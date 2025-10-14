@@ -44,35 +44,44 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 flex items-center justify-center py-12 px-4 relative overflow-hidden">
+      {/* Background Decorations */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-red-200 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-rose-200 rounded-full blur-3xl opacity-20 animate-pulse" style={{animationDelay: '1s'}}></div>
+      
       <motion.div
-        className="max-w-md w-full"
+        className="max-w-md w-full relative z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-block p-3 bg-gradient-to-r from-red-600 to-rose-600 rounded-2xl mb-4">
-            <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          <motion.div
+            className="inline-block p-4 bg-gradient-to-r from-red-600 to-rose-600 rounded-3xl mb-6 shadow-2xl"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          >
+            <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
             </svg>
-          </div>
-          <h1 className="text-4xl font-black mb-2">
-            <span className="bg-gradient-to-r from-red-600 to-rose-600 bg-clip-text text-transparent">
-              Welcome Back
+          </motion.div>
+          <h1 className="text-5xl font-black mb-3">
+            <span className="bg-gradient-to-r from-red-600 via-rose-500 to-pink-600 bg-clip-text text-transparent">
+              Welcome Back!
             </span>
           </h1>
-          <p className="text-gray-600">Sign in to continue saving lives</p>
+          <p className="text-gray-600 text-lg">Sign in to continue your journey of saving lives</p>
         </div>
 
         {/* Login Form */}
         <motion.form
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl shadow-2xl p-8 space-y-6"
+          className="bg-white rounded-3xl shadow-2xl p-8 space-y-6 border border-gray-100"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.3 }}
         >
           {error && (
             <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
@@ -125,9 +134,17 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-red-600 to-rose-600 text-white py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-red-600 to-rose-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Signing In..." : "Sign In"}
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Signing In...
+              </span>
+            ) : "Sign In 🚀"}
           </button>
 
           {/* Divider */}
@@ -136,13 +153,6 @@ const Login = () => {
             <Link to="/signup" className="text-red-600 font-bold hover:underline">
               Sign Up
             </Link>
-          </div>
-
-          {/* Quick Login Demo */}
-          <div className="bg-gray-50 rounded-xl p-4 text-sm text-gray-600">
-            <p className="font-semibold mb-2">Demo Accounts:</p>
-            <p>Admin: admin@test.com / admin123</p>
-            <p>User: user@test.com / user123</p>
           </div>
         </motion.form>
       </motion.div>

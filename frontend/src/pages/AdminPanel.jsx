@@ -112,25 +112,25 @@ const AdminPanel = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           {[
-            { label: "Total Users", value: stats.totalUsers, icon: FaUsers, color: "blue" },
-            { label: "Total Donors", value: stats.totalDonors, icon: FaTint, color: "red" },
-            { label: "Active Donors", value: stats.activeDonors, icon: FaHeartbeat, color: "green" },
-            { label: "Eligible Donors", value: stats.eligibleDonors, icon: FaBullhorn, color: "purple" },
+            { label: "Total Users", value: stats.totalUsers, icon: FaUsers, color: "from-blue-500 to-blue-600" },
+            { label: "Total Donors", value: stats.totalDonors, icon: FaTint, color: "from-red-500 to-rose-600" },
+            { label: "Active Donors", value: stats.activeDonors, icon: FaHeartbeat, color: "from-green-500 to-emerald-600" },
+            { label: "Eligible Donors", value: stats.eligibleDonors, icon: FaBullhorn, color: "from-purple-500 to-purple-600" },
           ].map((stat, idx) => (
             <motion.div
               key={idx}
-              className="bg-white rounded-2xl shadow-xl p-6"
+              className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100 hover:shadow-2xl transition-all"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-500 text-sm font-medium">{stat.label}</p>
-                  <p className="text-3xl font-black mt-1">{stat.value}</p>
+                  <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">{stat.label}</p>
+                  <p className="text-4xl font-black mt-2 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent">{stat.value}</p>
                 </div>
-                <div className={`p-3 bg-${stat.color}-100 rounded-xl`}>
-                  <stat.icon className={`text-2xl text-${stat.color}-600`} />
+                <div className={`p-4 bg-gradient-to-r ${stat.color} rounded-2xl shadow-lg`}>
+                  <stat.icon className="text-3xl text-white" />
                 </div>
               </div>
             </motion.div>

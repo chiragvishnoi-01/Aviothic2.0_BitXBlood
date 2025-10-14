@@ -73,33 +73,42 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 flex items-center justify-center py-12 px-4 relative overflow-hidden">
+      {/* Background Decorations */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-red-200 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-rose-200 rounded-full blur-3xl opacity-20 animate-pulse" style={{animationDelay: '1s'}}></div>
+      
       <motion.div
-        className="max-w-2xl w-full"
+        className="max-w-2xl w-full relative z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-block p-3 bg-gradient-to-r from-red-600 to-rose-600 rounded-2xl mb-4">
-            <FaTint className="text-4xl text-white" />
-          </div>
-          <h1 className="text-4xl font-black mb-2">
-            <span className="bg-gradient-to-r from-red-600 to-rose-600 bg-clip-text text-transparent">
-              Join Us
+          <motion.div
+            className="inline-block p-4 bg-gradient-to-r from-red-600 to-rose-600 rounded-3xl mb-6 shadow-2xl"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          >
+            <FaTint className="text-5xl text-white" />
+          </motion.div>
+          <h1 className="text-5xl font-black mb-3">
+            <span className="bg-gradient-to-r from-red-600 via-rose-500 to-pink-600 bg-clip-text text-transparent">
+              Join Our Mission
             </span>
           </h1>
-          <p className="text-gray-600">Create an account and start saving lives</p>
+          <p className="text-gray-600 text-lg">Create an account and start making a difference today</p>
         </div>
 
         {/* Signup Form */}
         <motion.form
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl shadow-2xl p-8 space-y-6"
+          className="bg-white rounded-3xl shadow-2xl p-8 space-y-6 border border-gray-100"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.3 }}
         >
           {error && (
             <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
