@@ -78,91 +78,181 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
-        {/* Image/Animation */}
+        {/* 3D Illustration - Better than GIF */}
         <motion.div
           className="md:w-1/2 flex justify-center"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-red-400 to-rose-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+          <div className="relative w-full max-w-lg h-[500px]">
+            {/* Animated Background Glow */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-red-400 to-rose-400 rounded-full blur-3xl opacity-30"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
             
-            {/* Blood Drop Animation */}
-            <div className="relative w-full max-w-md h-96 flex items-center justify-center">
+            {/* 3D Blood Donation Illustration */}
+            <div className="relative w-full h-full flex items-center justify-center">
+              {/* Large Central Drop with 3D effect */}
               <motion.div
                 className="relative"
                 animate={{
-                  y: [0, -20, 0],
+                  y: [0, -30, 0],
                 }}
                 transition={{
-                  duration: 2,
+                  duration: 3,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
               >
-                {/* Main Blood Drop */}
-                <div className="relative">
-                  <svg width="200" height="240" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    {/* Outer glow */}
-                    <defs>
-                      <filter id="glow">
-                        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                        <feMerge>
-                          <feMergeNode in="coloredBlur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <linearGradient id="bloodGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style={{stopColor: '#dc2626', stopOpacity: 1}} />
-                        <stop offset="100%" style={{stopColor: '#991b1b', stopOpacity: 1}} />
-                      </linearGradient>
-                    </defs>
+                <svg width="300" height="350" viewBox="0 0 300 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    {/* Advanced Gradients */}
+                    <linearGradient id="bloodGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" style={{stopColor: '#ef4444', stopOpacity: 1}} />
+                      <stop offset="50%" style={{stopColor: '#dc2626', stopOpacity: 1}} />
+                      <stop offset="100%" style={{stopColor: '#991b1b', stopOpacity: 1}} />
+                    </linearGradient>
                     
-                    {/* Blood drop shape */}
+                    <linearGradient id="shineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{stopColor: '#ffffff', stopOpacity: 0.6}} />
+                      <stop offset="100%" style={{stopColor: '#ffffff', stopOpacity: 0}} />
+                    </linearGradient>
+                    
+                    {/* Shadow */}
+                    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                      <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
+                      <feOffset dx="0" dy="10" result="offsetblur"/>
+                      <feFlood floodColor="#991b1b" floodOpacity="0.3"/>
+                      <feComposite in2="offsetblur" operator="in"/>
+                      <feMerge>
+                        <feMergeNode/>
+                        <feMergeNode in="SourceGraphic"/>
+                      </feMerge>
+                    </filter>
+                  </defs>
+                  
+                  {/* Main Blood Drop - 3D Style */}
+                  <g filter="url(#shadow)">
                     <path
-                      d="M100 20 C100 20, 40 80, 40 140 C40 180, 65 220, 100 220 C135 220, 160 180, 160 140 C160 80, 100 20, 100 20Z"
-                      fill="url(#bloodGradient)"
-                      filter="url(#glow)"
+                      d="M150 30 C150 30, 70 110, 70 190 C70 250, 105 310, 150 310 C195 310, 230 250, 230 190 C230 110, 150 30, 150 30Z"
+                      fill="url(#bloodGrad)"
                       className="drop-shadow-2xl"
                     />
                     
-                    {/* Heart icon in center */}
-                    <g transform="translate(100, 120)">
-                      <motion.path
-                        d="M0,-10 C-10,-20, -20,-15, -20,0 C-20,15, 0,25, 0,25 C0,25, 20,15, 20,0 C20,-15, 10,-20, 0,-10Z"
-                        fill="white"
-                        initial={{ scale: 0.8 }}
-                        animate={{ scale: [0.8, 1.2, 0.8] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                      />
-                    </g>
-                  </svg>
+                    {/* Shine effect */}
+                    <ellipse
+                      cx="120"
+                      cy="100"
+                      rx="40"
+                      ry="60"
+                      fill="url(#shineGrad)"
+                      opacity="0.4"
+                    />
+                  </g>
                   
-                  {/* Floating particles */}
-                  {[...Array(6)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute w-3 h-3 bg-red-400 rounded-full opacity-60"
-                      style={{
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                      }}
+                  {/* Animated Heart inside */}
+                  <g transform="translate(150, 180)">
+                    <motion.path
+                      d="M0,-20 C-15,-35, -35,-25, -35,0 C-35,25, 0,45, 0,45 C0,45, 35,25, 35,0 C35,-25, 15,-35, 0,-20Z"
+                      fill="white"
                       animate={{
-                        y: [-20, 20, -20],
-                        x: [-10, 10, -10],
-                        opacity: [0.3, 0.8, 0.3],
+                        scale: [1, 1.15, 1],
                       }}
                       transition={{
-                        duration: 3 + i * 0.5,
+                        duration: 1.2,
                         repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: i * 0.2,
+                        ease: "easeInOut"
                       }}
                     />
-                  ))}
-                </div>
+                    {/* Plus sign in heart */}
+                    <g fill="#dc2626">
+                      <rect x="-2" y="-12" width="4" height="24" rx="2"/>
+                      <rect x="-12" y="-2" width="24" height="4" rx="2"/>
+                    </g>
+                  </g>
+                </svg>
               </motion.div>
+              
+              {/* Orbiting Drops */}
+              {[0, 120, 240].map((angle, index) => (
+                <motion.div
+                  key={index}
+                  className="absolute"
+                  style={{
+                    top: '50%',
+                    left: '50%',
+                  }}
+                  animate={{
+                    rotate: [angle, angle + 360],
+                  }}
+                  transition={{
+                    duration: 10,
+                    repeat: Infinity,
+                    ease: "linear",
+                    delay: index * 0.5,
+                  }}
+                >
+                  <motion.div
+                    style={{
+                      width: 40,
+                      height: 50,
+                      borderRadius: '50% 50% 50% 0',
+                      transform: 'rotate(-45deg)',
+                      transformOrigin: 'center',
+                      x: 150,
+                    }}
+                    className="bg-gradient-to-br from-red-400 to-rose-500 opacity-60"
+                    animate={{
+                      y: [-5, 5, -5],
+                      scale: [0.9, 1.1, 0.9],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: index * 0.3,
+                    }}
+                  />
+                </motion.div>
+              ))}
+              
+              {/* Floating Mini Drops */}
+              {[...Array(8)].map((_, i) => (
+                <motion.div
+                  key={`mini-${i}`}
+                  className="absolute bg-gradient-to-br from-red-300/40 to-rose-400/40"
+                  style={{
+                    width: 15 + Math.random() * 15,
+                    height: 20 + Math.random() * 20,
+                    borderRadius: '50% 50% 50% 0',
+                    transform: `rotate(${-45 + Math.random() * 20}deg)`,
+                    left: `${20 + Math.random() * 60}%`,
+                    top: `${10 + Math.random() * 80}%`,
+                  }}
+                  animate={{
+                    y: [-30 - i * 5, 30 + i * 5, -30 - i * 5],
+                    x: [-15, 15, -15],
+                    opacity: [0.3, 0.7, 0.3],
+                    scale: [0.8, 1.2, 0.8],
+                  }}
+                  transition={{
+                    duration: 4 + i * 0.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: i * 0.3,
+                  }}
+                />
+              ))}
             </div>
           </div>
         </motion.div>
