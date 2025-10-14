@@ -1,0 +1,30 @@
+services:
+  # Backend API
+  - type: web
+    name: blood-donation-backend
+    runtime: node
+    region: singapore
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+
+  # Frontend Static Site
+  - type: web
+    name: blood-donation-frontend
+    runtime: static
+    region: singapore
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://blood-donation-backend.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
