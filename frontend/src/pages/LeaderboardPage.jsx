@@ -6,14 +6,20 @@ import { FaTrophy, FaMedal, FaAward, FaTint } from "react-icons/fa";
 const Leaderboard = () => {
   const [donors, setDonors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
         const res = await axios.get("/leaderboard");
-        setDonors(res.data);
+        // Ensure data is array and has proper structure
+        const validDonors = Array.isArray(res.data) ? res.data : [];
+        setDonors(validDonors);
+        setError(null);
       } catch (err) {
         console.error("Error fetching leaderboard:", err);
+        setError("Failed to load leaderboard. Please try again later.");
+        setDonors([]); // Set empty array on error
       } finally {
         setLoading(false);
       }
@@ -35,6 +41,24 @@ const Leaderboard = () => {
       <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-600 mb-4"></div>
         <p className="text-red-600 text-xl font-semibold animate-pulse">Loading leaderboard...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50 px-4">
+        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md text-center">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops!</h2>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }
@@ -67,6 +91,11 @@ const Leaderboard = () => {
               {donors.slice(0, 3).map((donor, index) => {
                 const medal = getMedal(index);
                 const MedalIcon = medal.icon;
+                // Safe access to donor properties
+                const donorName = donor?.name || 'Anonymous';
+                const donorCity = donor?.city || 'Unknown';
+                const donationCount = donor?.donationHistory?.length || 0;
+                
                 return (
                   <motion.div
                     key={donor._id}
@@ -82,11 +111,11 @@ const Leaderboard = () => {
                       <div className="text-6xl font-black mb-2">
                         <span className={medal.color}>#{index + 1}</span>
                       </div>
-                      <h3 className="font-bold text-xl text-gray-800 mb-1">{donor.name}</h3>
-                      <p className="text-sm text-gray-500 mb-3">{donor.city}</p>
+                      <h3 className="font-bold text-xl text-gray-800 mb-1">{donorName}</h3>
+                      <p className="text-sm text-gray-500 mb-3">{donorCity}</p>
                       <div className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-2 rounded-full font-bold inline-flex items-center gap-2">
                         <FaTint />
-                        {donor.donationHistory.length} Donations
+                        {donationCount} Donations
                       </div>
                     </div>
                   </motion.div>
@@ -110,6 +139,12 @@ const Leaderboard = () => {
                     const actualIndex = index + 3;
                     const medal = getMedal(actualIndex);
                     const MedalIcon = medal.icon;
+                    // Safe access to donor properties
+                    const donorName = donor?.name || 'Anonymous';
+                    const donorCity = donor?.city || 'Unknown';
+                    const donorBloodGroup = donor?.bloodGroup || 'N/A';
+                    const donationCount = donor?.donationHistory?.length || 0;
+                    
                     return (
                       <motion.li
                         key={donor._id}
@@ -125,19 +160,19 @@ const Leaderboard = () => {
                             </div>
                             <div>
                               <h3 className="font-bold text-gray-800 text-lg group-hover:text-red-600 transition-colors">
-                                {donor.name}
+                                {donorName}
                               </h3>
                               <p className="text-sm text-gray-500 flex items-center gap-1">
-                                <span>📍 {donor.city}</span>
+                                <span>📍 {donorCity}</span>
                                 <span className="text-gray-300">•</span>
-                                <span>🩸 {donor.bloodGroup}</span>
+                                <span>🩸 {donorBloodGroup}</span>
                               </p>
                             </div>
                           </div>
 
                           <div className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-2 rounded-full font-bold text-sm inline-flex items-center gap-2 shadow-lg">
                             <FaTint />
-                            {donor.donationHistory.length}
+                            {donationCount}
                           </div>
                         </div>
                       </motion.li>

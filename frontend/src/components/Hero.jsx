@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import heroGif from "/gif/blood-donation.gif";
 
 const Hero = () => {
   return (
@@ -79,7 +78,7 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
-        {/* Image */}
+        {/* Image/Animation */}
         <motion.div
           className="md:w-1/2 flex justify-center"
           initial={{ opacity: 0, x: 50 }}
@@ -88,11 +87,83 @@ const Hero = () => {
         >
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-red-400 to-rose-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
-            <img
-              src={heroGif}
-              alt="Blood Donation"
-              className="relative w-full max-w-md animate-float drop-shadow-2xl"
-            />
+            
+            {/* Blood Drop Animation */}
+            <div className="relative w-full max-w-md h-96 flex items-center justify-center">
+              <motion.div
+                className="relative"
+                animate={{
+                  y: [0, -20, 0],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                {/* Main Blood Drop */}
+                <div className="relative">
+                  <svg width="200" height="240" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    {/* Outer glow */}
+                    <defs>
+                      <filter id="glow">
+                        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                        <feMerge>
+                          <feMergeNode in="coloredBlur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      <linearGradient id="bloodGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style={{stopColor: '#dc2626', stopOpacity: 1}} />
+                        <stop offset="100%" style={{stopColor: '#991b1b', stopOpacity: 1}} />
+                      </linearGradient>
+                    </defs>
+                    
+                    {/* Blood drop shape */}
+                    <path
+                      d="M100 20 C100 20, 40 80, 40 140 C40 180, 65 220, 100 220 C135 220, 160 180, 160 140 C160 80, 100 20, 100 20Z"
+                      fill="url(#bloodGradient)"
+                      filter="url(#glow)"
+                      className="drop-shadow-2xl"
+                    />
+                    
+                    {/* Heart icon in center */}
+                    <g transform="translate(100, 120)">
+                      <motion.path
+                        d="M0,-10 C-10,-20, -20,-15, -20,0 C-20,15, 0,25, 0,25 C0,25, 20,15, 20,0 C20,-15, 10,-20, 0,-10Z"
+                        fill="white"
+                        initial={{ scale: 0.8 }}
+                        animate={{ scale: [0.8, 1.2, 0.8] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      />
+                    </g>
+                  </svg>
+                  
+                  {/* Floating particles */}
+                  {[...Array(6)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-3 h-3 bg-red-400 rounded-full opacity-60"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                      }}
+                      animate={{
+                        y: [-20, 20, -20],
+                        x: [-10, 10, -10],
+                        opacity: [0.3, 0.8, 0.3],
+                      }}
+                      transition={{
+                        duration: 3 + i * 0.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: i * 0.2,
+                      }}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            </div>
           </div>
         </motion.div>
       </div>
