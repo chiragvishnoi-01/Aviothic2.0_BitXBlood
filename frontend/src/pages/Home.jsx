@@ -14,42 +14,67 @@ const Home = () => {
       <Hero />
 
       {/* Recent Donors */}
-      <section className="container mx-auto px-6 py-16">
+      <section className="container mx-auto px-6 py-20 relative">
+        {/* Background decoration */}
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-red-100 rounded-full blur-3xl opacity-30 -z-10"></div>
+        
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
         >
-          <div className="flex items-center justify-between mb-10">
-            <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-br from-red-600 to-rose-600 text-white w-12 h-12 rounded-xl flex items-center justify-center shadow-lg">
-                <FaUsers className="text-xl" />
-              </div>
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-                  Recent <span className="gradient-text">Donors</span>
-                </h2>
-                <p className="text-gray-500 text-sm">Heroes who made a difference</p>
-              </div>
-            </div>
-            <Link
-              to="/dashboard"
-              className="text-red-600 hover:text-red-700 font-semibold transition flex items-center gap-2 group"
+          <div className="flex items-center justify-between mb-12">
+            <motion.div
+              className="flex items-center gap-4"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
             >
-              View All
-              <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </Link>
+              <motion.div
+                className="bg-gradient-to-br from-red-600 to-rose-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center shadow-2xl"
+                whileHover={{ rotate: 360, scale: 1.1 }}
+                transition={{ duration: 0.6 }}
+              >
+                <FaUsers className="text-2xl" />
+              </motion.div>
+              <div>
+                <h2 className="text-4xl md:text-5xl font-black text-gray-800">
+                  Recent <span className="bg-gradient-to-r from-red-600 via-rose-500 to-pink-600 bg-clip-text text-transparent">Donors</span>
+                </h2>
+                <p className="text-gray-500 text-base mt-1">Heroes who made a difference today</p>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
+              <Link
+                to="/dashboard"
+                className="text-red-600 hover:text-red-700 font-bold transition flex items-center gap-2 group bg-red-50 hover:bg-red-100 px-6 py-3 rounded-xl"
+              >
+                View All Donors
+                <FaArrowRight className="group-hover:translate-x-2 transition-transform" />
+              </Link>
+            </motion.div>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
             {donorsData.slice(0, 6).map((donor, index) => (
               <motion.div
                 key={donor.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ 
+                  delay: index * 0.15,
+                  duration: 0.5,
+                  type: "spring",
+                  stiffness: 100
+                }}
               >
                 <DonorCard donor={donor} />
               </motion.div>
@@ -59,8 +84,34 @@ const Home = () => {
       </section>
 
       {/* Campaign Section */}
-      <section className="bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 py-16">
-        <div className="container mx-auto px-6">
+      <section className="bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 py-20 relative overflow-hidden">
+        {/* Animated background elements */}
+        <motion.div
+          className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-red-300/30 to-rose-300/30 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-pink-300/30 to-rose-300/30 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.3, 1],
+            rotate: [0, -90, 0],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

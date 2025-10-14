@@ -18,43 +18,103 @@ const DonorCard = ({ donor }) => {
 
   return (
     <motion.div
-      className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border border-red-50 group card-hover"
-      whileHover={{ y: -5 }}
-      initial={{ opacity: 0, scale: 0.95 }}
+      className="relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 p-6 border-2 border-transparent hover:border-red-200 group overflow-hidden"
+      whileHover={{ y: -8, scale: 1.02 }}
+      initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.4, type: "spring" }}
     >
+      {/* Animated Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-red-50/50 via-transparent to-rose-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      
+      {/* Floating Particles */}
+      <motion.div
+        className="absolute top-4 right-4 w-2 h-2 bg-red-400 rounded-full"
+        animate={{
+          y: [0, -10, 0],
+          opacity: [0.5, 1, 0.5],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      
+      <div className="relative z-10">
       {/* Blood Group Badge */}
-      <div className="flex justify-between items-start mb-4">
-        <div className={`bg-gradient-to-br ${gradientClass} text-white w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
-          <div className="text-center">
-            <FaTint className="text-xl mx-auto mb-1" />
-            <div className="text-sm font-bold">{donor.bloodGroup}</div>
+      <div className="flex justify-between items-start mb-5">
+        <motion.div
+          className={`bg-gradient-to-br ${gradientClass} text-white w-20 h-20 rounded-3xl flex items-center justify-center shadow-2xl relative overflow-hidden`}
+          whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Shine Effect */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent transform -skew-x-12"></div>
+          <div className="text-center relative z-10">
+            <motion.div
+              animate={{ y: [0, -3, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <FaTint className="text-2xl mx-auto mb-1" />
+            </motion.div>
+            <div className="text-base font-black">{donor.bloodGroup}</div>
           </div>
-        </div>
-        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" title="Available"></div>
+        </motion.div>
+        <motion.div
+          className="flex flex-col items-end gap-2"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-xs font-semibold text-green-700">Available</span>
+          </div>
+        </motion.div>
       </div>
 
       {/* Donor Info */}
-      <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-red-600 transition-colors">
+      <motion.h3
+        className="text-2xl font-black text-gray-800 mb-4 group-hover:text-red-600 transition-colors"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
         {donor.name}
-      </h3>
+      </motion.h3>
       
-      <div className="space-y-2 text-gray-600">
-        <div className="flex items-center gap-2">
-          <FaMapMarkerAlt className="text-red-500" />
-          <span className="text-sm">{donor.city}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <FaPhone className="text-red-500" />
-          <span className="text-sm font-medium">{donor.phone}</span>
-        </div>
+      <div className="space-y-3 text-gray-600 mb-5">
+        <motion.div
+          className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl hover:bg-red-50 transition-colors group/item"
+          whileHover={{ x: 5 }}
+        >
+          <div className="bg-red-100 p-2 rounded-lg group-hover/item:bg-red-200 transition-colors">
+            <FaMapMarkerAlt className="text-red-600" />
+          </div>
+          <span className="text-sm font-medium">{donor.city}</span>
+        </motion.div>
+        <motion.div
+          className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl hover:bg-red-50 transition-colors group/item"
+          whileHover={{ x: 5 }}
+        >
+          <div className="bg-red-100 p-2 rounded-lg group-hover/item:bg-red-200 transition-colors">
+            <FaPhone className="text-red-600" />
+          </div>
+          <span className="text-sm font-bold">{donor.phone}</span>
+        </motion.div>
       </div>
 
       {/* Action Button */}
-      <button className="mt-4 w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white py-2.5 rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg">
+      <motion.button
+        className="mt-4 w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white py-3 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-2xl flex items-center justify-center gap-2"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <FaPhone className="text-sm" />
         Contact Donor
-      </button>
+      </motion.button>
+      </div>
     </motion.div>
   );
 };
