@@ -1,10 +1,25 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { FaBars, FaTimes, FaHeartbeat } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaBars, FaTimes, FaHeartbeat, FaUser, FaSignOutAlt } from "react-icons/fa";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/");
+  };
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -43,6 +58,18 @@ const Navbar = () => {
               </Link>
             </li>
           ))}
+          
+          {user?.role === 'admin' && (
+            <li>
+              <Link
+                to="/admin"
+                className="px-5 py-2 rounded-lg font-medium bg-yellow-400 text-gray-900 hover:bg-yellow-300 transition-all"
+              >
+                ⚙️ Admin
+              </Link>
+            </li>
+          )}
+          
           <li>
             <Link
               to="/sos"
@@ -51,6 +78,35 @@ const Navbar = () => {
               🚨 SOS
             </Link>
           </li>
+          
+          {user ? (
+            <li className="ml-4 flex items-center gap-3">
+              <span className="bg-white/20 px-4 py-2 rounded-lg font-medium">
+                👤 {user.name}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="bg-red-800 hover:bg-red-900 px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2"
+              >
+                <FaSignOutAlt /> Logout
+              </button>
+            </li>
+          ) : (
+            <li className="ml-4 flex items-center gap-2">
+              <Link
+                to="/login"
+                className="bg-white/20 hover:bg-white/30 px-5 py-2 rounded-lg font-medium transition-all"
+              >
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                className="bg-white text-red-600 px-5 py-2 rounded-lg font-bold hover:bg-red-50 transition-all shadow-lg"
+              >
+                Sign Up
+              </Link>
+            </li>
+          )}
         </ul>
 
         {/* Mobile Menu Button */}
@@ -80,6 +136,17 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
+          
+          {user?.role === 'admin' && (
+            <Link
+              to="/admin"
+              onClick={() => setIsOpen(false)}
+              className="block px-4 py-3 rounded-lg font-medium bg-yellow-400 text-gray-900"
+            >
+              ⚙️ Admin Panel
+            </Link>
+          )}
+          
           <Link
             to="/sos"
             onClick={() => setIsOpen(false)}
@@ -87,6 +154,40 @@ const Navbar = () => {
           >
             🚨 SOS Request
           </Link>
+          
+          {user ? (
+            <>
+              <div className="px-4 py-3 bg-white/20 rounded-lg text-center font-medium">
+                👤 {user.name}
+              </div>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsOpen(false);
+                }}
+                className="w-full bg-red-800 hover:bg-red-900 px-4 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2"
+              >
+                <FaSignOutAlt /> Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                onClick={() => setIsOpen(false)}
+                className="block bg-white/20 hover:bg-white/30 px-4 py-3 rounded-lg font-medium transition-all text-center"
+              >
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                onClick={() => setIsOpen(false)}
+                className="block bg-white text-red-600 px-4 py-3 rounded-lg font-bold hover:bg-red-50 transition shadow-lg text-center"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       )}
     </nav>

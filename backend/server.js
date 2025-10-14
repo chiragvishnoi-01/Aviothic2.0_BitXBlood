@@ -8,6 +8,7 @@ import sosRoutes from "./routes/sosRoutes.js";
 import bankRoutes from "./routes/bankRoutes.js";
 import leaderboardRoutes from "./routes/leaderboardRoutes.js";
 import campaignRoutes from "./routes/campaignRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 // API Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/donors", donorRoutes);
 app.use("/api/sos", sosRoutes);
 app.use("/api/banks", bankRoutes);

@@ -10,6 +10,9 @@ import Dashboard from "./pages/Dashboard.jsx";
 import LeaderboardPage from "./pages/LeaderboardPage.jsx";
 import Campaigns from "./pages/Campaigns.jsx";
 import CreateCampaign from "./pages/CreateCampaign.jsx";
+import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup.jsx";
+import AdminPanel from "./pages/AdminPanel.jsx";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -36,6 +39,9 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+        <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+        <Route path="/signup" element={<PageTransition><Signup /></PageTransition>} />
+        <Route path="/admin" element={<PageTransition><AdminPanel /></PageTransition>} />
         <Route path="/sos" element={<PageTransition><SOS /></PageTransition>} />
         <Route path="/dashboard" element={<PageTransition><Dashboard /></PageTransition>} />
         <Route path="/leaderboard" element={<PageTransition><LeaderboardPage /></PageTransition>} />
