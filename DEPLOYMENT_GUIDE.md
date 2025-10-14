@@ -202,7 +202,7 @@ If you want to use a real database instead of mock data:
 3. Get connection string
 4. Add to backend `.env`:
    ```
-   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/blood-donation
+   
    ```
 
 ### **Option 2: Railway PostgreSQL**
