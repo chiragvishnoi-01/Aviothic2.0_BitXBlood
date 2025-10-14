@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaArrowRight, FaUsers, FaCalendarAlt } from "react-icons/fa";
 import Hero from "../components/Hero";
+import Features from "../components/Features";
+import Testimonials from "../components/Testimonials";
 import DonorCard from "../components/DonorCard";
 import CampaignCard from "../components/CampaignCard";
 import donorsData from "../data/donors.json";
@@ -12,6 +14,9 @@ const Home = () => {
     <div className="overflow-hidden">
       {/* Hero Section */}
       <Hero />
+
+      {/* Features Section */}
+      <Features />
 
       {/* Recent Donors */}
       <section className="container mx-auto px-6 py-20 relative">
@@ -222,6 +227,9 @@ const Home = () => {
           </div>
         </motion.div>
       </section>
+
+      {/* Testimonials Section */}
+      <Testimonials />
     </div>
   );
 };
