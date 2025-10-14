@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 const Hero = () => {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 py-20">
-      {/* Background Decorations */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-red-200 rounded-full blur-3xl opacity-20 animate-pulse"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-rose-200 rounded-full blur-3xl opacity-20 animate-pulse delay-1000"></div>
+      {/* Static Background Decorations */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-red-200 rounded-full blur-3xl opacity-20"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-rose-200 rounded-full blur-3xl opacity-20"></div>
       
       <div className="container mx-auto px-6 flex flex-col-reverse md:flex-row items-center relative z-10">
         {/* Text Content */}
@@ -86,37 +86,16 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
         >
           <div className="relative w-full max-w-lg h-[500px]">
-            {/* Animated Background Glow */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-br from-red-400 to-rose-400 rounded-full blur-3xl opacity-30"
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.5, 0.3],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
+            {/* Static Background Glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-red-400 to-rose-400 rounded-full blur-3xl opacity-30"></div>
             
-            {/* 3D Blood Donation Illustration */}
+            {/* Simplified 3D Blood Drop Illustration */}
             <div className="relative w-full h-full flex items-center justify-center">
-              {/* Large Central Drop with 3D effect */}
-              <motion.div
-                className="relative"
-                animate={{
-                  y: [0, -30, 0],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
+              {/* Central Drop - Simple version */}
+              <div className="relative">
                 <svg width="300" height="350" viewBox="0 0 300 350" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <defs>
-                    {/* Advanced Gradients */}
+                    {/* Gradients */}
                     <linearGradient id="bloodGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                       <stop offset="0%" style={{stopColor: '#ef4444', stopOpacity: 1}} />
                       <stop offset="50%" style={{stopColor: '#dc2626', stopOpacity: 1}} />
@@ -141,7 +120,7 @@ const Hero = () => {
                     </filter>
                   </defs>
                   
-                  {/* Main Blood Drop - 3D Style */}
+                  {/* Main Blood Drop */}
                   <g filter="url(#shadow)">
                     <path
                       d="M150 30 C150 30, 70 110, 70 190 C70 250, 105 310, 150 310 C195 310, 230 250, 230 190 C230 110, 150 30, 150 30Z"
@@ -160,19 +139,11 @@ const Hero = () => {
                     />
                   </g>
                   
-                  {/* Animated Heart inside */}
+                  {/* Heart inside */}
                   <g transform="translate(150, 180)">
-                    <motion.path
+                    <path
                       d="M0,-20 C-15,-35, -35,-25, -35,0 C-35,25, 0,45, 0,45 C0,45, 35,25, 35,0 C35,-25, 15,-35, 0,-20Z"
                       fill="white"
-                      animate={{
-                        scale: [1, 1.15, 1],
-                      }}
-                      transition={{
-                        duration: 1.2,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
                     />
                     {/* Plus sign in heart */}
                     <g fill="#dc2626">
@@ -181,78 +152,7 @@ const Hero = () => {
                     </g>
                   </g>
                 </svg>
-              </motion.div>
-              
-              {/* Orbiting Drops */}
-              {[0, 120, 240].map((angle, index) => (
-                <motion.div
-                  key={index}
-                  className="absolute"
-                  style={{
-                    top: '50%',
-                    left: '50%',
-                  }}
-                  animate={{
-                    rotate: [angle, angle + 360],
-                  }}
-                  transition={{
-                    duration: 10,
-                    repeat: Infinity,
-                    ease: "linear",
-                    delay: index * 0.5,
-                  }}
-                >
-                  <motion.div
-                    style={{
-                      width: 40,
-                      height: 50,
-                      borderRadius: '50% 50% 50% 0',
-                      transform: 'rotate(-45deg)',
-                      transformOrigin: 'center',
-                      x: 150,
-                    }}
-                    className="bg-gradient-to-br from-red-400 to-rose-500 opacity-60"
-                    animate={{
-                      y: [-5, 5, -5],
-                      scale: [0.9, 1.1, 0.9],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: index * 0.3,
-                    }}
-                  />
-                </motion.div>
-              ))}
-              
-              {/* Floating Mini Drops */}
-              {[...Array(8)].map((_, i) => (
-                <motion.div
-                  key={`mini-${i}`}
-                  className="absolute bg-gradient-to-br from-red-300/40 to-rose-400/40"
-                  style={{
-                    width: 15 + Math.random() * 15,
-                    height: 20 + Math.random() * 20,
-                    borderRadius: '50% 50% 50% 0',
-                    transform: `rotate(${-45 + Math.random() * 20}deg)`,
-                    left: `${20 + Math.random() * 60}%`,
-                    top: `${10 + Math.random() * 80}%`,
-                  }}
-                  animate={{
-                    y: [-30 - i * 5, 30 + i * 5, -30 - i * 5],
-                    x: [-15, 15, -15],
-                    opacity: [0.3, 0.7, 0.3],
-                    scale: [0.8, 1.2, 0.8],
-                  }}
-                  transition={{
-                    duration: 4 + i * 0.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: i * 0.3,
-                  }}
-                />
-              ))}
+              </div>
             </div>
           </div>
         </motion.div>

@@ -37,13 +37,9 @@ const Home = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              <motion.div
-                className="bg-gradient-to-br from-red-600 to-rose-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center shadow-2xl"
-                whileHover={{ rotate: 360, scale: 1.1 }}
-                transition={{ duration: 0.6 }}
-              >
+              <div className="bg-gradient-to-br from-red-600 to-rose-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg">
                 <FaUsers className="text-2xl" />
-              </motion.div>
+              </div>
               <div>
                 <h2 className="text-4xl md:text-5xl font-black text-gray-800">
                   Recent <span className="bg-gradient-to-r from-red-600 via-rose-500 to-pink-600 bg-clip-text text-transparent">Donors</span>
@@ -71,14 +67,12 @@ const Home = () => {
             {donorsData.slice(0, 6).map((donor, index) => (
               <motion.div
                 key={donor.id}
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ 
-                  delay: index * 0.15,
-                  duration: 0.5,
-                  type: "spring",
-                  stiffness: 100
+                  delay: index * 0.1,
+                  duration: 0.3
                 }}
               >
                 <DonorCard donor={donor} />
@@ -90,31 +84,9 @@ const Home = () => {
 
       {/* Campaign Section */}
       <section className="bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 py-20 relative overflow-hidden">
-        {/* Animated background elements */}
-        <motion.div
-          className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-red-300/30 to-rose-300/30 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-pink-300/30 to-rose-300/30 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.3, 1],
-            rotate: [0, -90, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
+        {/* Static background decoration */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-red-200/20 to-rose-200/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-pink-200/20 to-rose-200/20 rounded-full blur-3xl"></div>
         
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
