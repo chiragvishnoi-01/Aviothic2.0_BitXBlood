@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import axios from "../api/axiosConfig";
@@ -8,14 +8,18 @@ import { FaCalendarAlt, FaPlus } from "react-icons/fa";
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
         const res = await axios.get("/campaigns");
-        setCampaigns(res.data);
+        setCampaigns(Array.isArray(res.data) ? res.data : []);
+        setError(null);
       } catch (err) {
         console.error("Error loading campaigns:", err);
+        setError("Failed to load campaigns. Please try again later.");
+        setCampaigns([]);
       } finally {
         setLoading(false);
       }
@@ -28,6 +32,24 @@ const Campaigns = () => {
       <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-600 mb-4"></div>
         <p className="text-red-600 text-xl font-semibold animate-pulse">Loading campaigns...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50 px-4">
+        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md text-center">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops!</h2>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }

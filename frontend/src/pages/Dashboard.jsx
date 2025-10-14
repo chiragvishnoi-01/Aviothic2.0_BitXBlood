@@ -46,10 +46,17 @@ const Dashboard = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-red-50 to-rose-50">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 text-center">
+      <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-red-50 to-rose-50 px-4">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md text-center">
           <div className="text-6xl mb-4">😞</div>
-          <p className="text-red-600 text-xl font-semibold">{error}</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops!</h2>
+          <p className="text-red-600 text-xl font-semibold mb-6">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            Try Again
+          </button>
         </div>
       </div>
     );

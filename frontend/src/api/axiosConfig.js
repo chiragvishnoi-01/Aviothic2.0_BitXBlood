@@ -1,7 +1,86 @@
 import axios from "axios";
 
+// Create axios instance with base configuration
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  timeout: 15000, // 15 seconds timeout
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
+
+// Request interceptor - Add auth token if available
+instance.interceptors.request.use(
+  (config) => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      try {
+        const userData = JSON.parse(user);
+        if (userData.token) {
+          config.headers.Authorization = `Bearer ${userData.token}`;
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor - Handle errors globally
+instance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    // Handle different error scenarios
+    if (error.response) {
+      // Server responded with error status
+      const { status, data } = error.response;
+      
+      switch (status) {
+        case 401:
+          // Unauthorized - clear user data and redirect to login
+          localStorage.removeItem('user');
+          if (window.location.pathname !== '/login') {
+            window.location.href = '/login';
+          }
+          break;
+          
+        case 403:
+          console.error('Access forbidden:', data.message);
+          break;
+          
+        case 404:
+          console.error('Resource not found:', data.message);
+          break;
+          
+        case 500:
+          console.error('Server error:', data.message);
+          break;
+          
+        default:
+          console.error('API Error:', data.message || 'Unknown error');
+      }
+    } else if (error.request) {
+      // Request made but no response received
+      console.error('Network Error: No response from server');
+      console.error('Please check if the backend is running at:', instance.defaults.baseURL);
+    } else {
+      // Something else happened
+      console.error('Error:', error.message);
+    }
+    
+    return Promise.reject(error);
+  }
+);
+
+// Log the API base URL in development
+if (import.meta.env.DEV) {
+  console.log('🔗 API Base URL:', instance.defaults.baseURL);
+}
 
 export default instance;
