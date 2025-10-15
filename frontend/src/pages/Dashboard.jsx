@@ -37,9 +37,124 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-600 mb-4"></div>
-        <p className="text-red-600 text-xl font-semibold animate-pulse">Loading donors...</p>
+      <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50 relative overflow-hidden">
+        {/* DNA-like animated strands */}
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 bg-gradient-to-b from-red-300 to-rose-400 rounded-full"
+            style={{
+              left: `${20 + i * 15}%`,
+              height: '60%',
+            }}
+            animate={{
+              scaleY: [1, 1.5, 1],
+              opacity: [0.3, 0.7, 0.3],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              delay: i * 0.2,
+            }}
+          />
+        ))}
+        
+        {/* Animated blood drop loader */}
+        <div className="relative mb-8">
+          <motion.div
+            className="relative"
+            animate={{
+              y: [0, -20, 0],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            {/* Main drop */}
+            <motion.div
+              className="w-20 h-24 bg-gradient-to-b from-red-500 to-red-700 rounded-t-full rounded-b-full"
+              style={{
+                clipPath: 'path("M10,0 C10,0 0,15 0,30 C0,45 10,60 20,60 C30,60 40,45 40,30 C40,15 10,0 10,0Z")',
+              }}
+              animate={{
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+              }}
+            />
+            
+            {/* Ripple effect */}
+            <motion.div
+              className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-16 h-4 bg-red-300 rounded-full blur-sm"
+              animate={{
+                scale: [1, 1.5, 1],
+                opacity: [0.5, 0.2, 0.5],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+              }}
+            />
+          </motion.div>
+          
+          {/* Orbiting cells */}
+          {[...Array(4)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-4 h-4 bg-red-400 rounded-full"
+              style={{
+                left: '50%',
+                top: '50%',
+              }}
+              animate={{
+                x: [0, Math.cos(i * 90 * Math.PI / 180) * 50],
+                y: [0, Math.sin(i * 90 * Math.PI / 180) * 50],
+                scale: [0.5, 1, 0.5],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: i * 0.25,
+              }}
+            />
+          ))}
+        </div>
+        
+        <motion.p
+          className="text-red-600 text-xl font-semibold"
+          animate={{
+            opacity: [0.5, 1, 0.5],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+          }}
+        >
+          Loading donors...
+        </motion.p>
+        
+        {/* Heartbeat pulse line */}
+        <div className="w-80 h-16 mt-6 relative overflow-hidden">
+          <svg width="100%" height="100%" viewBox="0 0 320 64">
+            <motion.path
+              d="M0,32 L50,32 L60,20 L70,44 L80,8 L90,56 L100,32 L320,32"
+              stroke="#dc2626"
+              strokeWidth="3"
+              fill="none"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: [0, 1, 0] }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+          </svg>
+        </div>
       </div>
     );
   }

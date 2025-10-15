@@ -29,9 +29,85 @@ const Campaigns = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-600 mb-4"></div>
-        <p className="text-red-600 text-xl font-semibold animate-pulse">Loading campaigns...</p>
+      <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50 relative overflow-hidden">
+        {/* Animated background particles */}
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-red-300 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0, 1, 0],
+              scale: [0, 1, 0],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+        
+        {/* Animated 3D Spinner */}
+        <motion.div
+          className="relative"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        >
+          <div className="w-20 h-20 border-4 border-red-200 border-t-red-600 border-r-rose-600 rounded-full"></div>
+          <motion.div
+            className="absolute inset-2 border-4 border-rose-200 border-b-rose-600 border-l-pink-600 rounded-full"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center"
+            animate={{
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+            }}
+          >
+            <span className="text-3xl">📅</span>
+          </motion.div>
+        </motion.div>
+        
+        <motion.p
+          className="text-red-600 text-xl font-semibold mt-6"
+          animate={{
+            opacity: [0.5, 1, 0.5],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+          }}
+        >
+          Loading campaigns...
+        </motion.p>
+        
+        {/* Pulsing dots */}
+        <div className="flex gap-2 mt-4">
+          {[0, 1, 2].map((i) => (
+            <motion.div
+              key={i}
+              className="w-3 h-3 bg-red-600 rounded-full"
+              animate={{
+                y: [0, -10, 0],
+              }}
+              transition={{
+                duration: 0.6,
+                repeat: Infinity,
+                delay: i * 0.2,
+              }}
+            />
+          ))}
+        </div>
       </div>
     );
   }

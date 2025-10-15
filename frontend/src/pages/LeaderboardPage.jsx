@@ -38,9 +38,102 @@ const Leaderboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-600 mb-4"></div>
-        <p className="text-red-600 text-xl font-semibold animate-pulse">Loading leaderboard...</p>
+      <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50 relative overflow-hidden">
+        {/* Floating trophy particles */}
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute text-3xl"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -50, 0],
+              rotate: [0, 360],
+              opacity: [0, 0.6, 0],
+            }}
+            transition={{
+              duration: 4 + Math.random() * 3,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          >
+            {['🏆', '🥇', '🥈', '🥉', '⭐'][i % 5]}
+          </motion.div>
+        ))}
+        
+        {/* 3D Trophy Spinner */}
+        <motion.div className="relative mb-8">
+          <motion.div
+            animate={{
+              rotateY: 360,
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            style={{
+              transformStyle: "preserve-3d",
+            }}
+          >
+            <div className="text-8xl">🏆</div>
+          </motion.div>
+          
+          {/* Orbiting stars */}
+          {[...Array(3)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-2xl"
+              style={{
+                left: '50%',
+                top: '50%',
+              }}
+              animate={{
+                x: [0, Math.cos(i * 120 * Math.PI / 180) * 60],
+                y: [0, Math.sin(i * 120 * Math.PI / 180) * 60],
+                rotate: [0, 360],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: i * 0.3,
+              }}
+            >
+              ⭐
+            </motion.div>
+          ))}
+        </motion.div>
+        
+        <motion.p
+          className="text-red-600 text-xl font-semibold"
+          animate={{
+            scale: [1, 1.05, 1],
+            opacity: [0.7, 1, 0.7],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+          }}
+        >
+          Loading leaderboard...
+        </motion.p>
+        
+        {/* Animated progress bar */}
+        <div className="w-64 h-2 bg-red-100 rounded-full mt-6 overflow-hidden">
+          <motion.div
+            className="h-full bg-gradient-to-r from-red-600 via-rose-600 to-pink-600"
+            animate={{
+              x: ['-100%', '100%'],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        </div>
       </div>
     );
   }

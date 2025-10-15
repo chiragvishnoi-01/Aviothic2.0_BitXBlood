@@ -5,9 +5,47 @@ import { motion } from "framer-motion";
 const Hero = () => {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 py-20">
-      {/* Static Background Decorations */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-red-200 rounded-full blur-3xl opacity-20"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-rose-200 rounded-full blur-3xl opacity-20"></div>
+      {/* Animated Background Decorations with Orbital Motion */}
+      <motion.div
+        className="absolute top-0 right-0 w-96 h-96 bg-red-200 rounded-full blur-3xl opacity-20"
+        animate={{
+          scale: [1, 1.2, 1],
+          x: [0, 50, 0],
+          y: [0, 30, 0],
+          rotate: [0, 180, 360],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      <motion.div
+        className="absolute bottom-0 left-0 w-96 h-96 bg-rose-200 rounded-full blur-3xl opacity-20"
+        animate={{
+          scale: [1, 1.3, 1],
+          x: [0, -40, 0],
+          y: [0, -25, 0],
+          rotate: [360, 180, 0],
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      <motion.div
+        className="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-200 rounded-full blur-3xl opacity-15"
+        animate={{
+          scale: [1, 1.5, 1],
+          rotate: [0, 360],
+        }}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+      />
       
       <div className="container mx-auto px-6 flex flex-col-reverse md:flex-row items-center relative z-10">
         {/* Text Content */}
@@ -78,7 +116,7 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
-        {/* 3D Illustration - Better than GIF */}
+        {/* 3D Animated Illustration with Orbital Elements */}
         <motion.div
           className="md:w-1/2 flex justify-center"
           initial={{ opacity: 0, x: 50 }}
@@ -86,13 +124,83 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
         >
           <div className="relative w-full max-w-lg h-[500px]">
-            {/* Static Background Glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-red-400 to-rose-400 rounded-full blur-3xl opacity-30"></div>
+            {/* Animated Background Glow with Pulse */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-red-400 to-rose-400 rounded-full blur-3xl opacity-30"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
             
-            {/* Simplified 3D Blood Drop Illustration */}
+            {/* Orbital Floating Particles */}
+            {[...Array(8)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-3 h-3 bg-red-400 rounded-full"
+                style={{
+                  left: '50%',
+                  top: '50%',
+                }}
+                animate={{
+                  x: [0, Math.cos(i * 45 * Math.PI / 180) * 150],
+                  y: [0, Math.sin(i * 45 * Math.PI / 180) * 150],
+                  scale: [0, 1, 0],
+                  opacity: [0, 1, 0],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  delay: i * 0.2,
+                  ease: "easeInOut"
+                }}
+              />
+            ))}
+            
+            {/* Glassmorphism Floating Cards */}
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={`glass-${i}`}
+                className="absolute bg-white/20 backdrop-blur-lg rounded-2xl p-4 border border-white/30 shadow-xl"
+                style={{
+                  left: `${20 + i * 30}%`,
+                  top: `${15 + i * 25}%`,
+                }}
+                animate={{
+                  y: [0, -20, 0],
+                  rotate: [0, 5, -5, 0],
+                }}
+                transition={{
+                  duration: 4 + i,
+                  repeat: Infinity,
+                  delay: i * 0.5,
+                  ease: "easeInOut"
+                }}
+              >
+                <div className="text-2xl">{['💉', '❤️', '🩸'][i]}</div>
+              </motion.div>
+            ))}
+            
+            {/* Animated 3D Blood Drop Illustration */}
             <div className="relative w-full h-full flex items-center justify-center">
-              {/* Central Drop - Simple version */}
-              <div className="relative">
+              {/* Central Drop with Breathing Animation */}
+              <motion.div
+                className="relative"
+                animate={{
+                  y: [0, -15, 0],
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
                 <svg width="300" height="350" viewBox="0 0 300 350" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <defs>
                     {/* Gradients */}
@@ -120,7 +228,7 @@ const Hero = () => {
                     </filter>
                   </defs>
                   
-                  {/* Main Blood Drop */}
+                  {/* Main Blood Drop with Animated Shine */}
                   <g filter="url(#shadow)">
                     <path
                       d="M150 30 C150 30, 70 110, 70 190 C70 250, 105 310, 150 310 C195 310, 230 250, 230 190 C230 110, 150 30, 150 30Z"
@@ -128,31 +236,120 @@ const Hero = () => {
                       className="drop-shadow-2xl"
                     />
                     
-                    {/* Shine effect */}
+                    {/* Animated Shine effect */}
                     <ellipse
                       cx="120"
                       cy="100"
                       rx="40"
                       ry="60"
                       fill="url(#shineGrad)"
-                      opacity="0.4"
-                    />
+                      opacity="0.6"
+                    >
+                      <animate
+                        attributeName="opacity"
+                        values="0.4;0.8;0.4"
+                        dur="2s"
+                        repeatCount="indefinite"
+                      />
+                      <animate
+                        attributeName="rx"
+                        values="40;50;40"
+                        dur="3s"
+                        repeatCount="indefinite"
+                      />
+                    </ellipse>
+                    
+                    {/* Moving Sparkles */}
+                    <circle cx="110" cy="80" r="3" fill="white" opacity="0.9">
+                      <animate
+                        attributeName="opacity"
+                        values="0;1;0"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+                    <circle cx="140" cy="120" r="2" fill="white" opacity="0.8">
+                      <animate
+                        attributeName="opacity"
+                        values="0;1;0"
+                        dur="2s"
+                        repeatCount="indefinite"
+                        begin="0.5s"
+                      />
+                    </circle>
+                    <circle cx="95" cy="140" r="2.5" fill="white" opacity="0.7">
+                      <animate
+                        attributeName="opacity"
+                        values="0;1;0"
+                        dur="1.8s"
+                        repeatCount="indefinite"
+                        begin="1s"
+                      />
+                    </circle>
                   </g>
                   
-                  {/* Heart inside */}
+                  {/* Animated Heart inside */}
                   <g transform="translate(150, 180)">
                     <path
                       d="M0,-20 C-15,-35, -35,-25, -35,0 C-35,25, 0,45, 0,45 C0,45, 35,25, 35,0 C35,-25, 15,-35, 0,-20Z"
                       fill="white"
-                    />
-                    {/* Plus sign in heart */}
+                    >
+                      <animateTransform
+                        attributeName="transform"
+                        type="scale"
+                        values="1;1.1;1"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                        additive="sum"
+                      />
+                    </path>
+                    {/* Plus sign in heart with rotation */}
                     <g fill="#dc2626">
-                      <rect x="-2" y="-12" width="4" height="24" rx="2"/>
-                      <rect x="-12" y="-2" width="24" height="4" rx="2"/>
+                      <rect x="-2" y="-12" width="4" height="24" rx="2">
+                        <animate
+                          attributeName="height"
+                          values="24;28;24"
+                          dur="1.5s"
+                          repeatCount="indefinite"
+                        />
+                      </rect>
+                      <rect x="-12" y="-2" width="24" height="4" rx="2">
+                        <animate
+                          attributeName="width"
+                          values="24;28;24"
+                          dur="1.5s"
+                          repeatCount="indefinite"
+                        />
+                      </rect>
                     </g>
                   </g>
                 </svg>
-              </div>
+              </motion.div>
+              
+              {/* Orbiting Mini Blood Drops */}
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={`orbit-${i}`}
+                  className="absolute w-8 h-10 bg-gradient-to-br from-red-400 to-rose-600 rounded-full"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                    clipPath: 'path("M4,0 C4,0 0,3 0,6 C0,8 2,10 4,10 C6,10 8,8 8,6 C8,3 4,0 4,0Z")',
+                  }}
+                  animate={{
+                    x: [0, Math.cos(i * 60 * Math.PI / 180) * 180, Math.cos((i * 60 + 360) * Math.PI / 180) * 180, 0],
+                    y: [0, Math.sin(i * 60 * Math.PI / 180) * 180, Math.sin((i * 60 + 360) * Math.PI / 180) * 180, 0],
+                    rotate: [0, 360],
+                    scale: [0.8, 1, 0.8],
+                  }}
+                  transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    delay: i * 0.3,
+                    ease: "linear"
+                  }}
+                />
+              ))}
             </div>
           </div>
         </motion.div>
