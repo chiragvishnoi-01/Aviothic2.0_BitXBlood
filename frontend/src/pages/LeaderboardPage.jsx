@@ -38,7 +38,7 @@ const Leaderboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50">
+      <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-600 mb-4"></div>
         <p className="text-red-600 text-xl font-semibold animate-pulse">Loading leaderboard...</p>
       </div>
@@ -47,7 +47,7 @@ const Leaderboard = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50 px-4">
+      <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-rose-50 px-4">
         <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md text-center">
           <div className="text-6xl mb-4">⚠️</div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops!</h2>

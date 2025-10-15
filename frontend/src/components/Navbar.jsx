@@ -32,7 +32,7 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="relative bg-white/95 backdrop-blur-md text-gray-800 px-6 py-4 shadow-lg sticky top-0 z-50 border-b border-red-100">
+    <nav className="relative bg-white/95 backdrop-blur-md text-gray-800 px-6 py-4 shadow-lg sticky top-0 z-[9999] border-b border-red-100">
       {/* Simple gradient top bar - no animation */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-rose-500 to-pink-500"></div>
       
