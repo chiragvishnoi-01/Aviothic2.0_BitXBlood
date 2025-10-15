@@ -7,7 +7,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC.svg)](https://tailwindcss.com/)
 [![Vite](https://img.shields.io/badge/Vite-5.4.20-646CFF.svg)](https://vitejs.dev/)
 
-![Blood Donation App](https://via.placeholder.com/1200x400/dc2626/ffffff?text=Blood+Donation+App)
+
 
 ---
 
