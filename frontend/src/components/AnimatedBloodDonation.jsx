@@ -358,10 +358,10 @@ const AnimatedBloodDonation = ({ size = "large" }) => {
           </text>
         </g>
 
-        {/* Pulsing Glow Ring - Centered */}
+        {/* Pulsing Glow Ring - Centered on Blood Bag */}
         <circle
           cx="200"
-          cy="250"
+          cy="270"
           r="150"
           fill="none"
           stroke="#ef4444"
