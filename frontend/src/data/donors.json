@@ -1,72 +1,30 @@
 [
   {
     "id": 1,
-    "name": "Rajesh Kumar",
+    "name": "John Smith",
     "bloodGroup": "O+",
-    "city": "Mumbai",
-    "phone": "+91 98765 43210"
+    "city": "New York",
+    "phone": "+1 555 123 4567"
   },
   {
     "id": 2,
-    "name": "Priya Sharma",
+    "name": "Sarah Johnson",
     "bloodGroup": "A-",
-    "city": "Delhi",
-    "phone": "+91 98234 56789"
+    "city": "Los Angeles",
+    "phone": "+1 555 234 5678"
   },
   {
     "id": 3,
-    "name": "Amit Patel",
+    "name": "Michael Brown",
     "bloodGroup": "B+",
-    "city": "Bangalore",
-    "phone": "+91 97654 32109"
+    "city": "Chicago",
+    "phone": "+1 555 345 6789"
   },
   {
     "id": 4,
-    "name": "Sneha Reddy",
+    "name": "Emily Davis",
     "bloodGroup": "AB+",
-    "city": "Hyderabad",
-    "phone": "+91 96543 21098"
-  },
-  {
-    "id": 5,
-    "name": "Vikram Singh",
-    "bloodGroup": "O-",
-    "city": "Pune",
-    "phone": "+91 95432 10987"
-  },
-  {
-    "id": 6,
-    "name": "Anjali Gupta",
-    "bloodGroup": "A+",
-    "city": "Chennai",
-    "phone": "+91 94321 09876"
-  },
-  {
-    "id": 7,
-    "name": "Arjun Mehta",
-    "bloodGroup": "B-",
-    "city": "Kolkata",
-    "phone": "+91 93210 98765"
-  },
-  {
-    "id": 8,
-    "name": "Kavya Iyer",
-    "bloodGroup": "AB-",
-    "city": "Ahmedabad",
-    "phone": "+91 92109 87654"
-  },
-  {
-    "id": 9,
-    "name": "Rahul Verma",
-    "bloodGroup": "O+",
-    "city": "Jaipur",
-    "phone": "+91 91098 76543"
-  },
-  {
-    "id": 10,
-    "name": "Divya Nair",
-    "bloodGroup": "A+",
-    "city": "Kochi",
-    "phone": "+91 90987 65432"
+    "city": "Houston",
+    "phone": "+1 555 456 7890"
   }
 ]

@@ -59,12 +59,13 @@ const Dashboard = () => {
           />
         ))}
         
-        {/* Animated blood drop loader */}
+        {/* Animated blood drop loader - Smooth version */}
         <div className="relative mb-8">
+          {/* 3D Rotating Drop */}
           <motion.div
-            className="relative"
+            className="relative w-24 h-32 flex items-center justify-center"
             animate={{
-              y: [0, -20, 0],
+              y: [0, -15, 0],
             }}
             transition={{
               duration: 1.5,
@@ -72,27 +73,27 @@ const Dashboard = () => {
               ease: "easeInOut"
             }}
           >
-            {/* Main drop */}
+            {/* Blood drop using CSS */}
             <motion.div
-              className="w-20 h-24 bg-gradient-to-b from-red-500 to-red-700 rounded-t-full rounded-b-full"
-              style={{
-                clipPath: 'path("M10,0 C10,0 0,15 0,30 C0,45 10,60 20,60 C30,60 40,45 40,30 C40,15 10,0 10,0Z")',
-              }}
+              className="relative w-16 h-20"
               animate={{
-                scale: [1, 1.1, 1],
+                scale: [1, 1.08, 1],
               }}
               transition={{
                 duration: 1.5,
                 repeat: Infinity,
               }}
-            />
+            >
+              <div className="absolute inset-0 bg-gradient-to-b from-red-500 to-red-700 rounded-full" />
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-red-500" style={{ borderBottomColor: '#ef4444' }} />
+            </motion.div>
             
-            {/* Ripple effect */}
+            {/* Glow effect */}
             <motion.div
-              className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-16 h-4 bg-red-300 rounded-full blur-sm"
+              className="absolute inset-0 bg-red-400 rounded-full blur-xl opacity-40"
               animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.5, 0.2, 0.5],
+                scale: [1, 1.3, 1],
+                opacity: [0.3, 0.5, 0.3],
               }}
               transition={{
                 duration: 1.5,
@@ -101,24 +102,24 @@ const Dashboard = () => {
             />
           </motion.div>
           
-          {/* Orbiting cells */}
+          {/* Orbiting cells - Smooth animation */}
           {[...Array(4)].map((_, i) => (
             <motion.div
-              key={i}
-              className="absolute w-4 h-4 bg-red-400 rounded-full"
+              key={`orbit-${i}`}
+              className="absolute w-3 h-3 bg-red-400 rounded-full shadow-lg"
               style={{
                 left: '50%',
                 top: '50%',
               }}
               animate={{
-                x: [0, Math.cos(i * 90 * Math.PI / 180) * 50],
-                y: [0, Math.sin(i * 90 * Math.PI / 180) * 50],
-                scale: [0.5, 1, 0.5],
+                x: [0, Math.cos((i * 90) * Math.PI / 180) * 60],
+                y: [0, Math.sin((i * 90) * Math.PI / 180) * 60],
               }}
               transition={{
-                duration: 2,
+                duration: 2.5,
                 repeat: Infinity,
-                delay: i * 0.25,
+                delay: i * 0.2,
+                ease: "linear"
               }}
             />
           ))}

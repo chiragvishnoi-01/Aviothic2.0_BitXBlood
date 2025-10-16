@@ -272,7 +272,7 @@ const CreateCampaign = () => {
                 name="city"
                 value={formData.city}
                 onChange={handleChange}
-                placeholder="e.g., Mumbai"
+                placeholder="e.g., New York"
                 required
                 className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-400 transition-all"
               />
