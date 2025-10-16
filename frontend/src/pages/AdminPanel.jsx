@@ -127,7 +127,7 @@ const AdminPanel = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">{stat.label}</p>
-                  <p className="text-4xl font-black mt-2 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent">{stat.value}</p>
+                  <p className={`text-4xl font-black mt-2 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>{stat.value}</p>
                 </div>
                 <div className={`p-4 bg-gradient-to-r ${stat.color} rounded-2xl shadow-lg`}>
                   <stat.icon className="text-3xl text-white" />

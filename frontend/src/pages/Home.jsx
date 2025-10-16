@@ -12,7 +12,80 @@ import donorsData from "../data/donors.json";
 
 const Home = () => {
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden relative">
+      {/* Global Animated Background Particles Across Entire Page */}
+      {[...Array(30)].map((_, i) => (
+        <motion.div
+          key={`global-particle-${i}`}
+          className="absolute w-4 h-4 pointer-events-none z-0"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -100, 0],
+            x: [0, Math.sin(i) * 50, 0],
+            rotate: [0, 360],
+            scale: [0.5, 1.5, 0.5],
+            opacity: [0, 0.3, 0],
+          }}
+          transition={{
+            duration: 8 + Math.random() * 4,
+            repeat: Infinity,
+            delay: Math.random() * 5,
+          }}
+        >
+          {['💉', '🩸', '❤️', '➕', '🏥'][i % 5]}
+        </motion.div>
+      ))}
+      
+      {/* Animated Blood Drops Falling from Top */}
+      {[...Array(15)].map((_, i) => (
+        <motion.div
+          key={`falling-drop-${i}`}
+          className="absolute w-6 h-8 bg-gradient-to-b from-red-400 to-red-600 pointer-events-none"
+          style={{
+            left: `${5 + (i * 6.5)}%`,
+            top: '-50px',
+            clipPath: 'path("M3,0 C3,0 0,2 0,4 C0,6 2,8 3,8 C4,8 6,6 6,4 C6,2 3,0 3,0Z")',
+          }}
+          animate={{
+            y: [0, window.innerHeight + 100],
+            rotate: [0, 180],
+            opacity: [0, 0.6, 0],
+          }}
+          transition={{
+            duration: 5 + Math.random() * 3,
+            repeat: Infinity,
+            delay: i * 0.5,
+            ease: "easeIn"
+          }}
+        />
+      ))}
+      
+      {/* Floating DNA Helixes */}
+      {[...Array(4)].map((_, i) => (
+        <motion.div
+          key={`dna-${i}`}
+          className="absolute text-6xl opacity-10 pointer-events-none"
+          style={{
+            left: `${20 + (i * 25)}%`,
+            top: `${20 + (i % 2) * 40}%`,
+          }}
+          animate={{
+            y: [0, -80, 0],
+            rotate: [0, 360],
+            scale: [1, 1.3, 1],
+          }}
+          transition={{
+            duration: 12 + i,
+            repeat: Infinity,
+            delay: i * 2,
+          }}
+        >
+          🧬
+        </motion.div>
+      ))}
       {/* Hero Section */}
       <Hero />
 
@@ -512,25 +585,79 @@ const Home = () => {
 
       {/* Animated Blood Donation Showcase - Replaces Static GIF */}
       <section className="container mx-auto px-6 py-20 relative overflow-hidden">
-        {/* Animated Background */}
-        {[...Array(20)].map((_, i) => (
+        {/* Enhanced Background with More Particles */}
+        {[...Array(40)].map((_, i) => (
           <motion.div
             key={`bg-particle-${i}`}
-            className="absolute w-2 h-2 bg-red-200 rounded-full"
+            className="absolute rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
+              width: `${2 + Math.random() * 4}px`,
+              height: `${2 + Math.random() * 4}px`,
+              background: ['#fca5a5', '#f87171', '#ef4444', '#dc2626'][i % 4],
             }}
             animate={{
-              y: [0, -50, 0],
-              opacity: [0, 0.5, 0],
+              y: [0, -60, 0],
+              x: [0, Math.sin(i) * 30, 0],
+              opacity: [0, 0.6, 0],
+              scale: [0, 1.5, 0],
             }}
             transition={{
-              duration: 4 + Math.random() * 2,
+              duration: 4 + Math.random() * 3,
               repeat: Infinity,
-              delay: Math.random() * 3,
+              delay: Math.random() * 4,
             }}
           />
+        ))}
+        
+        {/* Orbiting Medical Symbols */}
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={`medical-symbol-${i}`}
+            className="absolute text-5xl opacity-20"
+            style={{
+              left: '50%',
+              top: '50%',
+            }}
+            animate={{
+              x: [0, Math.cos(i * 45 * Math.PI / 180) * 300],
+              y: [0, Math.sin(i * 45 * Math.PI / 180) * 300],
+              rotate: [0, 360],
+              scale: [0.5, 1.2, 0.5],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              delay: i * 0.5,
+            }}
+          >
+            {['💊', '🩹', '🩺', '💉', '🏥', '⚕️', '🧪', '🔬'][i]}
+          </motion.div>
+        ))}
+        
+        {/* Floating Plus Signs Grid */}
+        {[...Array(12)].map((_, i) => (
+          <motion.div
+            key={`plus-grid-${i}`}
+            className="absolute text-4xl font-bold text-red-300 opacity-20"
+            style={{
+              left: `${10 + (i % 4) * 25}%`,
+              top: `${10 + Math.floor(i / 4) * 30}%`,
+            }}
+            animate={{
+              rotate: [0, 90, 180, 270, 360],
+              scale: [1, 1.3, 1],
+              opacity: [0.1, 0.3, 0.1],
+            }}
+            transition={{
+              duration: 6 + (i % 3),
+              repeat: Infinity,
+              delay: i * 0.3,
+            }}
+          >
+            +
+          </motion.div>
         ))}
 
         <motion.div
@@ -569,58 +696,178 @@ const Home = () => {
         </motion.div>
 
         <motion.div
-          className="flex justify-center"
+          className="flex justify-center relative z-10"
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
+          {/* Rotating Ring Around Animation */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            animate={{
+              rotate: 360,
+            }}
+            transition={{
+              duration: 30,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          >
+            {[...Array(12)].map((_, i) => (
+              <motion.div
+                key={`ring-dot-${i}`}
+                className="absolute w-4 h-4 bg-gradient-to-br from-red-400 to-rose-600 rounded-full"
+                style={{
+                  left: '50%',
+                  top: '50%',
+                  transform: `translate(-50%, -50%) rotate(${i * 30}deg) translateY(-250px)`,
+                }}
+                animate={{
+                  scale: [1, 1.5, 1],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: i * 0.1,
+                }}
+              />
+            ))}
+          </motion.div>
+          
+          {/* Pulsing Circles Behind */}
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={`pulse-circle-${i}`}
+              className="absolute rounded-full border-2 border-red-300"
+              style={{
+                width: `${300 + i * 100}px`,
+                height: `${300 + i * 100}px`,
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)',
+              }}
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.2, 0, 0.2],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                delay: i * 0.4,
+              }}
+            />
+          ))}
+          
           <AnimatedBloodDonation size="large" />
         </motion.div>
 
         {/* Info Cards Below Animation */}
-        <div className="grid md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto relative z-10">
           {[
             {
               icon: "💉",
               title: "Safe Process",
-              description: "Sterile equipment and professional staff ensure your safety"
+              description: "Sterile equipment and professional staff ensure your safety",
+              color: "from-red-500 to-rose-600"
             },
             {
               icon: "⏱️",
               title: "Quick & Easy",
-              description: "Donation takes only 10-15 minutes of your time"
+              description: "Donation takes only 10-15 minutes of your time",
+              color: "from-rose-500 to-pink-600"
             },
             {
               icon: "❤️",
               title: "Saves Lives",
-              description: "One donation can save up to 3 lives"
+              description: "One donation can save up to 3 lives",
+              color: "from-pink-500 to-red-600"
             },
           ].map((card, index) => (
             <motion.div
               key={index}
-              className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-red-100 hover:border-red-300 transition-all"
+              className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-red-100 hover:border-red-300 transition-all relative overflow-hidden group"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
-              whileHover={{ y: -5, scale: 1.02 }}
+              whileHover={{ y: -10, scale: 1.05 }}
             >
+              {/* Animated Gradient Background on Hover */}
               <motion.div
-                className="text-5xl mb-4"
+                className={`absolute inset-0 bg-gradient-to-br ${card.color} opacity-0 group-hover:opacity-10 transition-opacity`}
                 animate={{
-                  rotate: [0, 10, -10, 0],
+                  backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
                 }}
                 transition={{
-                  duration: 2,
+                  duration: 3,
+                  repeat: Infinity,
+                }}
+                style={{ backgroundSize: '200% 200%' }}
+              />
+              
+              {/* Orbiting Mini Icons */}
+              {[...Array(3)].map((_, i) => (
+                <motion.div
+                  key={`card-orbit-${i}`}
+                  className="absolute text-xl opacity-20"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                  }}
+                  animate={{
+                    x: [0, Math.cos(i * 120 * Math.PI / 180) * 60],
+                    y: [0, Math.sin(i * 120 * Math.PI / 180) * 60],
+                    rotate: [0, 360],
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    delay: i * 0.3,
+                  }}
+                >
+                  {card.icon}
+                </motion.div>
+              ))}
+              
+              <motion.div
+                className="text-5xl mb-4 relative z-10"
+                animate={{
+                  rotate: [0, 10, -10, 0],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 3,
                   repeat: Infinity,
                   delay: index * 0.3,
                 }}
               >
                 {card.icon}
               </motion.div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">{card.title}</h3>
-              <p className="text-gray-600">{card.description}</p>
+              
+              {/* Floating Sparkles */}
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={`sparkle-${i}`}
+                  className="absolute w-1 h-1 bg-yellow-400 rounded-full"
+                  style={{
+                    left: `${20 + i * 15}%`,
+                    top: `${20 + i * 10}%`,
+                  }}
+                  animate={{
+                    opacity: [0, 1, 0],
+                    scale: [0, 2, 0],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    delay: i * 0.4,
+                  }}
+                />
+              ))}
+              
+              <h3 className="text-xl font-bold text-gray-800 mb-2 relative z-10">{card.title}</h3>
+              <p className="text-gray-600 relative z-10">{card.description}</p>
             </motion.div>
           ))}
         </div>
