@@ -7,7 +7,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC.svg)](https://tailwindcss.com/)
 [![Vite](https://img.shields.io/badge/Vite-5.4.20-646CFF.svg)](https://vitejs.dev/)
 
-![Blood Donation App](https://via.placeholder.com/1200x400/dc2626/ffffff?text=Blood+Donation+App)
+
 
 ---
 
@@ -240,13 +240,17 @@ This app is ready to deploy! Check out our comprehensive [DEPLOYMENT_GUIDE.md](.
 ## 📸 Screenshots
 
 ### Home Page
-![Home Page](https://via.placeholder.com/800x400/dc2626/ffffff?text=Home+Page)
+![Home Page]<img width="1919" height="1012" alt="Screenshot 2025-10-15 183940" src="https://github.com/user-attachments/assets/82964460-2696-4c9f-976d-209f395b36a4" />
+
 
 ### Campaign Creation
-![Create Campaign](https://via.placeholder.com/800x400/dc2626/ffffff?text=Create+Campaign)
+![Create Campaign]<img width="1916" height="1013" alt="Screenshot 2025-10-15 184237" src="https://github.com/user-attachments/assets/fbf4df0c-8a69-40a8-8a61-cc781fb61a25" />
+
+
 
 ### Dashboard
-![Dashboard](https://via.placeholder.com/800x400/dc2626/ffffff?text=Donor+Dashboard)
+![Dashboard]<img width="1919" height="1021" alt="Screenshot 2025-10-15 184135" src="https://github.com/user-attachments/assets/9e932fa9-7bb6-48f8-9f88-863d9bbafd28" />
+
 
 ---
 
