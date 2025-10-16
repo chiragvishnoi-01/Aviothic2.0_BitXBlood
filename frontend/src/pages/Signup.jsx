@@ -130,7 +130,7 @@ const Signup = () => {
                   onChange={handleChange}
                   required
                   className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none transition-colors"
-                  placeholder="John Doe"
+                  placeholder="Rajesh Kumar"
                 />
               </div>
             </div>
@@ -205,7 +205,7 @@ const Signup = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none transition-colors"
-                  placeholder="+1 234 567 8900"
+                  placeholder="+91 98765 43210"
                 />
               </div>
             </div>
@@ -221,7 +221,7 @@ const Signup = () => {
                   value={formData.city}
                   onChange={handleChange}
                   className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none transition-colors"
-                  placeholder="New York"
+                  placeholder="Mumbai"
                 />
               </div>
             </div>

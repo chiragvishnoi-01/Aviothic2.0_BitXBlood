@@ -2,9 +2,10 @@ import React from "react";
 
 const Leaderboard = () => {
   const donors = [
-    { name: "Rahul Mehta", donations: 12 },
-    { name: "Sneha Sharma", donations: 10 },
-    { name: "Amit Verma", donations: 8 },
+    { name: "Rajesh Kumar", donations: 6, city: "Mumbai" },
+    { name: "Priya Sharma", donations: 5, city: "Delhi" },
+    { name: "Amit Patel", donations: 4, city: "Bangalore" },
+    { name: "Sneha Reddy", donations: 4, city: "Hyderabad" },
   ];
 
   return (
