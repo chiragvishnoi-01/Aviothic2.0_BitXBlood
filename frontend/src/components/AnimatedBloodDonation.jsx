@@ -126,7 +126,7 @@ const AnimatedBloodDonation = ({ size = "large" }) => {
         {/* Blood Bag Container */}
         <g filter="url(#bagShadow)">
           {/* Bag Body */}
-          <motion.rect
+          <rect
             x="120"
             y="150"
             width="160"
@@ -135,49 +135,51 @@ const AnimatedBloodDonation = ({ size = "large" }) => {
             fill="url(#bagGrad)"
             stroke="#dc2626"
             strokeWidth="3"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-          />
+          >
+            <animate
+              attributeName="opacity"
+              from="0"
+              to="1"
+              dur="0.8s"
+              fill="freeze"
+            />
+          </rect>
 
           {/* Blood Level (Animated Fill) */}
-          <motion.rect
+          <rect
             x="125"
-            y="350"
+            y="160"
             width="150"
-            height="0"
+            height="230"
             rx="10"
             fill="url(#bloodGrad)"
-            animate={{
-              height: [0, 230],
-              y: [350, 160],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-          />
+          >
+            <animate
+              attributeName="height"
+              values="0;230;0"
+              dur="6s"
+              repeatCount="indefinite"
+            />
+            <animate
+              attributeName="y"
+              values="350;160;350"
+              dur="6s"
+              repeatCount="indefinite"
+            />
+          </rect>
 
           {/* Blood Surface Wave */}
-          <motion.path
-            d="M125,160 Q150,155 175,160 T225,160 L225,165 L125,165 Z"
+          <path
             fill="#dc2626"
-            opacity="0.3"
-            animate={{
-              d: [
-                "M125,160 Q150,155 175,160 T225,160 L225,165 L125,165 Z",
-                "M125,160 Q150,165 175,160 T225,160 L225,165 L125,165 Z",
-                "M125,160 Q150,155 175,160 T225,160 L225,165 L125,165 Z",
-              ]
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
+            opacity="0.5"
+          >
+            <animate
+              attributeName="d"
+              values="M125,160 Q150,155 175,160 T225,160 L225,165 L125,165 Z;M125,160 Q150,165 175,160 T225,160 L225,165 L125,165 Z;M125,160 Q150,155 175,160 T225,160 L225,165 L125,165 Z"
+              dur="2s"
+              repeatCount="indefinite"
+            />
+          </path>
 
           {/* Measurement Lines */}
           {[0, 1, 2, 3, 4].map((i) => (
@@ -224,34 +226,34 @@ const AnimatedBloodDonation = ({ size = "large" }) => {
           </g>
 
           {/* Tube/Pipe */}
-          <motion.path
+          <path
             d="M200,150 Q200,100 220,80 L230,80"
             stroke="url(#tubeGrad)"
             strokeWidth="8"
             fill="none"
             strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 1.5, delay: 0.5 }}
-          />
+            strokeDasharray="1000"
+            strokeDashoffset="1000"
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              from="1000"
+              to="0"
+              dur="1.5s"
+              begin="0.5s"
+              fill="freeze"
+            />
+          </path>
 
           {/* Flowing Blood in Tube */}
-          <motion.circle
+          <circle
             r="4"
             fill="#dc2626"
-            animate={{
-              offsetDistance: ['0%', '100%'],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "linear"
-            }}
           >
             <animateMotion dur="2s" repeatCount="indefinite">
               <mpath href="#tubePath"/>
             </animateMotion>
-          </motion.circle>
+          </circle>
 
           <path
             id="tubePath"
@@ -260,11 +262,15 @@ const AnimatedBloodDonation = ({ size = "large" }) => {
           />
 
           {/* Connector/Needle */}
-          <motion.g
-            initial={{ x: 50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-          >
+          <g opacity="1">
+            <animate
+              attributeName="opacity"
+              from="0"
+              to="1"
+              dur="1s"
+              begin="1s"
+              fill="freeze"
+            />
             <rect
               x="230"
               y="75"
@@ -279,36 +285,46 @@ const AnimatedBloodDonation = ({ size = "large" }) => {
               points="270,75 285,80 270,85"
               fill="#6b7280"
             />
-          </motion.g>
+          </g>
         </g>
 
         {/* Sparkles/Stars */}
         {[...Array(8)].map((_, i) => (
-          <motion.g key={`sparkle-${i}`}>
+          <g key={`sparkle-${i}`}>
             <circle
               cx={100 + (i * 40)}
               cy={100 + (i % 3) * 100}
               r="2"
               fill="#fbbf24"
-              animate={{
-                opacity: [0, 1, 0],
-                scale: [0, 1.5, 0],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                delay: i * 0.3,
-              }}
-            />
-          </motion.g>
+            >
+              <animate
+                attributeName="opacity"
+                values="0;1;0"
+                dur="2s"
+                begin={`${i * 0.3}s`}
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="r"
+                values="0;3;0"
+                dur="2s"
+                begin={`${i * 0.3}s`}
+                repeatCount="indefinite"
+              />
+            </circle>
+          </g>
         ))}
 
         {/* Glassmorphism Info Card */}
-        <motion.g
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2 }}
-        >
+        <g opacity="1">
+          <animate
+            attributeName="opacity"
+            from="0"
+            to="1"
+            dur="0.5s"
+            begin="2s"
+            fill="freeze"
+          />
           <rect
             x="50"
             y="420"
@@ -340,10 +356,10 @@ const AnimatedBloodDonation = ({ size = "large" }) => {
           >
             Every Drop Saves Lives ❤️
           </text>
-        </motion.g>
+        </g>
 
         {/* Pulsing Glow Ring */}
-        <motion.circle
+        <circle
           cx="200"
           cy="270"
           r="150"
@@ -351,16 +367,20 @@ const AnimatedBloodDonation = ({ size = "large" }) => {
           stroke="#ef4444"
           strokeWidth="2"
           opacity="0.3"
-          animate={{
-            r: [150, 180],
-            opacity: [0.3, 0],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeOut"
-          }}
-        />
+        >
+          <animate
+            attributeName="r"
+            values="150;180;150"
+            dur="2s"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="opacity"
+            values="0.3;0;0.3"
+            dur="2s"
+            repeatCount="indefinite"
+          />
+        </circle>
       </svg>
 
       {/* Orbiting Plus Signs */}
