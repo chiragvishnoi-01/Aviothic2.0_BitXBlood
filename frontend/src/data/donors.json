@@ -19,12 +19,5 @@
     "bloodGroup": "B+",
     "city": "Chicago",
     "phone": "+1 555 345 6789"
-  },
-  {
-    "id": 4,
-    "name": "Emily Davis",
-    "bloodGroup": "AB+",
-    "city": "Houston",
-    "phone": "+1 555 456 7890"
   }
 ]
