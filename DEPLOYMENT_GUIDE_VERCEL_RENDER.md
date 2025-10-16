@@ -60,9 +60,7 @@ React/Vite          Express.js            Database
 1. Go to **"Database"** → Click **"Connect"**
 2. Choose **"Connect your application"**
 3. Copy the connection string:
-   ```
-   mongodb+srv://bloodlink_admin:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
-   ```
+
 4. Replace `<password>` with your actual password
 5. Add database name: Replace `?retryWrites` with `/bloodlink?retryWrites`
 
@@ -116,11 +114,6 @@ Click **"Add Environment Variable"** for each:
 | `MONGODB_URI` | Your MongoDB connection string from Step 1.4 |
 | `FRONTEND_URL` | Leave empty for now (will add after Vercel) |
 
-**Example MONGODB_URI:**
-```
-mongodb+srv://bloodlink_admin:YourPassword123@cluster0.abc123.mongodb.net/bloodlink?retryWrites=true&w=majority
-```
-
 ### 2.4 Deploy Backend
 
 1. Click **"Create Web Service"**
@@ -156,18 +149,13 @@ mongodb+srv://bloodlink_admin:YourPassword123@cluster0.abc123.mongodb.net/bloodl
 
 Click **"Environment Variables"** and add:
 
-| Key | Value |
-|-----|-------|
-| `VITE_API_URL` | `https://bloodlink-backend.onrender.com/api` |
+
 
 **⚠️ Important:** 
 - Use your actual Render URL from Step 2.4
 - Add `/api` at the end!
 
-**Example:**
-```
-VITE_API_URL=https://bloodlink-backend.onrender.com/api
-```
+
 
 ### 3.3 Deploy Frontend
 
