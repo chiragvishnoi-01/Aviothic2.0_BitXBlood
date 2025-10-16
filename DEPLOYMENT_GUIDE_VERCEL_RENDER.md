@@ -67,9 +67,7 @@ React/Vite          Express.js            Database
 5. Add database name: Replace `?retryWrites` with `/bloodlink?retryWrites`
 
 **Final Connection String Example:**
-```
-mongodb+srv://bloodlink_admin:YourPassword123@cluster0.abc123.mongodb.net/bloodlink?retryWrites=true&w=majority
-```
+
 
 **⚠️ SAVE THIS CONNECTION STRING! You'll need it for Render.**
 
