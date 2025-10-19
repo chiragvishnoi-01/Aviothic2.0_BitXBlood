@@ -745,7 +745,8 @@ const Home = () => {
                 height: `${300 + i * 100}px`,
                 left: '50%',
                 top: '50%',
-                transform: 'translate(-50%, -50%)',
+                marginLeft: `-${(300 + i * 100) / 2}px`,
+                marginTop: `-${(300 + i * 100) / 2}px`,
               }}
               animate={{
                 scale: [1, 1.2, 1],
