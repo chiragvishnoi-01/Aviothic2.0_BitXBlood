@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "../api/axiosConfig";
 import { motion } from "framer-motion";
-import { FaTrophy, FaMedal, FaAward, FaTint } from "react-icons/fa";
+import { FaTrophy, FaMedal, FaAward, FaTint, FaRedo } from "react-icons/fa";
 
 const Leaderboard = () => {
   const [donors, setDonors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
+        setLoading(true);
         const res = await axios.get("/leaderboard");
         // Ensure data is array and has proper structure
         const validDonors = Array.isArray(res.data) ? res.data : [];
@@ -24,8 +26,28 @@ const Leaderboard = () => {
         setLoading(false);
       }
     };
+    
     fetchLeaderboard();
-  }, []);
+    
+    // Retry logic - if there's an error, retry after 5 seconds
+    let retryTimer;
+    if (error && retryCount < 3) {
+      retryTimer = setTimeout(() => {
+        setRetryCount(prev => prev + 1);
+        // This will trigger a re-render and the effect will run again
+      }, 5000);
+    }
+    
+    return () => {
+      if (retryTimer) clearTimeout(retryTimer);
+    };
+  }, [error, retryCount]);
+
+  const handleRetry = () => {
+    setRetryCount(0);
+    setError(null);
+    setLoading(true);
+  };
 
   const getMedal = (index) => {
     const medals = [
@@ -134,6 +156,12 @@ const Leaderboard = () => {
             }}
           />
         </div>
+        
+        {retryCount > 0 && (
+          <p className="text-gray-500 mt-4">
+            Retry attempt {retryCount}/3...
+          </p>
+        )}
       </div>
     );
   }
@@ -145,12 +173,26 @@ const Leaderboard = () => {
           <div className="text-6xl mb-4">⚠️</div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops!</h2>
           <p className="text-gray-600 mb-6">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            Try Again
-          </button>
+          <div className="flex gap-4 justify-center">
+            <button
+              onClick={handleRetry}
+              className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+            >
+              <FaRedo />
+              Try Again
+            </button>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              Refresh Page
+            </button>
+          </div>
+          {retryCount >= 3 && (
+            <p className="text-gray-500 text-sm mt-4">
+              Still having issues? Please check your internet connection or try again later.
+            </p>
+          )}
         </div>
       </div>
     );

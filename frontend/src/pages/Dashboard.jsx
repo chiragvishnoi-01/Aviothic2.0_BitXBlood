@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "../api/axiosConfig";
 import DonorCard from "../components/DonorCard";
-import { FaSearch, FaFilter } from "react-icons/fa";
+import { FaSearch, FaFilter, FaRedo } from "react-icons/fa";
 
 const Dashboard = () => {
   const [donors, setDonors] = useState([]);
@@ -10,21 +10,44 @@ const Dashboard = () => {
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [filterBloodGroup, setFilterBloodGroup] = useState("");
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     const fetchDonors = async () => {
       try {
+        setLoading(true);
         const res = await axios.get("/donors");
         setDonors(res.data);
-        setLoading(false);
+        setError("");
       } catch (err) {
         console.error(err);
-        setError("Failed to load donors.");
+        setError("Failed to load donors. Please try again later.");
+        setDonors([]);
+      } finally {
         setLoading(false);
       }
     };
+    
     fetchDonors();
-  }, []);
+    
+    // Retry logic - if there's an error, retry after 5 seconds
+    let retryTimer;
+    if (error && retryCount < 3) {
+      retryTimer = setTimeout(() => {
+        setRetryCount(prev => prev + 1);
+      }, 5000);
+    }
+    
+    return () => {
+      if (retryTimer) clearTimeout(retryTimer);
+    };
+  }, [error, retryCount]);
+
+  const handleRetry = () => {
+    setRetryCount(0);
+    setError("");
+    setLoading(true);
+  };
 
   const filteredDonors = donors.filter((donor) => {
     const matchesSearch =
@@ -156,6 +179,12 @@ const Dashboard = () => {
             />
           </svg>
         </div>
+        
+        {retryCount > 0 && (
+          <p className="text-gray-500 mt-4">
+            Retry attempt {retryCount}/3...
+          </p>
+        )}
       </div>
     );
   }
@@ -167,12 +196,26 @@ const Dashboard = () => {
           <div className="text-6xl mb-4">😞</div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops!</h2>
           <p className="text-red-600 text-xl font-semibold mb-6">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            Try Again
-          </button>
+          <div className="flex gap-4 justify-center">
+            <button
+              onClick={handleRetry}
+              className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+            >
+              <FaRedo />
+              Try Again
+            </button>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              Refresh Page
+            </button>
+          </div>
+          {retryCount >= 3 && (
+            <p className="text-gray-500 text-sm mt-4">
+              Still having issues? Please check your internet connection or try again later.
+            </p>
+          )}
         </div>
       </div>
     );

@@ -35,7 +35,9 @@ instance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
+  async (error) => {
+    const originalRequest = error.config;
+    
     // Handle different error scenarios
     if (error.response) {
       // Server responded with error status
@@ -77,6 +79,26 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Add retry logic for failed requests
+instance.interceptors.response.use(undefined, async (error) => {
+  const originalRequest = error.config;
+  
+  // If we haven't retried yet and it's a network error
+  if (!originalRequest._retry && 
+      (error.code === 'ECONNABORTED' || error.message.includes('timeout') || !error.response)) {
+    
+    originalRequest._retry = true;
+    
+    // Wait 1 second before retrying
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    console.log('Retrying request...');
+    return instance(originalRequest);
+  }
+  
+  return Promise.reject(error);
+});
 
 // Log the API base URL in development
 if (import.meta.env.DEV) {
