@@ -133,6 +133,8 @@ const Dashboard = () => {
               style={{
                 left: '50%',
                 top: '50%',
+                marginLeft: '-6px',
+                marginTop: '-6px',
               }}
               animate={{
                 x: [0, Math.cos((i * 90) * Math.PI / 180) * 60],
