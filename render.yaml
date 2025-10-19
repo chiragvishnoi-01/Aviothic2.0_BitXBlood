@@ -10,6 +10,8 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: MONGODB_URI
+        value: mongodb+srv://your-username:your-password@cluster0.xxxxx.mongodb.net/blood-donation
 
   # Frontend Static Site
   - type: web
