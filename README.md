@@ -29,16 +29,20 @@ PORT=5000
 # FRONTEND_URL=https://your-frontend-domain.vercel.app
 ```
 
-#### Frontend Environment Variables
+### 📦 Setting Up MongoDB Atlas (Production Database)
 
-Create a `.env` file in the `frontend` directory with the following variable:
+For production deployment, you need to use MongoDB Atlas instead of localhost:
 
-```bash
-# Backend API URL
-# For local development: http://localhost:5000/api
-# For production: https://your-backend-url.onrender.com/api
-VITE_API_URL=your_backend_api_url
-```
+1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2. Sign up for a free account
+3. Create a new cluster:
+   - Select "Shared" tier (free)
+   - Choose a cloud provider and region closest to your users
+   - Leave other settings as default
+4. Once the cluster is created, click "Connect"
+5. Select "Connect your application"
+6. Copy the connection string and replace `<username>`, `<password>`, and `<cluster>` with your actual credentials
+7. Replace the MONGODB_URI in your backend environment variables with this connection string
 
 ### 🚀 Deployment to Render (Backend)
 
