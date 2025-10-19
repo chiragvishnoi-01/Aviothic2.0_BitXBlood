@@ -1,9 +1,11 @@
 import express from "express";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 const router = express.Router();
+const JWT_SECRET = process.env.JWT_SECRET || "blood_donation_secret_key";
 
-// Simple authentication (in production, use bcrypt and JWT)
 // Register
 router.post("/register", async (req, res) => {
   try {
@@ -15,11 +17,15 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Hash password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     // Create new user
     const user = new User({
       name,
       email,
-      password, // In production, hash this with bcrypt
+      password: hashedPassword,
       role: role || 'user',
       bloodGroup,
       phone,
@@ -29,8 +35,16 @@ router.post("/register", async (req, res) => {
 
     await user.save();
 
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user._id, email: user.email, role: user.role },
+      JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
     res.status(201).json({
       message: "Registration successful",
+      token,
       user: {
         id: user._id,
         name: user.name,
@@ -55,13 +69,22 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Check password (in production, use bcrypt.compare)
-    if (user.password !== password) {
+    // Check password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user._id, email: user.email, role: user.role },
+      JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
     res.json({
       message: "Login successful",
+      token,
       user: {
         id: user._id,
         name: user.name,
@@ -77,9 +100,40 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Get user profile
-router.get("/profile/:id", async (req, res) => {
+// Middleware to verify JWT token
+export const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Access token required" });
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: "Invalid or expired token" });
+    }
+    req.user = user;
+    next();
+  });
+};
+
+// Middleware to check if user is admin
+export const isAdmin = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ message: "Access denied. Admin rights required." });
+  }
+  next();
+};
+
+// Get user profile (protected route)
+router.get("/profile/:id", authenticateToken, async (req, res) => {
   try {
+    // Users can only access their own profile or admins can access any profile
+    if (req.user.userId !== req.params.id && req.user.role !== 'admin') {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
     const user = await User.findById(req.params.id).select('-password');
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -90,9 +144,14 @@ router.get("/profile/:id", async (req, res) => {
   }
 });
 
-// Update user profile
-router.put("/profile/:id", async (req, res) => {
+// Update user profile (protected route)
+router.put("/profile/:id", authenticateToken, async (req, res) => {
   try {
+    // Users can only update their own profile or admins can update any profile
+    if (req.user.userId !== req.params.id && req.user.role !== 'admin') {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
     const user = await User.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
@@ -105,8 +164,8 @@ router.put("/profile/:id", async (req, res) => {
   }
 });
 
-// Add medical record (Admin/Doctor only in production)
-router.post("/medical-record/:id", async (req, res) => {
+// Add medical record (Admin/Doctor only)
+router.post("/medical-record/:id", authenticateToken, isAdmin, async (req, res) => {
   try {
     const { weight, bloodPressure, hemoglobin, lastDonationDate, eligibleForDonation, medicalNotes, checkupBy } = req.body;
     
@@ -133,7 +192,7 @@ router.post("/medical-record/:id", async (req, res) => {
 });
 
 // Get all users (Admin only)
-router.get("/all", async (req, res) => {
+router.get("/all", authenticateToken, isAdmin, async (req, res) => {
   try {
     const users = await User.find().select('-password');
     res.json(users);
@@ -142,8 +201,8 @@ router.get("/all", async (req, res) => {
   }
 });
 
-// Get all donors with medical records
-router.get("/donors", async (req, res) => {
+// Get all donors with medical records (Admin only)
+router.get("/donors", authenticateToken, isAdmin, async (req, res) => {
   try {
     const donors = await User.find({ isDonor: true }).select('-password');
     res.json(donors);

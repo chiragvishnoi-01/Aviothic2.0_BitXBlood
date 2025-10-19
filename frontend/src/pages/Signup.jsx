@@ -62,8 +62,14 @@ const Signup = () => {
         role: 'user'
       });
 
-      // Auto login after signup
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      // Store user data and token in localStorage
+      const userData = {
+        ...response.data.user,
+        token: response.data.token
+      };
+      localStorage.setItem("user", JSON.stringify(userData));
+      
+      // Redirect to dashboard
       navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed. Please try again.");
@@ -74,7 +80,7 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 flex items-center justify-center py-12 px-4 relative overflow-hidden">
-      {/* Background Decorations */}
+      {/* Background Decorations */ }
       <div className="absolute top-0 right-0 w-96 h-96 bg-red-200 rounded-full blur-3xl opacity-20 animate-pulse"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-rose-200 rounded-full blur-3xl opacity-20 animate-pulse" style={{animationDelay: '1s'}}></div>
       
@@ -84,7 +90,7 @@ const Signup = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Header */}
+        {/* Header */ }
         <div className="text-center mb-8">
           <motion.div
             className="inline-block p-4 bg-gradient-to-r from-red-600 to-rose-600 rounded-3xl mb-6 shadow-2xl"
@@ -102,7 +108,7 @@ const Signup = () => {
           <p className="text-gray-600 text-lg">Create an account and start making a difference today</p>
         </div>
 
-        {/* Signup Form */}
+        {/* Signup Form */ }
         <motion.form
           onSubmit={handleSubmit}
           className="bg-white rounded-3xl shadow-2xl p-8 space-y-6 border border-gray-100"
@@ -116,9 +122,9 @@ const Signup = () => {
             </div>
           )}
 
-          {/* Grid Layout for inputs */}
+          {/* Grid Layout for inputs */ }
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Name */}
+            {/* Name */ }
             <div>
               <label className="block text-gray-700 font-semibold mb-2">Full Name *</label>
               <div className="relative">
@@ -135,7 +141,7 @@ const Signup = () => {
               </div>
             </div>
 
-            {/* Email */}
+            {/* Email */ }
             <div>
               <label className="block text-gray-700 font-semibold mb-2">Email Address *</label>
               <div className="relative">
@@ -152,7 +158,7 @@ const Signup = () => {
               </div>
             </div>
 
-            {/* Password */}
+            {/* Password */ }
             <div>
               <label className="block text-gray-700 font-semibold mb-2">Password *</label>
               <div className="relative">
@@ -177,7 +183,7 @@ const Signup = () => {
               </div>
             </div>
 
-            {/* Confirm Password */}
+            {/* Confirm Password */ }
             <div>
               <label className="block text-gray-700 font-semibold mb-2">Confirm Password *</label>
               <div className="relative">
@@ -194,7 +200,7 @@ const Signup = () => {
               </div>
             </div>
 
-            {/* Phone */}
+            {/* Phone */ }
             <div>
               <label className="block text-gray-700 font-semibold mb-2">Phone Number</label>
               <div className="relative">
@@ -210,7 +216,7 @@ const Signup = () => {
               </div>
             </div>
 
-            {/* City */}
+            {/* City */ }
             <div>
               <label className="block text-gray-700 font-semibold mb-2">City</label>
               <div className="relative">
@@ -227,7 +233,7 @@ const Signup = () => {
             </div>
           </div>
 
-          {/* Donor Checkbox */}
+          {/* Donor Checkbox */ }
           <div className="bg-red-50 rounded-xl p-6">
             <label className="flex items-center cursor-pointer">
               <input
@@ -243,7 +249,7 @@ const Signup = () => {
             </label>
           </div>
 
-          {/* Blood Group (shown if isDonor is true) */}
+          {/* Blood Group (shown if isDonor is true) */ }
           {formData.isDonor && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
@@ -276,7 +282,7 @@ const Signup = () => {
             </motion.div>
           )}
 
-          {/* Submit Button */}
+          {/* Submit Button */ }
           <button
             type="submit"
             disabled={loading}
@@ -285,7 +291,7 @@ const Signup = () => {
             {loading ? "Creating Account..." : "Create Account"}
           </button>
 
-          {/* Divider */}
+          {/* Divider */ }
           <div className="text-center text-gray-500">
             Already have an account?{" "}
             <Link to="/login" className="text-red-600 font-bold hover:underline">

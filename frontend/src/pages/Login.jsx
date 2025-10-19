@@ -27,8 +27,12 @@ const Login = () => {
     try {
       const response = await axios.post("/auth/login", formData);
       
-      // Store user data in localStorage
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      // Store user data and token in localStorage
+      const userData = {
+        ...response.data.user,
+        token: response.data.token
+      };
+      localStorage.setItem("user", JSON.stringify(userData));
       
       // Redirect based on role
       if (response.data.user.role === 'admin') {
@@ -45,7 +49,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 flex items-center justify-center py-12 px-4 relative overflow-hidden">
-      {/* Background Decorations */}
+      {/* Background Decorations */ }
       <div className="absolute top-0 right-0 w-96 h-96 bg-red-200 rounded-full blur-3xl opacity-20 animate-pulse"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-rose-200 rounded-full blur-3xl opacity-20 animate-pulse" style={{animationDelay: '1s'}}></div>
       
@@ -55,7 +59,7 @@ const Login = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Header */}
+        {/* Header */ }
         <div className="text-center mb-8">
           <motion.div
             className="inline-block p-4 bg-gradient-to-r from-red-600 to-rose-600 rounded-3xl mb-6 shadow-2xl"
@@ -75,7 +79,7 @@ const Login = () => {
           <p className="text-gray-600 text-lg">Sign in to continue your journey of saving lives</p>
         </div>
 
-        {/* Login Form */}
+        {/* Login Form */ }
         <motion.form
           onSubmit={handleSubmit}
           className="bg-white rounded-3xl shadow-2xl p-8 space-y-6 border border-gray-100"
@@ -89,7 +93,7 @@ const Login = () => {
             </div>
           )}
 
-          {/* Email */}
+          {/* Email */ }
           <div>
             <label className="block text-gray-700 font-semibold mb-2">Email Address</label>
             <div className="relative">
@@ -106,7 +110,7 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Password */}
+          {/* Password */ }
           <div>
             <label className="block text-gray-700 font-semibold mb-2">Password</label>
             <div className="relative">
@@ -130,7 +134,7 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit Button */ }
           <button
             type="submit"
             disabled={loading}
@@ -147,7 +151,7 @@ const Login = () => {
             ) : "Sign In 🚀"}
           </button>
 
-          {/* Divider */}
+          {/* Divider */ }
           <div className="text-center text-gray-500">
             Don't have an account?{" "}
             <Link to="/signup" className="text-red-600 font-bold hover:underline">

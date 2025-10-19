@@ -9,7 +9,7 @@ import sosRoutes from "./routes/sosRoutes.js";
 import bankRoutes from "./routes/bankRoutes.js";
 import leaderboardRoutes from "./routes/leaderboardRoutes.js";
 import campaignRoutes from "./routes/campaignRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
+import authRoutes, { authenticateToken } from "./routes/authRoutes.js";
 
 dotenv.config();
 
