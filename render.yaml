@@ -11,7 +11,9 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGODB_URI
-        value: mongodb+srv://your-username:your-password@cluster0.xxxxx.mongodb.net/blood-donation
+        sync: false
+      - key: JWT_SECRET
+        sync: false
 
   # Frontend Static Site
   - type: web
@@ -23,7 +25,7 @@ services:
     staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL
-        value: https://aviothic2-0-bitxblood-backend.onrender.com/api
+        value: https://blood-donation-backend-xxxyyyzzz.onrender.com/api
     routes:
       - type: rewrite
         source: /*

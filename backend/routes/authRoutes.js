@@ -4,7 +4,13 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "blood_donation_secret_key";
+
+// Validate JWT_SECRET is provided
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  console.error("FATAL ERROR: JWT_SECRET is not defined in environment variables");
+  process.exit(1);
+}
 
 // Register
 router.post("/register", async (req, res) => {
