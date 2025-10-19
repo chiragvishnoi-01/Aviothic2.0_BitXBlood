@@ -23,7 +23,7 @@ services:
     staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL
-        value: https://blood-donation-backend.onrender.com/api
+        value: https://aviothic2-0-bitxblood-backend.onrender.com/api
     routes:
       - type: rewrite
         source: /*
