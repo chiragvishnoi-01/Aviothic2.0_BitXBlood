@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 
-// Mock database connection - no actual connection needed for mock data
+// Connect to MongoDB
 export const connectDB = async () => {
-  console.log("Using mock data - no database connection required");
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    process.exit(1);
+  }
 };
