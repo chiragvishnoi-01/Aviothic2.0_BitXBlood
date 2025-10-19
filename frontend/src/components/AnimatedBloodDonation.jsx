@@ -358,26 +358,58 @@ const AnimatedBloodDonation = ({ size = "large" }) => {
           </text>
         </g>
 
-        {/* Pulsing Glow Ring - Perfectly centered around blood bag */}
+        {/* Enhanced Circular Rings Animation */}
+        {/* Fixed outer ring */}
         <circle
           cx="200"
           cy="270"
-          r="155"
+          r="160"
           fill="none"
-          stroke="#ef4444"
+          stroke="#fecaca"
+          strokeWidth="1"
+          opacity="0.5"
+        />
+        
+        {/* Pulsing middle ring */}
+        <circle
+          cx="200"
+          cy="270"
+          r="140"
+          fill="none"
+          stroke="#fca5a5"
           strokeWidth="2"
-          opacity="0.3"
+          opacity="0.7"
         >
           <animate
             attributeName="r"
-            values="155;185;155"
-            dur="2s"
+            values="140;150;140"
+            dur="3s"
             repeatCount="indefinite"
           />
           <animate
             attributeName="opacity"
-            values="0.3;0;0.3"
-            dur="2s"
+            values="0.7;0.3;0.7"
+            dur="3s"
+            repeatCount="indefinite"
+          />
+        </circle>
+        
+        {/* Inner animated ring */}
+        <circle
+          cx="200"
+          cy="270"
+          r="120"
+          fill="none"
+          stroke="#ef4444"
+          strokeWidth="3"
+          opacity="0.9"
+          strokeDasharray="10 5"
+        >
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            values="0 200 270;360 200 270"
+            dur="8s"
             repeatCount="indefinite"
           />
         </circle>
