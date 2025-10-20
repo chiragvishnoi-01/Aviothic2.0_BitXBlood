@@ -97,16 +97,25 @@ router.post("/register", async (req, res) => {
 // Login
 router.post("/login", async (req, res) => {
   try {
-    console.log('Login attempt:', req.body);
+    console.log('=== LOGIN ATTEMPT ===');
+    console.log('Request body:', req.body);
+    console.log('Request headers:', req.headers);
     
     // Validate JWT_SECRET is provided
     const JWT_SECRET = process.env.JWT_SECRET;
+    console.log('JWT_SECRET loaded:', !!JWT_SECRET);
     if (!JWT_SECRET) {
       console.error("FATAL ERROR: JWT_SECRET is not defined in environment variables");
       return res.status(500).json({ message: "Server configuration error" });
     }
 
     const { email, password } = req.body;
+    
+    // Validate input
+    if (!email || !password) {
+      console.log('Login failed: Missing email or password');
+      return res.status(400).json({ message: "Email and password are required" });
+    }
     
     console.log('Searching for user with email:', email);
 
@@ -121,6 +130,9 @@ router.post("/login", async (req, res) => {
 
     // Check password
     console.log('Checking password for user:', email);
+    console.log('Password provided length:', password.length);
+    console.log('Stored password hash length:', user.password.length);
+    
     const isPasswordValid = await bcrypt.compare(password, user.password);
     console.log('Password validation result:', isPasswordValid);
     
@@ -135,6 +147,8 @@ router.post("/login", async (req, res) => {
       JWT_SECRET,
       { expiresIn: "24h" }
     );
+
+    console.log('Login successful for user:', email, 'with role:', user.role);
 
     res.json({
       message: "Login successful",
