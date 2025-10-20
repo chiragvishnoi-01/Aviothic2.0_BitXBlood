@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "../api/axiosConfig";
-import { FaUsers, FaTint, FaBullhorn, FaHeartbeat, FaPlus, FaSearch, FaEdit, FaTrash, FaEye } from "react-icons/fa";
+import { FaUsers, FaTint, FaBullhorn, FaHeartbeat, FaPlus, FaSearch, FaEdit, FaTrash, FaEye, FaKey } from "react-icons/fa";
 
 const AdminPanel = () => {
   const navigate = useNavigate();
@@ -12,6 +12,8 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [showMedicalModal, setShowMedicalModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [selectedDonor, setSelectedDonor] = useState(null);
   const [medicalForm, setMedicalForm] = useState({
     weight: "",
@@ -21,6 +23,12 @@ const AdminPanel = () => {
     medicalNotes: "",
     checkupBy: ""
   });
+  const [passwordForm, setPasswordForm] = useState({
+    newPassword: "",
+    confirmPassword: ""
+  });
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState("");
 
   useEffect(() => {
     // Check if user is admin
@@ -48,23 +56,36 @@ const AdminPanel = () => {
     }
   };
 
-  const handleAddMedicalRecord = async (e) => {
+  const handlePasswordChange = (user) => {
+    setSelectedUser(user);
+    setShowPasswordModal(true);
+    setPasswordForm({ newPassword: "", confirmPassword: "" });
+    setPasswordError("");
+    setPasswordSuccess("");
+  };
+
+  const handlePasswordSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate passwords
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      setPasswordError("Passwords do not match");
+      return;
+    }
+    
+    if (passwordForm.newPassword.length < 6) {
+      setPasswordError("Password must be at least 6 characters long");
+      return;
+    }
+    
     try {
-      await axios.post(`/auth/medical-record/${selectedDonor._id}`, medicalForm);
-      alert("Medical record added successfully!");
-      setShowMedicalModal(false);
-      fetchData();
-      setMedicalForm({
-        weight: "",
-        bloodPressure: "",
-        hemoglobin: "",
-        eligibleForDonation: true,
-        medicalNotes: "",
-        checkupBy: ""
-      });
+      // Note: This would require a backend endpoint to change passwords
+      // For now, we'll show a message that this feature needs backend implementation
+      setPasswordError("Password change feature requires backend implementation");
+      // setPasswordSuccess("Password changed successfully!");
+      // setShowPasswordModal(false);
     } catch (error) {
-      alert("Failed to add medical record");
+      setPasswordError("Failed to change password");
     }
   };
 
@@ -108,6 +129,74 @@ const AdminPanel = () => {
           </h1>
           <p className="text-gray-600">Manage donors, users, and medical records</p>
         </motion.div>
+
+        {/* Password Change Modal */}
+        {showPasswordModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <motion.div
+              className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+            >
+              <h3 className="text-2xl font-bold mb-4 text-gray-800">Change Password</h3>
+              <p className="text-gray-600 mb-4">Changing password for: <span className="font-semibold">{selectedUser?.name}</span></p>
+              
+              {passwordError && (
+                <div className="bg-red-50 text-red-700 p-3 rounded-lg mb-4">
+                  {passwordError}
+                </div>
+              )}
+              
+              {passwordSuccess && (
+                <div className="bg-green-50 text-green-700 p-3 rounded-lg mb-4">
+                  {passwordSuccess}
+                </div>
+              )}
+              
+              <form onSubmit={handlePasswordSubmit}>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-semibold mb-2">New Password</label>
+                  <input
+                    type="password"
+                    value={passwordForm.newPassword}
+                    onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none"
+                    placeholder="Enter new password"
+                    required
+                  />
+                </div>
+                
+                <div className="mb-6">
+                  <label className="block text-gray-700 font-semibold mb-2">Confirm Password</label>
+                  <input
+                    type="password"
+                    value={passwordForm.confirmPassword}
+                    onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none"
+                    placeholder="Confirm new password"
+                    required
+                  />
+                </div>
+                
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowPasswordModal(false)}
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-xl font-bold transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white py-3 rounded-xl font-bold transition-all shadow-lg"
+                  >
+                    Change Password
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -266,6 +355,7 @@ const AdminPanel = () => {
                     <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">City</th>
                     <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">Is Donor</th>
                     <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">Joined</th>
+                    <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -299,6 +389,15 @@ const AdminPanel = () => {
                       </td>
                       <td className="px-6 py-4 text-gray-600">
                         {new Date(user.createdAt).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4">
+                        <button
+                          onClick={() => handlePasswordChange(user)}
+                          className="p-2 bg-purple-100 text-purple-600 rounded-lg hover:bg-purple-200 transition-colors"
+                          title="Change Password"
+                        >
+                          <FaKey />
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -404,6 +503,74 @@ const AdminPanel = () => {
                   className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition-all"
                 >
                   Cancel
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
+      
+      {/* Password Change Modal */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+          >
+            <h3 className="text-2xl font-bold mb-4 text-gray-800">Change Password</h3>
+            <p className="text-gray-600 mb-4">Changing password for: <span className="font-semibold">{selectedUser?.name}</span></p>
+            
+            {passwordError && (
+              <div className="bg-red-50 text-red-700 p-3 rounded-lg mb-4">
+                {passwordError}
+              </div>
+            )}
+            
+            {passwordSuccess && (
+              <div className="bg-green-50 text-green-700 p-3 rounded-lg mb-4">
+                {passwordSuccess}
+              </div>
+            )}
+            
+            <form onSubmit={handlePasswordSubmit}>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold mb-2">New Password</label>
+                <input
+                  type="password"
+                  value={passwordForm.newPassword}
+                  onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none"
+                  placeholder="Enter new password"
+                  required
+                />
+              </div>
+              
+              <div className="mb-6">
+                <label className="block text-gray-700 font-semibold mb-2">Confirm Password</label>
+                <input
+                  type="password"
+                  value={passwordForm.confirmPassword}
+                  onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none"
+                  placeholder="Confirm new password"
+                  required
+                />
+              </div>
+              
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordModal(false)}
+                  className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-xl font-bold transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white py-3 rounded-xl font-bold transition-all shadow-lg"
+                >
+                  Change Password
                 </button>
               </div>
             </form>
