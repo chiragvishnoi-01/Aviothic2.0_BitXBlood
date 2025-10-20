@@ -52,7 +52,15 @@ const Login = () => {
         // Server responded with error status
         console.error('Error status:', err.response.status);
         console.error('Error data:', err.response.data);
-        setError(err.response.data?.message || "Login failed. Please try again.");
+        
+        // More specific error messages based on status code
+        if (err.response.status === 401) {
+          setError("Invalid email or password. Please check your credentials and try again.");
+        } else if (err.response.status === 500) {
+          setError("Server error. Please try again later.");
+        } else {
+          setError(err.response.data?.message || "Login failed. Please try again.");
+        }
       } else if (err.request) {
         // Request made but no response received
         setError("Network error. Please check your connection and try again.");

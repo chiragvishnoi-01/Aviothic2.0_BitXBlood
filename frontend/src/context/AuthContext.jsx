@@ -34,7 +34,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    // Clear all possible storage mechanisms
     localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
+    // Clear any cookies if used
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
     setUser(null);
   };
 
