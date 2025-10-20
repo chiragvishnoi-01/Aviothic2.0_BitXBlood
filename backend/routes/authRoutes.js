@@ -107,16 +107,23 @@ router.post("/login", async (req, res) => {
     }
 
     const { email, password } = req.body;
+    
+    console.log('Searching for user with email:', email);
 
     // Find user with timeout
     const user = await User.findOne({ email }).maxTimeMS(5000);
+    console.log('User lookup result:', user ? 'User found' : 'User not found');
+    
     if (!user) {
       console.log('Login failed: User not found with email', email);
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
     // Check password
+    console.log('Checking password for user:', email);
     const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log('Password validation result:', isPasswordValid);
+    
     if (!isPasswordValid) {
       console.log('Login failed: Invalid password for user', email);
       return res.status(401).json({ message: "Invalid credentials" });
