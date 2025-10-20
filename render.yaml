@@ -5,9 +5,15 @@ services:
     runtime: node
     region: singapore
     plan: free
-    buildCommand: cd backend && npm install
-    startCommand: cd backend && npm start
-\
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+
   # Frontend Static Site
   - type: web
     name: blood-donation-frontend
@@ -16,7 +22,6 @@ services:
     plan: free
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
-
     routes:
       - type: rewrite
         source: /*
