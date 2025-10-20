@@ -17,8 +17,8 @@ router.post("/register", async (req, res) => {
 
     const { name, email, password, role, bloodGroup, phone, city, isDonor } = req.body;
     
-    // Check if user exists
-    const existingUser = await User.findOne({ email });
+    // Check if user exists with timeout
+    const existingUser = await User.findOne({ email }).maxTimeMS(5000);
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -39,7 +39,8 @@ router.post("/register", async (req, res) => {
       isDonor: isDonor || false
     });
 
-    await user.save();
+    // Save user with timeout
+    await user.save({ maxTimeMS: 10000 });
 
     // Generate JWT token
     const token = jwt.sign(
@@ -60,6 +61,10 @@ router.post("/register", async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('Registration error:', error);
+    if (error.name === 'MongoServerSelectionError' || error.name === 'MongoNetworkError') {
+      return res.status(500).json({ message: "Database connection timeout. Please try again.", error: error.message });
+    }
     res.status(500).json({ message: "Registration failed", error: error.message });
   }
 });
@@ -76,8 +81,8 @@ router.post("/login", async (req, res) => {
 
     const { email, password } = req.body;
 
-    // Find user
-    const user = await User.findOne({ email });
+    // Find user with timeout
+    const user = await User.findOne({ email }).maxTimeMS(5000);
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -109,6 +114,10 @@ router.post("/login", async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('Login error:', error);
+    if (error.name === 'MongoServerSelectionError' || error.name === 'MongoNetworkError') {
+      return res.status(500).json({ message: "Database connection timeout. Please try again.", error: error.message });
+    }
     res.status(500).json({ message: "Login failed", error: error.message });
   }
 });
