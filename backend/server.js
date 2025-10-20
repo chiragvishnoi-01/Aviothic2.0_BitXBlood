@@ -73,7 +73,13 @@ app.get('/health', (req, res) => {
   res.status(200).json({ 
     status: 'OK', 
     message: 'BloodLink Backend is running!',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    environment: {
+      NODE_ENV: process.env.NODE_ENV || 'development',
+      MONGODB_URI: process.env.MONGODB_URI ? 'Loaded' : 'Not found',
+      JWT_SECRET: process.env.JWT_SECRET ? 'Loaded' : 'Not found',
+      PORT: process.env.PORT || 5001
+    }
   });
 });
 
