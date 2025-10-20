@@ -16,6 +16,7 @@ const Profile = () => {
     city: user?.city || "",
     bloodGroup: user?.bloodGroup || ""
   });
+  const [showDonorForm, setShowDonorForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -72,6 +73,39 @@ const Profile = () => {
   };
 
   const gradientClass = bloodGroupColors[user.bloodGroup] || "from-red-500 to-rose-500";
+
+  const handleRegisterAsDonor = async () => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await axios.put(`/auth/register-donor/${user.id}`, {
+        bloodGroup: formData.bloodGroup,
+        city: formData.city,
+        phone: formData.phone
+      }, {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      });
+      
+      // Update user data in context and localStorage
+      const updatedUser = {
+        ...user,
+        ...response.data.user
+      };
+      login(updatedUser);
+      
+      setSuccess("Successfully registered as donor!");
+      setShowDonorForm(false);
+    } catch (err) {
+      console.error("Donor registration error:", err);
+      setError(err.response?.data?.message || "Failed to register as donor. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 py-12 px-4">
@@ -312,7 +346,7 @@ const Profile = () => {
                     </div>
                   )}
 
-                  {user.isDonor && (
+                  {user.isDonor ? (
                     <div>
                       <label className="block text-gray-700 font-semibold mb-2">Donor Status</label>
                       <div className="bg-green-50 border border-green-200 rounded-xl p-3">
@@ -321,6 +355,80 @@ const Profile = () => {
                           Registered Blood Donor
                         </p>
                       </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <label className="block text-gray-700 font-semibold mb-2">Become a Donor</label>
+                      {!showDonorForm ? (
+                        <button
+                          onClick={() => setShowDonorForm(true)}
+                          className="w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white py-3 rounded-xl font-bold transition-all shadow-lg"
+                        >
+                          Register as Blood Donor
+                        </button>
+                      ) : (
+                        <div className="bg-red-50 border border-red-200 rounded-xl p-4 space-y-4">
+                          <h4 className="font-bold text-red-800">Register as Donor</h4>
+                          <div>
+                            <label className="block text-gray-700 font-semibold mb-2">Blood Group *</label>
+                            <select
+                              name="bloodGroup"
+                              value={formData.bloodGroup}
+                              onChange={handleChange}
+                              required
+                              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none transition-colors"
+                            >
+                              <option value="">Select Blood Group</option>
+                              <option value="A+">A+</option>
+                              <option value="A-">A-</option>
+                              <option value="B+">B+</option>
+                              <option value="B-">B-</option>
+                              <option value="O+">O+</option>
+                              <option value="O-">O-</option>
+                              <option value="AB+">AB+</option>
+                              <option value="AB-">AB-</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-gray-700 font-semibold mb-2">City *</label>
+                            <input
+                              type="text"
+                              name="city"
+                              value={formData.city}
+                              onChange={handleChange}
+                              required
+                              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none transition-colors"
+                              placeholder="Your city"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-gray-700 font-semibold mb-2">Phone Number</label>
+                            <input
+                              type="tel"
+                              name="phone"
+                              value={formData.phone}
+                              onChange={handleChange}
+                              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none transition-colors"
+                              placeholder="Your phone number"
+                            />
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={handleRegisterAsDonor}
+                              disabled={loading || !formData.bloodGroup || !formData.city}
+                              className="flex-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white py-3 rounded-xl font-bold transition-all shadow-lg disabled:opacity-50"
+                            >
+                              {loading ? 'Registering...' : 'Register as Donor'}
+                            </button>
+                            <button
+                              onClick={() => setShowDonorForm(false)}
+                              className="px-4 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-bold transition-colors"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

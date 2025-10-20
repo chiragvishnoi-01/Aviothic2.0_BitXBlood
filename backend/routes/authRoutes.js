@@ -286,6 +286,40 @@ router.get("/donors-public", async (req, res) => {
   }
 });
 
+// Register as donor
+router.put("/register-donor/:id", authenticateToken, async (req, res) => {
+  try {
+    // Users can only update their own donor status
+    if (req.user.userId !== req.params.id) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const { bloodGroup, city, phone } = req.body;
+    
+    // Validate required fields for donors
+    if (!bloodGroup || !city) {
+      return res.status(400).json({ message: "Blood group and city are required to become a donor" });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { 
+        $set: { 
+          isDonor: true,
+          bloodGroup,
+          city,
+          phone: phone || user.phone
+        }
+      },
+      { new: true }
+    ).select('-password');
+    
+    res.json({ message: "Successfully registered as donor", user });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to register as donor", error: error.message });
+  }
+});
+
 // Change user password (Admin only or user changing their own password)
 router.put("/change-password/:id", authenticateToken, async (req, res) => {
   try {
