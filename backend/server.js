@@ -38,7 +38,8 @@ const corsOptions = {
           'http://localhost:5173',
           'http://localhost:5001',
           'http://127.0.0.1:5173',
-          'http://127.0.0.1:3000'
+          'http://127.0.0.1:3000',
+          'https://aviothic2-0-bit-x-blood.vercel.app'
         ];
     
     // Always allow requests from the same origin or if no origin is specified
@@ -46,7 +47,7 @@ const corsOptions = {
       callback(null, true);
     } else {
       console.log('CORS blocked origin:', origin);
-      callback(null, true); // Temporarily allow all origins for testing
+      callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,

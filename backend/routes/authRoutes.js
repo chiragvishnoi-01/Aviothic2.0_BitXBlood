@@ -20,15 +20,26 @@ router.post("/register", async (req, res) => {
     const { name, email, password, role, bloodGroup, phone, city, isDonor } = req.body;
     
     // Check if user exists with timeout
+    console.log('Checking if user exists with email:', email);
     const existingUser = await User.findOne({ email }).maxTimeMS(5000);
     if (existingUser) {
       console.log('Registration failed: User already exists with email', email);
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Validate required fields
+    if (!name || !email || !password) {
+      console.log('Registration failed: Missing required fields');
+      return res.status(400).json({ message: "Name, email, and password are required" });
+    }
+
     // Hash password
+    console.log('Hashing password for user:', email);
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Small delay to ensure database connection
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     // Create new user
     const user = new User({
@@ -72,7 +83,14 @@ router.post("/register", async (req, res) => {
     if (error.name === 'MongoServerSelectionError' || error.name === 'MongoNetworkError') {
       return res.status(500).json({ message: "Database connection timeout. Please try again.", error: error.message });
     }
-    res.status(500).json({ message: "Registration failed", error: error.message });
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({ message: "Validation error", errors: messages });
+    }
+    if (error.code === 11000) {
+      return res.status(400).json({ message: "User with this email already exists" });
+    }
+    res.status(500).json({ message: "Registration failed. Please try again.", error: error.message });
   }
 });
 
@@ -129,7 +147,7 @@ router.post("/login", async (req, res) => {
     if (error.name === 'MongoServerSelectionError' || error.name === 'MongoNetworkError') {
       return res.status(500).json({ message: "Database connection timeout. Please try again.", error: error.message });
     }
-    res.status(500).json({ message: "Login failed", error: error.message });
+    res.status(500).json({ message: "Login failed. Please try again.", error: error.message });
   }
 });
 

@@ -88,7 +88,9 @@ const Signup = () => {
       console.error('Registration error:', err);
       if (err.response) {
         // Server responded with error status
-        setError(err.response.data?.message || "Registration failed. Please try again.");
+        const errorMessage = err.response.data?.message || "Registration failed. Please try again.";
+        const errorDetails = err.response.data?.errors ? err.response.data.errors.join(', ') : '';
+        setError(errorMessage + (errorDetails ? `: ${errorDetails}` : ''));
       } else if (err.request) {
         // Request made but no response received
         setError("Network error. Please check your connection and try again.");
