@@ -56,7 +56,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// Health Check Route
+// Health Check Route - Added for deployment verification
 app.get('/health', (req, res) => {
   res.status(200).json({ 
     status: 'OK', 
