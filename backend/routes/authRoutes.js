@@ -277,7 +277,7 @@ router.get("/donors", authenticateToken, isAdmin, async (req, res) => {
 });
 
 // Get all donors - public endpoint for regular users and donors
-router.get("/donors-public", authenticateToken, async (req, res) => {
+router.get("/donors-public", async (req, res) => {
   try {
     const donors = await User.find({ isDonor: true }).select('-password');
     res.json(donors);
