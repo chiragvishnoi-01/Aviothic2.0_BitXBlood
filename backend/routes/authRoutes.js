@@ -109,10 +109,23 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     
     console.log('Searching for user with email:', email);
+    console.log('Email length:', email.length);
+    console.log('Email type:', typeof email);
 
     // Find user with timeout
     let user = await User.findOne({ email }).maxTimeMS(5000);
     console.log('User lookup result:', user ? 'User found' : 'User not found');
+    
+    // Log all users in the database for debugging (only in development)
+    if (process.env.NODE_ENV !== 'production' && !user) {
+      console.log('DEBUG: Listing all users in database');
+      try {
+        const allUsers = await User.find({}, 'email name role');
+        console.log('All users:', allUsers);
+      } catch (listError) {
+        console.log('Error listing users:', listError.message);
+      }
+    }
     
     // Temporary workaround: If user not found, try to find by ID (for debugging)
     if (!user && email === 'witepurple@gmail.com') {
@@ -125,6 +138,14 @@ router.post("/login", async (req, res) => {
       } catch (idError) {
         console.log('Failed to find user by ID:', idError.message);
       }
+    }
+    
+    // Additional workaround: Try with lowercase email
+    if (!user) {
+      console.log('Trying with lowercase email...');
+      const lowerCaseEmail = email.toLowerCase();
+      user = await User.findOne({ email: lowerCaseEmail }).maxTimeMS(5000);
+      console.log('Lowercase search result:', user ? 'User found' : 'User not found');
     }
     
     if (!user) {
