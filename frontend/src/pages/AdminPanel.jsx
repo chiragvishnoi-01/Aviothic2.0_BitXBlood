@@ -79,13 +79,17 @@ const AdminPanel = () => {
     }
     
     try {
-      // Note: This would require a backend endpoint to change passwords
-      // For now, we'll show a message that this feature needs backend implementation
-      setPasswordError("Password change feature requires backend implementation");
-      // setPasswordSuccess("Password changed successfully!");
-      // setShowPasswordModal(false);
+      // Call backend endpoint to change password
+      await axios.put(`/auth/change-password/${selectedUser._id}`, {
+        newPassword: passwordForm.newPassword
+      });
+      
+      setPasswordSuccess("Password changed successfully!");
+      setTimeout(() => {
+        setShowPasswordModal(false);
+      }, 2000);
     } catch (error) {
-      setPasswordError("Failed to change password");
+      setPasswordError(error.response?.data?.message || "Failed to change password");
     }
   };
 
