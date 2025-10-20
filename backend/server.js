@@ -69,18 +69,44 @@ app.get('/test', (req, res) => {
 });
 
 // Health Check Route - Added for deployment verification
-app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'OK', 
-    message: 'BloodLink Backend is running!',
-    timestamp: new Date().toISOString(),
-    environment: {
-      NODE_ENV: process.env.NODE_ENV || 'development',
-      MONGODB_URI: process.env.MONGODB_URI ? 'Loaded' : 'Not found',
-      JWT_SECRET: process.env.JWT_SECRET ? 'Loaded' : 'Not found',
-      PORT: process.env.PORT || 5001
-    }
-  });
+app.get('/health', async (req, res) => {
+  try {
+    // Try to find the specific user
+    const User = (await import('./models/User.js')).default;
+    const user = await User.findById('68f6786c92b16879c173dac7');
+    
+    res.status(200).json({ 
+      status: 'OK', 
+      message: 'BloodLink Backend is running!',
+      timestamp: new Date().toISOString(),
+      environment: {
+        NODE_ENV: process.env.NODE_ENV || 'development',
+        MONGODB_URI: process.env.MONGODB_URI ? 'Loaded' : 'Not found',
+        JWT_SECRET: process.env.JWT_SECRET ? 'Loaded' : 'Not found',
+        PORT: process.env.PORT || 5001
+      },
+      userTest: {
+        userFound: !!user,
+        userEmail: user ? user.email : null,
+        userName: user ? user.name : null
+      }
+    });
+  } catch (error) {
+    res.status(200).json({ 
+      status: 'OK', 
+      message: 'BloodLink Backend is running!',
+      timestamp: new Date().toISOString(),
+      environment: {
+        NODE_ENV: process.env.NODE_ENV || 'development',
+        MONGODB_URI: process.env.MONGODB_URI ? 'Loaded' : 'Not found',
+        JWT_SECRET: process.env.JWT_SECRET ? 'Loaded' : 'Not found',
+        PORT: process.env.PORT || 5001
+      },
+      userTest: {
+        error: error.message
+      }
+    });
+  }
 });
 
 // Root Route

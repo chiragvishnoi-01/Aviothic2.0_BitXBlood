@@ -192,54 +192,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Emergency login endpoint - bypass normal authentication
-router.post("/emergency-login", async (req, res) => {
-  try {
-    console.log('Emergency login attempt');
-    
-    // Validate JWT_SECRET is provided
-    const JWT_SECRET = process.env.JWT_SECRET;
-    if (!JWT_SECRET) {
-      console.error("FATAL ERROR: JWT_SECRET is not defined in environment variables");
-      return res.status(500).json({ message: "Server configuration error" });
-    }
-    
-    // Directly find the known admin user
-    const user = await User.findById('68f6786c92b16879c173dac7');
-    
-    if (!user) {
-      console.log('Emergency login failed: User not found');
-      return res.status(401).json({ message: "User not found" });
-    }
-    
-    console.log('Emergency login successful for user:', user.email);
-    
-    // Generate JWT token
-    const token = jwt.sign(
-      { userId: user._id, email: user.email, role: user.role },
-      JWT_SECRET,
-      { expiresIn: "24h" }
-    );
-
-    res.json({
-      message: "Login successful",
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        isDonor: user.isDonor,
-        bloodGroup: user.bloodGroup,
-        city: user.city
-      }
-    });
-  } catch (error) {
-    console.error('Emergency login error:', error);
-    res.status(500).json({ message: "Login failed. Please try again.", error: error.message });
-  }
-});
-
 // Test endpoint to check database connection
 router.get("/test-db", async (req, res) => {
   try {
