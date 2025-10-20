@@ -16,7 +16,7 @@ const Dashboard = () => {
     const fetchDonors = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("/donors");
+        const res = await axios.get("/auth/donors-public");
         setDonors(res.data);
         setError("");
       } catch (err) {
