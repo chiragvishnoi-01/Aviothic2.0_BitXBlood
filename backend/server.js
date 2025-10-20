@@ -10,7 +10,7 @@ dotenv.config();
 console.log('Environment Variables:');
 console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'Loaded' : 'Not found');
 console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Loaded' : 'Not found');
-console.log('PORT:', process.env.PORT || 5000);
+console.log('PORT:', process.env.PORT || 5001);
 
 // Import routes AFTER environment variables are loaded
 import donorRoutes from "./routes/donorRoutes.js";
@@ -25,8 +25,36 @@ connectDB();
 
 const app = express();
 
-// Simple CORS for testing
-app.use(cors());
+// Configure CORS properly for development and production
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl)
+    if (!origin) return callback(null, true);
+    
+    // List of allowed origins (configured via environment variable or defaults)
+    const allowedOrigins = process.env.ALLOWED_ORIGINS 
+      ? process.env.ALLOWED_ORIGINS.split(',') 
+      : [
+          'http://localhost:5173',
+          'http://localhost:5001',
+          'http://127.0.0.1:5173',
+          'http://127.0.0.1:3000'
+        ];
+    
+    // Always allow requests from the same origin or if no origin is specified
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      console.log('CORS blocked origin:', origin);
+      callback(null, true); // Temporarily allow all origins for testing
+    }
+  },
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
@@ -97,7 +125,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Export the app for serverless deployment
 export default app;

@@ -8,6 +8,8 @@ const router = express.Router();
 // Register
 router.post("/register", async (req, res) => {
   try {
+    console.log('Registration attempt:', req.body);
+    
     // Validate JWT_SECRET is provided
     const JWT_SECRET = process.env.JWT_SECRET;
     if (!JWT_SECRET) {
@@ -20,6 +22,7 @@ router.post("/register", async (req, res) => {
     // Check if user exists with timeout
     const existingUser = await User.findOne({ email }).maxTimeMS(5000);
     if (existingUser) {
+      console.log('Registration failed: User already exists with email', email);
       return res.status(400).json({ message: "User already exists" });
     }
 
@@ -39,8 +42,12 @@ router.post("/register", async (req, res) => {
       isDonor: isDonor || false
     });
 
+    console.log('Saving new user:', user.email);
+    
     // Save user with timeout
     await user.save({ maxTimeMS: 10000 });
+    
+    console.log('User saved successfully:', user._id);
 
     // Generate JWT token
     const token = jwt.sign(
@@ -72,6 +79,8 @@ router.post("/register", async (req, res) => {
 // Login
 router.post("/login", async (req, res) => {
   try {
+    console.log('Login attempt:', req.body);
+    
     // Validate JWT_SECRET is provided
     const JWT_SECRET = process.env.JWT_SECRET;
     if (!JWT_SECRET) {
@@ -84,12 +93,14 @@ router.post("/login", async (req, res) => {
     // Find user with timeout
     const user = await User.findOne({ email }).maxTimeMS(5000);
     if (!user) {
+      console.log('Login failed: User not found with email', email);
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
     // Check password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
+      console.log('Login failed: Invalid password for user', email);
       return res.status(401).json({ message: "Invalid credentials" });
     }
 

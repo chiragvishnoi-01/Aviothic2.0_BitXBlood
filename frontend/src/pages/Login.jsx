@@ -25,7 +25,9 @@ const Login = () => {
     setError("");
 
     try {
+      console.log('Attempting login with data:', formData);
       const response = await axios.post("/auth/login", formData);
+      console.log('Login response:', response.data);
       
       // Store user data and token in localStorage
       const userData = {
@@ -41,7 +43,17 @@ const Login = () => {
         navigate("/dashboard");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Please try again.");
+      console.error('Login error:', err);
+      if (err.response) {
+        // Server responded with error status
+        setError(err.response.data?.message || "Login failed. Please try again.");
+      } else if (err.request) {
+        // Request made but no response received
+        setError("Network error. Please check your connection and try again.");
+      } else {
+        // Something else happened
+        setError("Login failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

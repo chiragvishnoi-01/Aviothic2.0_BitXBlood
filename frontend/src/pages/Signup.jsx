@@ -51,6 +51,17 @@ const Signup = () => {
     }
 
     try {
+      console.log('Attempting registration with data:', {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        city: formData.city,
+        bloodGroup: formData.bloodGroup,
+        isDonor: formData.isDonor,
+        role: 'user'
+      });
+      
       const response = await axios.post("/auth/register", {
         name: formData.name,
         email: formData.email,
@@ -62,6 +73,8 @@ const Signup = () => {
         role: 'user'
       });
 
+      console.log('Registration response:', response.data);
+      
       // Store user data and token in localStorage
       const userData = {
         ...response.data.user,
@@ -72,7 +85,17 @@ const Signup = () => {
       // Redirect to dashboard
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed. Please try again.");
+      console.error('Registration error:', err);
+      if (err.response) {
+        // Server responded with error status
+        setError(err.response.data?.message || "Registration failed. Please try again.");
+      } else if (err.request) {
+        // Request made but no response received
+        setError("Network error. Please check your connection and try again.");
+      } else {
+        // Something else happened
+        setError("Registration failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
