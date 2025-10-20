@@ -83,8 +83,8 @@ const Signup = () => {
         token: response.data.token
       });
       
-      // Redirect to dashboard
-      navigate("/dashboard");
+      // Redirect to home page
+      navigate("/");
     } catch (err) {
       console.error('Registration error:', err);
       if (err.response) {
