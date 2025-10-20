@@ -158,6 +158,46 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Test endpoint to check database connection
+router.get("/test-db", async (req, res) => {
+  try {
+    console.log('=== DATABASE CONNECTION TEST FROM ROUTE ===');
+    
+    // Check environment variables
+    console.log('MONGODB_URI loaded:', !!process.env.MONGODB_URI);
+    console.log('JWT_SECRET loaded:', !!process.env.JWT_SECRET);
+    
+    // Try to find all users
+    const users = await User.find({});
+    console.log('Found users:', users.length);
+    
+    // Try to find specific user
+    const targetUser = await User.findOne({ email: 'witepurple@gmail.com' });
+    console.log('Target user found:', !!targetUser);
+    
+    if (targetUser) {
+      console.log('Target user email:', targetUser.email);
+      console.log('Target user role:', targetUser.role);
+    }
+    
+    res.json({
+      message: "Database test completed",
+      userCount: users.length,
+      targetUserFound: !!targetUser,
+      environment: {
+        mongodbUriLoaded: !!process.env.MONGODB_URI,
+        jwtSecretLoaded: !!process.env.JWT_SECRET
+      }
+    });
+  } catch (error) {
+    console.error('Database test error:', error);
+    res.status(500).json({ 
+      message: "Database test failed", 
+      error: error.message 
+    });
+  }
+});
+
 // Middleware to verify JWT token
 export const authenticateToken = (req, res, next) => {
   // Validate JWT_SECRET is provided
