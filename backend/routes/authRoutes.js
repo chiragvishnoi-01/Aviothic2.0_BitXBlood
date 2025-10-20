@@ -276,4 +276,40 @@ router.get("/donors", authenticateToken, isAdmin, async (req, res) => {
   }
 });
 
+// Change user password (Admin only or user changing their own password)
+router.put("/change-password/:id", authenticateToken, async (req, res) => {
+  try {
+    const { newPassword } = req.body;
+    
+    // Users can change their own password or admins can change any user's password
+    if (req.user.userId !== req.params.id && req.user.role !== 'admin') {
+      return res.status(403).json({ message: "Access denied" });
+    }
+    
+    // Validate password
+    if (!newPassword || newPassword.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters long" });
+    }
+    
+    // Hash new password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    
+    // Update user password
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { password: hashedPassword },
+      { new: true }
+    ).select('-password');
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    res.json({ message: "Password changed successfully", user });
+  } catch (error) {
+    res.status(500).json({ message: "Error changing password", error: error.message });
+  }
+});
+
 export default router;
