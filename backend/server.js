@@ -112,11 +112,9 @@ const PORT = process.env.PORT || 5000;
 // Export the app for serverless deployment
 export default app;
 
-// Start the server for development
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`🌐 API URL: http://localhost:${PORT}`);
-  });
-}
+// Start the server
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🌐 API URL: http://localhost:${PORT}`);
+});
