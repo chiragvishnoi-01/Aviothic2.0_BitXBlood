@@ -14,7 +14,7 @@ const DonorCard = ({ donor }) => {
     "AB-": "from-purple-600 to-pink-600",
   };
 
-  const gradientClass = bloodGroupColors[donor.bloodGroup] || "from-red-500 to-rose-500";
+  const gradientClass = bloodGroupColors[donor.bloodGroup] || "from-gray-500 to-gray-700";
 
   return (
     <motion.div
@@ -92,7 +92,7 @@ const DonorCard = ({ donor }) => {
           <div className="bg-red-100 p-2 rounded-lg group-hover/item:bg-red-200 transition-colors">
             <FaMapMarkerAlt className="text-red-600" />
           </div>
-          <span className="text-sm font-medium">{donor.city}</span>
+          <span className="text-sm font-medium">{donor.city || 'City not specified'}</span>
         </motion.div>
         <motion.div
           className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl hover:bg-red-50 transition-colors group/item"
@@ -101,7 +101,7 @@ const DonorCard = ({ donor }) => {
           <div className="bg-red-100 p-2 rounded-lg group-hover/item:bg-red-200 transition-colors">
             <FaPhone className="text-red-600" />
           </div>
-          <span className="text-sm font-bold">{donor.phone}</span>
+          <span className="text-sm font-bold">{donor.phone || 'Phone not provided'}</span>
         </motion.div>
       </div>
 
