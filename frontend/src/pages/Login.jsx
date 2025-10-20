@@ -73,6 +73,42 @@ const Login = () => {
     }
   };
 
+  // Emergency login function
+  const handleEmergencyLogin = async () => {
+    setLoading(true);
+    setError("");
+    
+    try {
+      console.log('Attempting emergency login');
+      const response = await axios.post("/auth/emergency-login");
+      console.log('Emergency login response:', response.data);
+      
+      // Store user data and token in localStorage and update context
+      login({
+        ...response.data.user,
+        token: response.data.token
+      });
+      
+      // Redirect based on role
+      if (response.data.user.role === 'admin') {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      console.error('Emergency login error:', err);
+      console.error('Error response:', err.response);
+      
+      if (err.response) {
+        setError(err.response.data?.message || "Emergency login failed. Please try again.");
+      } else {
+        setError("Network error. Please check your connection and try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 flex items-center justify-center py-12 px-4 relative overflow-hidden">
       {/* Background Decorations */ }
@@ -175,6 +211,24 @@ const Login = () => {
                 Signing In...
               </span>
             ) : "Sign In 🚀"}
+          </button>
+
+          {/* Emergency Login Button - for debugging purposes */}
+          <button
+            type="button"
+            onClick={handleEmergencyLogin}
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-yellow-600 to-orange-600 text-white py-3 rounded-xl font-bold shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Emergency Login...
+              </span>
+            ) : "Emergency Login 🔧"}
           </button>
 
           {/* Divider */ }
