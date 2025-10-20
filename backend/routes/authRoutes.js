@@ -276,6 +276,16 @@ router.get("/donors", authenticateToken, isAdmin, async (req, res) => {
   }
 });
 
+// Get all donors - public endpoint for regular users and donors
+router.get("/donors-public", authenticateToken, async (req, res) => {
+  try {
+    const donors = await User.find({ isDonor: true }).select('-password');
+    res.json(donors);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching donors", error: error.message });
+  }
+});
+
 // Change user password (Admin only or user changing their own password)
 router.put("/change-password/:id", authenticateToken, async (req, res) => {
   try {
