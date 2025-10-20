@@ -13,6 +13,7 @@ import CreateCampaign from "./pages/CreateCampaign.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
+import Profile from "./pages/Profile.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
 const ScrollToTop = () => {
@@ -48,6 +49,7 @@ const AnimatedRoutes = () => {
         <Route path="/leaderboard" element={<PageTransition><LeaderboardPage /></PageTransition>} />
         <Route path="/campaigns" element={<PageTransition><Campaigns /></PageTransition>} />
         <Route path="/create-campaign" element={<PageTransition><CreateCampaign /></PageTransition>} />
+        <Route path="/profile" element={<PageTransition><Profile /></PageTransition>} />
         <Route
           path="*"
           element={

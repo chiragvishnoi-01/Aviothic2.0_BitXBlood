@@ -84,17 +84,20 @@ const Navbar = () => {
           
           {user ? (
             <li className="ml-4 flex items-center gap-3">
-              <div className="flex items-center gap-2 bg-gray-50 px-4 py-2.5 rounded-lg border border-gray-200">
+              <Link
+                to="/profile"
+                className="flex items-center gap-2 bg-gray-50 px-4 py-2.5 rounded-lg border border-gray-200 hover:bg-red-50 hover:text-red-600 transition-all duration-200"
+              >
                 <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
                   {user.name.charAt(0).toUpperCase()}
                 </div>
-                <span className="font-bold text-gray-800 text-sm">{user.name}</span>
-              </div>
+                <span className="font-bold text-gray-800 text-sm hidden md:inline">{user.name}</span>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2.5 rounded-lg font-bold text-sm transition-all duration-200 flex items-center gap-2 shadow-md"
               >
-                <FaSignOutAlt /> Logout
+                <FaSignOutAlt /> <span className="hidden md:inline">Logout</span>
               </button>
             </li>
           ) : (
@@ -169,12 +172,16 @@ const Navbar = () => {
           
           {user ? (
             <>
-              <div className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-center font-bold text-gray-800 flex items-center justify-center gap-2">
+              <Link
+                to="/profile"
+                onClick={() => setIsOpen(false)}
+                className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-center font-bold text-gray-800 flex items-center justify-center gap-2 hover:bg-red-50 hover:text-red-600 transition-colors"
+              >
                 <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
                   {user.name.charAt(0).toUpperCase()}
                 </div>
                 {user.name}
-              </div>
+              </Link>
               <button
                 onClick={() => {
                   handleLogout();
