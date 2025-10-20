@@ -44,8 +44,13 @@ const Login = () => {
       }
     } catch (err) {
       console.error('Login error:', err);
+      console.error('Error response:', err.response);
+      console.error('Error request:', err.request);
+      
       if (err.response) {
         // Server responded with error status
+        console.error('Error status:', err.response.status);
+        console.error('Error data:', err.response.data);
         setError(err.response.data?.message || "Login failed. Please try again.");
       } else if (err.request) {
         // Request made but no response received
