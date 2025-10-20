@@ -12,7 +12,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 5000
+        value: 5001
       - key: MONGODB_URI
         value: mongodb+srv://chirag562:ONlt2AkocdRY2jdu@aviothic01.e67ncgo.mongodb.net/?retryWrites=true&w=majority&appName=aviothic01
       - key: JWT_SECRET
