@@ -62,10 +62,6 @@ This guide will walk you through setting up MongoDB Atlas for your BloodLink app
 3. Select **"Connect your application"**
 4. Copy the connection string provided
 
-The connection string will look like this:
-```
-mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-```
 
 ### STEP 6: Customize Connection String
 
