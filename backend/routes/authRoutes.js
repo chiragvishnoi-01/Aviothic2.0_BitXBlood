@@ -8,8 +8,6 @@ const router = express.Router();
 // Register
 router.post("/register", async (req, res) => {
   try {
-    console.log('Registration attempt:', req.body);
-    
     // Validate JWT_SECRET is provided
     const JWT_SECRET = process.env.JWT_SECRET;
     if (!JWT_SECRET) {
@@ -19,27 +17,20 @@ router.post("/register", async (req, res) => {
 
     const { name, email, password, role, bloodGroup, phone, city, isDonor } = req.body;
     
-    // Check if user exists with timeout
-    console.log('Checking if user exists with email:', email);
-    const existingUser = await User.findOne({ email }).maxTimeMS(5000);
+    // Check if user exists
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      console.log('Registration failed: User already exists with email', email);
       return res.status(400).json({ message: "User already exists" });
     }
 
     // Validate required fields
     if (!name || !email || !password) {
-      console.log('Registration failed: Missing required fields');
       return res.status(400).json({ message: "Name, email, and password are required" });
     }
 
     // Hash password
-    console.log('Hashing password for user:', email);
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    // Small delay to ensure database connection
-    await new Promise(resolve => setTimeout(resolve, 100));
 
     // Create new user
     const user = new User({
@@ -53,12 +44,8 @@ router.post("/register", async (req, res) => {
       isDonor: isDonor || false
     });
 
-    console.log('Saving new user:', user.email);
-    
-    // Save user with timeout
-    await user.save({ maxTimeMS: 10000 });
-    
-    console.log('User saved successfully:', user._id);
+    // Save user
+    await user.save();
 
     // Generate JWT token
     const token = jwt.sign(
@@ -80,9 +67,6 @@ router.post("/register", async (req, res) => {
     });
   } catch (error) {
     console.error('Registration error:', error);
-    if (error.name === 'MongoServerSelectionError' || error.name === 'MongoNetworkError') {
-      return res.status(500).json({ message: "Database connection timeout. Please try again.", error: error.message });
-    }
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map(err => err.message);
       return res.status(400).json({ message: "Validation error", errors: messages });
@@ -97,8 +81,6 @@ router.post("/register", async (req, res) => {
 // Login
 router.post("/login", async (req, res) => {
   try {
-    console.log('Login attempt:', req.body);
-    
     // Validate JWT_SECRET is provided
     const JWT_SECRET = process.env.JWT_SECRET;
     if (!JWT_SECRET) {
@@ -108,58 +90,17 @@ router.post("/login", async (req, res) => {
 
     const { email, password } = req.body;
     
-    console.log('Searching for user with email:', email);
-    console.log('Email length:', email.length);
-    console.log('Email type:', typeof email);
-
-    // Find user with timeout
-    let user = await User.findOne({ email }).maxTimeMS(5000);
-    console.log('User lookup result:', user ? 'User found' : 'User not found');
-    
-    // Log all users in the database for debugging (only in development)
-    if (process.env.NODE_ENV !== 'production' && !user) {
-      console.log('DEBUG: Listing all users in database');
-      try {
-        const allUsers = await User.find({}, 'email name role');
-        console.log('All users:', allUsers);
-      } catch (listError) {
-        console.log('Error listing users:', listError.message);
-      }
-    }
-    
-    // Temporary workaround: If user not found, try to find by ID (for debugging)
-    if (!user && email === 'witepurple@gmail.com') {
-      console.log('Trying to find user by ID as workaround...');
-      try {
-        user = await User.findById('68f6786c92b16879c173dac7');
-        if (user) {
-          console.log('Found user by ID:', user.email);
-        }
-      } catch (idError) {
-        console.log('Failed to find user by ID:', idError.message);
-      }
-    }
-    
-    // Additional workaround: Try with lowercase email
-    if (!user) {
-      console.log('Trying with lowercase email...');
-      const lowerCaseEmail = email.toLowerCase();
-      user = await User.findOne({ email: lowerCaseEmail }).maxTimeMS(5000);
-      console.log('Lowercase search result:', user ? 'User found' : 'User not found');
-    }
+    // Find user
+    const user = await User.findOne({ email });
     
     if (!user) {
-      console.log('Login failed: User not found with email', email);
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
     // Check password
-    console.log('Checking password for user:', email);
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log('Password validation result:', isPasswordValid);
     
     if (!isPasswordValid) {
-      console.log('Login failed: Invalid password for user', email);
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
@@ -180,55 +121,13 @@ router.post("/login", async (req, res) => {
         role: user.role,
         isDonor: user.isDonor,
         bloodGroup: user.bloodGroup,
-        city: user.city
+        city: user.city,
+        phone: user.phone
       }
     });
   } catch (error) {
     console.error('Login error:', error);
-    if (error.name === 'MongoServerSelectionError' || error.name === 'MongoNetworkError') {
-      return res.status(500).json({ message: "Database connection timeout. Please try again.", error: error.message });
-    }
     res.status(500).json({ message: "Login failed. Please try again.", error: error.message });
-  }
-});
-
-// Test endpoint to check database connection
-router.get("/test-db", async (req, res) => {
-  try {
-    console.log('=== DATABASE CONNECTION TEST FROM ROUTE ===');
-    
-    // Check environment variables
-    console.log('MONGODB_URI loaded:', !!process.env.MONGODB_URI);
-    console.log('JWT_SECRET loaded:', !!process.env.JWT_SECRET);
-    
-    // Try to find all users
-    const users = await User.find({});
-    console.log('Found users:', users.length);
-    
-    // Try to find specific user
-    const targetUser = await User.findOne({ email: 'witepurple@gmail.com' });
-    console.log('Target user found:', !!targetUser);
-    
-    if (targetUser) {
-      console.log('Target user email:', targetUser.email);
-      console.log('Target user role:', targetUser.role);
-    }
-    
-    res.json({
-      message: "Database test completed",
-      userCount: users.length,
-      targetUserFound: !!targetUser,
-      environment: {
-        mongodbUriLoaded: !!process.env.MONGODB_URI,
-        jwtSecretLoaded: !!process.env.JWT_SECRET
-      }
-    });
-  } catch (error) {
-    console.error('Database test error:', error);
-    res.status(500).json({ 
-      message: "Database test failed", 
-      error: error.message 
-    });
   }
 });
 
@@ -291,9 +190,12 @@ router.put("/profile/:id", authenticateToken, async (req, res) => {
       return res.status(403).json({ message: "Access denied" });
     }
 
+    // Don't allow password updates through this route
+    const { password, ...updateData } = req.body;
+
     const user = await User.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body },
+      { $set: updateData },
       { new: true }
     ).select('-password');
     
@@ -375,16 +277,21 @@ router.put("/register-donor/:id", authenticateToken, async (req, res) => {
       return res.status(400).json({ message: "Blood group and city are required to become a donor" });
     }
 
+    // Prepare update object
+    const updateData = { 
+      isDonor: true,
+      bloodGroup,
+      city
+    };
+    
+    // Only update phone if provided
+    if (phone) {
+      updateData.phone = phone;
+    }
+
     const user = await User.findByIdAndUpdate(
       req.params.id,
-      { 
-        $set: { 
-          isDonor: true,
-          bloodGroup,
-          city,
-          phone: phone || user.phone
-        }
-      },
+      { $set: updateData },
       { new: true }
     ).select('-password');
     

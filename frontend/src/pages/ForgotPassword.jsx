@@ -1,0 +1,130 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import axios from "../api/axiosConfig";
+import { FaEnvelope, FaPaperPlane } from "react-icons/fa";
+
+const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setMessage("");
+
+    // Simple email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // In a real implementation, this would send a password reset email
+      // For now, we'll just simulate the process
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      setMessage("Password reset instructions have been sent to your email address. Please check your inbox.");
+      setEmail("");
+    } catch (err) {
+      console.error('Password reset error:', err);
+      if (err.response) {
+        setError(err.response.data?.message || "Failed to send reset instructions. Please try again.");
+      } else {
+        setError("Network error. Please check your connection and try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 flex items-center justify-center py-12 px-4 relative overflow-hidden">
+      {/* Background Decorations */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-red-200 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-rose-200 rounded-full blur-3xl opacity-20 animate-pulse" style={{animationDelay: '1s'}}></div>
+      
+      <motion.div
+        className="max-w-md w-full relative z-10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        {/* Header */}
+        <div className="text-center mb-8">
+          <motion.div
+            className="inline-block p-4 bg-gradient-to-r from-red-600 to-rose-600 rounded-3xl mb-6 shadow-2xl"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          >
+            <FaPaperPlane className="text-5xl text-white" />
+          </motion.div>
+          <h1 className="text-5xl font-black mb-3">
+            <span className="bg-gradient-to-r from-red-600 via-rose-500 to-pink-600 bg-clip-text text-transparent">
+              Reset Password
+            </span>
+          </h1>
+          <p className="text-gray-600 text-lg">Enter your email to receive password reset instructions</p>
+        </div>
+
+        {/* Forgot Password Form */}
+        <motion.form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-3xl shadow-2xl p-8 space-y-6 border border-gray-100"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          {(error || message) && (
+            <div className={error ? "bg-red-50 border-l-4 border-red-500 p-4 rounded" : "bg-green-50 border-l-4 border-green-500 p-4 rounded"}>
+              <p className={error ? "text-red-700 text-sm" : "text-green-700 text-sm"}>
+                {error || message}
+              </p>
+            </div>
+          )}
+
+          {/* Email */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">Email Address</label>
+            <div className="relative">
+              <FaEnvelope className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none transition-colors"
+                placeholder="you@example.com"
+              />
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-red-600 to-rose-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50"
+          >
+            {loading ? "Sending Instructions..." : "Send Reset Instructions"}
+          </button>
+
+          {/* Divider */}
+          <div className="text-center text-gray-500">
+            Remember your password?{" "}
+            <Link to="/login" className="text-red-600 font-bold hover:underline">
+              Sign In
+            </Link>
+          </div>
+        </motion.form>
+      </motion.div>
+    </div>
+  );
+};
+
+export default ForgotPassword;

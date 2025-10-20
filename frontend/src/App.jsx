@@ -12,6 +12,7 @@ import Campaigns from "./pages/Campaigns.jsx";
 import CreateCampaign from "./pages/CreateCampaign.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
 import Profile from "./pages/Profile.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
@@ -43,6 +44,7 @@ const AnimatedRoutes = () => {
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
         <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
         <Route path="/signup" element={<PageTransition><Signup /></PageTransition>} />
+        <Route path="/forgot-password" element={<PageTransition><ForgotPassword /></PageTransition>} />
         <Route path="/admin" element={<PageTransition><AdminPanel /></PageTransition>} />
         <Route path="/sos" element={<PageTransition><SOS /></PageTransition>} />
         <Route path="/dashboard" element={<PageTransition><Dashboard /></PageTransition>} />
