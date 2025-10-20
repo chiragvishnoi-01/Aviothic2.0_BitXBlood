@@ -56,6 +56,14 @@ app.use(cors({
 
 app.use(express.json());
 
+// Test Route
+app.get('/test', (req, res) => {
+  res.status(200).json({ 
+    message: 'Server is working!',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Health Check Route - Added for deployment verification
 app.get('/health', (req, res) => {
   res.status(200).json({ 
@@ -78,6 +86,14 @@ app.get('/', (req, res) => {
       leaderboard: '/api/leaderboard',
       campaigns: '/api/campaigns',
     }
+  });
+});
+
+// Fallback route for Render
+app.get('/api/*', (req, res) => {
+  res.status(404).json({ 
+    error: 'API route not found',
+    path: req.path 
   });
 });
 
