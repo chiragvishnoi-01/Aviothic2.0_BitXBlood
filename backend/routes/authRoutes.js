@@ -5,16 +5,16 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
-// Validate JWT_SECRET is provided
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  console.error("FATAL ERROR: JWT_SECRET is not defined in environment variables");
-  process.exit(1);
-}
-
 // Register
 router.post("/register", async (req, res) => {
   try {
+    // Validate JWT_SECRET is provided
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) {
+      console.error("FATAL ERROR: JWT_SECRET is not defined in environment variables");
+      return res.status(500).json({ message: "Server configuration error" });
+    }
+
     const { name, email, password, role, bloodGroup, phone, city, isDonor } = req.body;
     
     // Check if user exists
@@ -67,6 +67,13 @@ router.post("/register", async (req, res) => {
 // Login
 router.post("/login", async (req, res) => {
   try {
+    // Validate JWT_SECRET is provided
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) {
+      console.error("FATAL ERROR: JWT_SECRET is not defined in environment variables");
+      return res.status(500).json({ message: "Server configuration error" });
+    }
+
     const { email, password } = req.body;
 
     // Find user
@@ -108,6 +115,13 @@ router.post("/login", async (req, res) => {
 
 // Middleware to verify JWT token
 export const authenticateToken = (req, res, next) => {
+  // Validate JWT_SECRET is provided
+  const JWT_SECRET = process.env.JWT_SECRET;
+  if (!JWT_SECRET) {
+    console.error("FATAL ERROR: JWT_SECRET is not defined in environment variables");
+    return res.status(500).json({ message: "Server configuration error" });
+  }
+
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 

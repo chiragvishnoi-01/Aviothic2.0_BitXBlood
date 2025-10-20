@@ -3,15 +3,22 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
 
-// Import routes
+// Load environment variables from .env file
+dotenv.config();
+
+// Log environment variables for debugging
+console.log('Environment Variables:');
+console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'Loaded' : 'Not found');
+console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Loaded' : 'Not found');
+console.log('PORT:', process.env.PORT || 5000);
+
+// Import routes AFTER environment variables are loaded
 import donorRoutes from "./routes/donorRoutes.js";
 import sosRoutes from "./routes/sosRoutes.js";
 import bankRoutes from "./routes/bankRoutes.js";
 import leaderboardRoutes from "./routes/leaderboardRoutes.js";
 import campaignRoutes from "./routes/campaignRoutes.js";
 import authRoutes, { authenticateToken } from "./routes/authRoutes.js";
-
-dotenv.config();
 
 // Connect to Database
 connectDB();
