@@ -92,14 +92,6 @@ app.get('/', (req, res) => {
   });
 });
 
-// Fallback route for Render
-app.get('/api/*', (req, res) => {
-  res.status(404).json({ 
-    error: 'API route not found',
-    path: req.path 
-  });
-});
-
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/donors", donorRoutes);
@@ -107,6 +99,14 @@ app.use("/api/sos", sosRoutes);
 app.use("/api/banks", bankRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/campaigns", campaignRoutes);
+
+// Fallback route for Render
+app.get('/api/*', (req, res) => {
+  res.status(404).json({ 
+    error: 'API route not found',
+    path: req.path 
+  });
+});
 
 // 404 Handler
 app.use((req, res) => {
