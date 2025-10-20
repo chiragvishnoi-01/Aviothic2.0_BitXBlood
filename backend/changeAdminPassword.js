@@ -19,12 +19,10 @@ const changeAdminPassword = async () => {
       email = args[0];
       newPassword = args[1];
     } else {
-      // Default values for interactive use
-      email = "admin@example.com";
-      newPassword = "admin123";
-      
+      // No default values - require explicit arguments
       console.log("Usage: node changeAdminPassword.js <email> <newPassword>");
-      console.log("Using default values:");
+      console.log("Error: Email and password must be provided as arguments");
+      process.exit(1);
     }
     
     console.log(`Changing password for user: ${email}`);
@@ -46,7 +44,8 @@ const changeAdminPassword = async () => {
     
     console.log("✅ Password changed successfully!");
     console.log(`Email: ${email}`);
-    console.log(`New Password: ${newPassword}`);
+    // Don't log the password for security reasons
+    console.log("Password has been updated securely.");
     
     process.exit(0);
   } catch (error) {
