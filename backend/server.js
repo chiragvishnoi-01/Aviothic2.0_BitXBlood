@@ -67,7 +67,7 @@ app.get('/health', (req, res) => {
 
 // Root Route
 app.get('/', (req, res) => {
-  res.json({ 
+  res.status(200).json({ 
     message: 'BloodLink API Server',
     version: '1.0.0',
     endpoints: {
