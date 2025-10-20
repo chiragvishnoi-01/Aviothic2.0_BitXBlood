@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "create-admin": "node createAdmin.js"
+    "create-admin": "node createAdmin.js",
+    "change-password": "node changeAdminPassword.js"
   },
   "dependencies": {
     "axios": "^1.12.2",
