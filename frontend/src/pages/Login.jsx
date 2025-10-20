@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "../api/axiosConfig";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Login = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,12 +31,11 @@ const Login = () => {
       const response = await axios.post("/auth/login", formData);
       console.log('Login response:', response.data);
       
-      // Store user data and token in localStorage
-      const userData = {
+      // Store user data and token in localStorage and update context
+      login({
         ...response.data.user,
         token: response.data.token
-      };
-      localStorage.setItem("user", JSON.stringify(userData));
+      });
       
       // Redirect based on role
       if (response.data.user.role === 'admin') {

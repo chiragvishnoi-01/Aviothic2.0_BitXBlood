@@ -13,6 +13,7 @@ import CreateCampaign from "./pages/CreateCampaign.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -64,16 +65,18 @@ const AnimatedRoutes = () => {
 
 const App = () => {
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow">
-          <AnimatedRoutes />
-        </main>
-        <Footer />
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <ScrollToTop />
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          <main className="flex-grow">
+            <AnimatedRoutes />
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 };
 

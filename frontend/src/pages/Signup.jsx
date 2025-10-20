@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "../api/axiosConfig";
 import { FaUser, FaEnvelope, FaLock, FaTint, FaCity, FaPhone, FaEye, FaEyeSlash } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const Signup = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
 
   const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
@@ -75,12 +77,11 @@ const Signup = () => {
 
       console.log('Registration response:', response.data);
       
-      // Store user data and token in localStorage
-      const userData = {
+      // Store user data and token in localStorage and update context
+      login({
         ...response.data.user,
         token: response.data.token
-      };
-      localStorage.setItem("user", JSON.stringify(userData));
+      });
       
       // Redirect to dashboard
       navigate("/dashboard");
