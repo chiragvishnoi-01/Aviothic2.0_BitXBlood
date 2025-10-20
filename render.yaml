@@ -13,6 +13,10 @@ services:
         value: production
       - key: PORT
         value: 5000
+      - key: MONGODB_URI
+        value: mongodb+srv://chirag562:ONlt2AkocdRY2jdu@aviothic01.e67ncgo.mongodb.net/?retryWrites=true&w=majority&appName=aviothic01
+      - key: JWT_SECRET
+        value: my_very_strong_and_secure_jwt_secret_key_12345
 
   # Frontend Static Site
   - type: web
