@@ -60,35 +60,8 @@ const corsOptions = {
 // Apply CORS middleware BEFORE other middleware
 app.use(cors(corsOptions));
 
-// Handle preflight requests explicitly
-app.options('*', (req, res) => {
-  res.header('Access-Control-Max-Age', '86400'); // 24 hours
-  res.sendStatus(204);
-});
-
-// Explicitly set CORS headers for all responses
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  const allowedOrigins = process.env.ALLOWED_ORIGINS 
-    ? process.env.ALLOWED_ORIGINS.split(',') 
-    : [
-        'http://localhost:5173',
-        'http://localhost:5001',
-        'http://127.0.0.1:5173',
-        'http://127.0.0.1:3000',
-        'https://aviothic2-0-bit-x-blood.vercel.app',
-        'https://aviothic2-0-bitxblood-frontend.vercel.app',
-        'https://aviothic2-0-bit-x-blood-854tbk5jj-chiragvishnoi-01s-projects.vercel.app'
-      ];
-  
-  if (origin && allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  next();
-});
+// Handle preflight requests explicitly - THIS MUST BE BEFORE OTHER ROUTES
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 

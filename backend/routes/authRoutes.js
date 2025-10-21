@@ -5,6 +5,15 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
+// Health check endpoint for auth routes
+router.get("/health", (req, res) => {
+  res.status(200).json({ 
+    status: 'OK', 
+    message: 'Auth routes are working!',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Register
 router.post("/register", async (req, res) => {
   try {
