@@ -130,7 +130,7 @@ app.get('/', (req, res) => {
   });
 });
 
-// API Routes
+// API Routes - MOVE THESE BEFORE THE FALLBACK ROUTE
 app.use("/api/auth", authRoutes);
 app.use("/api/donors", donorRoutes);
 app.use("/api/sos", sosRoutes);
@@ -138,15 +138,16 @@ app.use("/api/banks", bankRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/campaigns", campaignRoutes);
 
+// REMOVE THE FALLBACK ROUTE THAT WAS INTERFERING
 // Fallback route for Render
-app.get('/api/*', (req, res) => {
-  res.status(404).json({ 
-    error: 'API route not found',
-    path: req.path 
-  });
-});
+// app.get('/api/*', (req, res) => {
+//   res.status(404).json({ 
+//     error: 'API route not found',
+//     path: req.path 
+//   });
+// });
 
-// 404 Handler
+// 404 Handler - This should be the last route
 app.use((req, res) => {
   res.status(404).json({ 
     error: 'Route not found',
