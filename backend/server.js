@@ -28,8 +28,17 @@ const app = express();
 // Configure CORS properly for development and production
 const corsOptions = {
   origin: function (origin, callback) {
+    // Log all incoming requests for debugging
+    console.log('=== CORS DEBUG INFO ===');
+    console.log('Request Origin:', origin);
+    console.log('Request Method:', process.env.REQUEST_METHOD || 'Not set');
+    console.log('Request Headers:', process.env.REQUEST_HEADERS || 'Not set');
+    
     // Allow requests with no origin (like mobile apps, curl)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      console.log('No origin provided - allowing request');
+      return callback(null, true);
+    }
     
     // List of allowed origins (configured via environment variable or defaults)
     const allowedOrigins = process.env.ALLOWED_ORIGINS 
@@ -44,22 +53,31 @@ const corsOptions = {
           'https://aviothic2-0-bit-x-blood-854tbk5jj-chiragvishnoi-01s-projects.vercel.app'
         ];
     
+    // Clean up origins (remove whitespace)
+    const cleanAllowedOrigins = allowedOrigins.map(orig => orig.trim());
+    
     // Log the origin and allowed origins for debugging
     console.log('CORS Check - Request Origin:', origin);
-    console.log('CORS Check - Allowed Origins:', allowedOrigins);
+    console.log('CORS Check - Allowed Origins:', cleanAllowedOrigins);
+    console.log('CORS Check - Origin Index:', cleanAllowedOrigins.indexOf(origin));
     
     // Always allow requests from the same origin or if no origin is specified
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+    if (cleanAllowedOrigins.indexOf(origin) !== -1 || !origin) {
       console.log('CORS Check - Origin ALLOWED');
       callback(null, true);
     } else {
       console.log('CORS Check - Origin BLOCKED');
+      console.log('Full allowed origins list:', cleanAllowedOrigins);
       callback(new Error('Not allowed by CORS'));
     }
+    
+    console.log('=== END CORS DEBUG ===');
   },
   credentials: true,
   optionsSuccessStatus: 200,
-  exposedHeaders: ['Access-Control-Allow-Origin']
+  exposedHeaders: ['Access-Control-Allow-Origin'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
 };
 
 // Apply CORS middleware BEFORE other middleware
@@ -71,9 +89,18 @@ app.options('*', cors(corsOptions));
 app.use(express.json());
 
 // CORS Test Route
-app.get('/cors-test', (req, res) => {
+app.get('/cors-test', cors(corsOptions), (req, res) => {
   res.status(200).json({ 
     message: 'CORS test successful!',
+    origin: req.headers.origin,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// CORS Test Route for POST
+app.post('/cors-test', cors(corsOptions), (req, res) => {
+  res.status(200).json({ 
+    message: 'CORS POST test successful!',
     origin: req.headers.origin,
     timestamp: new Date().toISOString()
   });
