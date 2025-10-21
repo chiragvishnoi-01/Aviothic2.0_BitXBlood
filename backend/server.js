@@ -40,7 +40,8 @@ const corsOptions = {
           'http://127.0.0.1:5173',
           'http://127.0.0.1:3000',
           'https://aviothic2-0-bit-x-blood.vercel.app',
-          'https://aviothic2-0-bitxblood-frontend.vercel.app' // Added the actual Vercel deployment URL
+          'https://aviothic2-0-bitxblood-frontend.vercel.app',
+          'https://aviothic2-0-bit-x-blood-854tbk5jj-chiragvishnoi-01s-projects.vercel.app' // Added the specific Vercel deployment URL
         ];
     
     // Always allow requests from the same origin or if no origin is specified
