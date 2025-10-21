@@ -57,8 +57,14 @@ const corsOptions = {
   exposedHeaders: ['Access-Control-Allow-Origin']
 };
 
-// Apply CORS middleware
+// Apply CORS middleware BEFORE other middleware
 app.use(cors(corsOptions));
+
+// Handle preflight requests explicitly
+app.options('*', (req, res) => {
+  res.header('Access-Control-Max-Age', '86400'); // 24 hours
+  res.sendStatus(204);
+});
 
 // Explicitly set CORS headers for all responses
 app.use((req, res, next) => {

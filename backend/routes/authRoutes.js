@@ -90,15 +90,37 @@ router.post("/login", async (req, res) => {
 
     const { email, password } = req.body;
     
-    // Find user
-    const user = await User.findOne({ email });
+    console.log('Login attempt:', { email, password: password ? '[REDACTED]' : 'MISSING' });
+    
+    // Find user by email
+    console.log('Searching for user with email:', email);
+    let user = await User.findOne({ email });
+    
+    console.log('User lookup result:', user ? 'User found' : 'User not found');
     
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      // Try to find user by lowercase email as fallback
+      console.log('Fallback search for user with lowercase email:', email.toLowerCase());
+      const fallbackUser = await User.findOne({ email: email.toLowerCase() });
+      console.log('Fallback user lookup result:', fallbackUser ? 'User found' : 'User not found');
+      
+      if (!fallbackUser) {
+        // Try to find all users to see what's in the database
+        console.log('Performing diagnostic search for all users...');
+        const allUsers = await User.find({}, 'email name');
+        console.log('All users in database:', allUsers.map(u => ({ email: u.email, name: u.name })));
+        
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+      
+      // Use fallback user if found
+      user = fallbackUser;
     }
 
     // Check password
+    console.log('Checking password for user:', user.email);
     const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log('Password validation result:', isPasswordValid);
     
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid credentials" });

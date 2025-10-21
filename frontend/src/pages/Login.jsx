@@ -33,8 +33,11 @@ const Login = () => {
     try {
       console.log('Attempting login with data:', {
         email: formData.email,
-        password: formData.password
+        password: formData.password ? '[REDACTED]' : 'MISSING'
       });
+      
+      // Log the API base URL being used
+      console.log('API Base URL:', axios.defaults.baseURL);
       
       const response = await axios.post("/auth/login", {
         email: formData.email,
@@ -53,19 +56,24 @@ const Login = () => {
       if (response.data.user.role === 'admin') {
         navigate("/admin");
       } else {
+        // For regular users, go to home page, not donor page
         navigate("/");
       }
     } catch (err) {
       console.error('Login error:', err);
       if (err.response) {
         // Server responded with error status
+        console.error('Error response:', err.response);
         const errorMessage = err.response.data?.message || "Login failed. Please try again.";
         setError(errorMessage);
       } else if (err.request) {
         // Request made but no response received
+        console.error('Network Error Details:', err.request);
+        console.error('Request config:', err.config);
         setError("Network error. Please check your connection and try again.");
       } else {
         // Something else happened
+        console.error('Unexpected Error:', err.message);
         setError("Login failed. Please try again.");
       }
     } finally {

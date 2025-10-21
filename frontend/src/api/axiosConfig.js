@@ -12,6 +12,15 @@ const instance = axios.create({
 // Request interceptor - Add auth token if available
 instance.interceptors.request.use(
   (config) => {
+    // Log request details in development
+    if (import.meta.env.DEV) {
+      console.log(' Axios Request:', {
+        method: config.method?.toUpperCase(),
+        url: config.baseURL + config.url,
+        data: config.data
+      });
+    }
+    
     const user = localStorage.getItem('user');
     if (user) {
       try {
@@ -26,6 +35,7 @@ instance.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.error('Request Error:', error);
     return Promise.reject(error);
   }
 );
@@ -33,6 +43,14 @@ instance.interceptors.request.use(
 // Response interceptor - Handle errors globally
 instance.interceptors.response.use(
   (response) => {
+    // Log response details in development
+    if (import.meta.env.DEV) {
+      console.log(' Axios Response:', {
+        status: response.status,
+        url: response.config?.url,
+        data: response.data
+      });
+    }
     return response;
   },
   async (error) => {
@@ -46,6 +64,7 @@ instance.interceptors.response.use(
       switch (status) {
         case 401:
           // Unauthorized - clear user data and redirect to login
+          console.warn('Unauthorized access - clearing user session');
           localStorage.removeItem('user');
           if (window.location.pathname !== '/login') {
             window.location.href = '/login';
@@ -65,11 +84,16 @@ instance.interceptors.response.use(
           break;
           
         default:
-          console.error('API Error:', data.message || 'Unknown error');
+          console.error('API Error:', status, data.message || 'Unknown error');
       }
     } else if (error.request) {
       // Request made but no response received
       console.error('Network Error: No response from server');
+      console.error('Request details:', {
+        url: error.config?.baseURL + error.config?.url,
+        method: error.config?.method,
+        baseURL: error.config?.baseURL
+      });
       console.error('Please check if the backend is running at:', instance.defaults.baseURL);
     } else {
       // Something else happened
