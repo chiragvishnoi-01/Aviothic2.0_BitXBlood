@@ -41,7 +41,7 @@ const corsOptions = {
           'http://127.0.0.1:3000',
           'https://aviothic2-0-bit-x-blood.vercel.app',
           'https://aviothic2-0-bitxblood-frontend.vercel.app',
-          'https://aviothic2-0-bit-x-blood-854tbk5jj-chiragvishnoi-01s-projects.vercel.app' // Added the specific Vercel deployment URL
+          'https://aviothic2-0-bit-x-blood-854tbk5jj-chiragvishnoi-01s-projects.vercel.app'
         ];
     
     // Always allow requests from the same origin or if no origin is specified
@@ -53,11 +53,36 @@ const corsOptions = {
     }
   },
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  exposedHeaders: ['Access-Control-Allow-Origin']
 };
 
 // Apply CORS middleware
 app.use(cors(corsOptions));
+
+// Explicitly set CORS headers for all responses
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  const allowedOrigins = process.env.ALLOWED_ORIGINS 
+    ? process.env.ALLOWED_ORIGINS.split(',') 
+    : [
+        'http://localhost:5173',
+        'http://localhost:5001',
+        'http://127.0.0.1:5173',
+        'http://127.0.0.1:3000',
+        'https://aviothic2-0-bit-x-blood.vercel.app',
+        'https://aviothic2-0-bitxblood-frontend.vercel.app',
+        'https://aviothic2-0-bit-x-blood-854tbk5jj-chiragvishnoi-01s-projects.vercel.app'
+      ];
+  
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  next();
+});
 
 app.use(express.json());
 
