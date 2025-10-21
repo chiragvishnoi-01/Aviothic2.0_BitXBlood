@@ -44,11 +44,16 @@ const corsOptions = {
           'https://aviothic2-0-bit-x-blood-854tbk5jj-chiragvishnoi-01s-projects.vercel.app'
         ];
     
+    // Log the origin and allowed origins for debugging
+    console.log('CORS Check - Request Origin:', origin);
+    console.log('CORS Check - Allowed Origins:', allowedOrigins);
+    
     // Always allow requests from the same origin or if no origin is specified
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      console.log('CORS Check - Origin ALLOWED');
       callback(null, true);
     } else {
-      console.log('CORS blocked origin:', origin);
+      console.log('CORS Check - Origin BLOCKED');
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -64,6 +69,15 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
 app.use(express.json());
+
+// CORS Test Route
+app.get('/cors-test', (req, res) => {
+  res.status(200).json({ 
+    message: 'CORS test successful!',
+    origin: req.headers.origin,
+    timestamp: new Date().toISOString()
+  });
+});
 
 // Test Route
 app.get('/test', (req, res) => {
