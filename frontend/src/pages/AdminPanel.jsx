@@ -159,11 +159,24 @@ const AdminPanel = () => {
     donor.bloodGroup?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Filter out test admin users from the users list
+  const filteredUsers = users.filter(user => {
+    const testAdminEmails = [
+      "testadmin@gmail.com",
+      "deployed-admin@gmail.com",
+      "test@example.com"
+    ];
+    return !testAdminEmails.includes(user.email);
+  }).filter(user =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const stats = {
-    totalUsers: users.length,
-    totalDonors: donors.length,
-    activeDonors: donors.filter(d => d.medicalRecords?.length > 0).length,
-    eligibleDonors: donors.filter(d => 
+    totalUsers: filteredUsers.length,
+    totalDonors: filteredDonors.length,
+    activeDonors: filteredDonors.filter(d => d.medicalRecords?.length > 0).length,
+    eligibleDonors: filteredDonors.filter(d => 
       d.medicalRecords?.length > 0 && 
       d.medicalRecords[d.medicalRecords.length - 1]?.eligibleForDonation
     ).length
@@ -423,10 +436,7 @@ const AdminPanel = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {users.filter(user =>
-                    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    user.email.toLowerCase().includes(searchTerm.toLowerCase())
-                  ).map((user) => (
+                  {filteredUsers.map((user) => (
                     <tr key={user._id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-6 py-4">
                         <div>
