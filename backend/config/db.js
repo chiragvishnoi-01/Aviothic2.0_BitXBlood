@@ -20,6 +20,14 @@ export const connectDB = async () => {
   } catch (error) {
     console.error(`Error: ${error.message}`);
     console.error('Full error:', error);
-    process.exit(1);
+    
+    // In development, we can continue with mock data
+    if (process.env.NODE_ENV === 'development') {
+      console.log('⚠️  MongoDB connection failed. Continuing with mock data for development.');
+      // We'll implement mock data in the routes
+    } else {
+      // In production, we should exit
+      process.exit(1);
+    }
   }
 };

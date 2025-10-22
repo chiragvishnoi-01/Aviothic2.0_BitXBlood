@@ -12,14 +12,6 @@ console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'Loaded' : 'Not found');
 console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Loaded' : 'Not found');
 console.log('PORT:', process.env.PORT || 5001);
 
-// Import routes AFTER environment variables are loaded
-import donorRoutes from "./routes/donorRoutes.js";
-import sosRoutes from "./routes/sosRoutes.js";
-import bankRoutes from "./routes/bankRoutes.js";
-import leaderboardRoutes from "./routes/leaderboardRoutes.js";
-import campaignRoutes from "./routes/campaignRoutes.js";
-import authRoutes, { authenticateToken } from "./routes/authRoutes.js";
-
 // Connect to Database
 connectDB();
 
@@ -61,8 +53,26 @@ const corsOptions = {
     console.log('CORS Check - Allowed Origins:', cleanAllowedOrigins);
     console.log('CORS Check - Origin Index:', cleanAllowedOrigins.indexOf(origin));
     
-    // Always allow requests from the same origin or if no origin is specified
-    if (cleanAllowedOrigins.indexOf(origin) !== -1 || !origin) {
+    // Check if origin is in allowed list
+    const isAllowedOrigin = cleanAllowedOrigins.includes(origin);
+    
+    // Also allow if it's a subdomain of an allowed origin
+    let isSubdomain = false;
+    for (const allowedOrigin of cleanAllowedOrigins) {
+      if (allowedOrigin.startsWith('https://') && origin.startsWith('https://')) {
+        const allowedDomain = allowedOrigin.replace('https://', '');
+        const requestDomain = origin.replace('https://', '');
+        
+        // Check if request domain ends with allowed domain (subdomain check)
+        if (requestDomain.endsWith(allowedDomain)) {
+          isSubdomain = true;
+          break;
+        }
+      }
+    }
+    
+    // Allow if origin is in allowed list or is a subdomain of an allowed origin
+    if (isAllowedOrigin || isSubdomain) {
       console.log('CORS Check - Origin ALLOWED');
       callback(null, true);
     } else {
@@ -117,10 +127,6 @@ app.get('/test', (req, res) => {
 // Health Check Route - Added for deployment verification
 app.get('/health', async (req, res) => {
   try {
-    // Try to find the specific user
-    const User = (await import('./models/User.js')).default;
-    const user = await User.findById('68f6786c92b16879c173dac7');
-    
     res.status(200).json({ 
       status: 'OK', 
       message: 'BloodLink Backend is running!',
@@ -130,11 +136,6 @@ app.get('/health', async (req, res) => {
         MONGODB_URI: process.env.MONGODB_URI ? 'Loaded' : 'Not found',
         JWT_SECRET: process.env.JWT_SECRET ? 'Loaded' : 'Not found',
         PORT: process.env.PORT || 5001
-      },
-      userTest: {
-        userFound: !!user,
-        userEmail: user ? user.email : null,
-        userName: user ? user.name : null
       }
     });
   } catch (error) {
@@ -147,9 +148,6 @@ app.get('/health', async (req, res) => {
         MONGODB_URI: process.env.MONGODB_URI ? 'Loaded' : 'Not found',
         JWT_SECRET: process.env.JWT_SECRET ? 'Loaded' : 'Not found',
         PORT: process.env.PORT || 5001
-      },
-      userTest: {
-        error: error.message
       }
     });
   }
@@ -171,6 +169,15 @@ app.get('/', (req, res) => {
   });
 });
 
+// Import routes AFTER environment variables are loaded
+// We'll conditionally load routes based on database connection
+import donorRoutes from "./routes/donorRoutes.js";
+import sosRoutes from "./routes/sosRoutes.js";
+import bankRoutes from "./routes/bankRoutes.js";
+import leaderboardRoutes from "./routes/leaderboardRoutes.js";
+import campaignRoutes from "./routes/campaignRoutes.js";
+import authRoutes, { authenticateToken } from "./routes/authRoutes.js";
+
 // API Routes - MOVE THESE BEFORE THE FALLBACK ROUTE
 app.use("/api/auth", authRoutes);
 app.use("/api/donors", donorRoutes);
@@ -178,15 +185,6 @@ app.use("/api/sos", sosRoutes);
 app.use("/api/banks", bankRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/campaigns", campaignRoutes);
-
-// REMOVE THE FALLBACK ROUTE THAT WAS INTERFERING
-// Fallback route for Render
-// app.get('/api/*', (req, res) => {
-//   res.status(404).json({ 
-//     error: 'API route not found',
-//     path: req.path 
-//   });
-// });
 
 // 404 Handler - This should be the last route
 app.use((req, res) => {
