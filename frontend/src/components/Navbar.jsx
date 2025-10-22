@@ -93,12 +93,6 @@ const Navbar = () => {
                 </div>
                 <span className="font-bold text-gray-800 text-sm hidden md:inline">{user.name}</span>
               </Link>
-              <button
-                onClick={handleLogout}
-                className="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2.5 rounded-lg font-bold text-sm transition-all duration-200 flex items-center gap-2 shadow-md"
-              >
-                <FaSignOutAlt /> <span className="hidden md:inline">Logout</span>
-              </button>
             </li>
           ) : (
             <li className="ml-4 flex items-center gap-3">

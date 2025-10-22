@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "../api/axiosConfig";
 import { useAuth } from "../context/AuthContext.jsx";
-import { FaUser, FaEnvelope, FaPhone, FaCity, FaTint, FaEdit, FaSave, FaTimes } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaPhone, FaCity, FaTint, FaEdit, FaSave, FaTimes, FaSignOutAlt } from "react-icons/fa";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -457,6 +457,19 @@ const Profile = () => {
                   </div>
                 )}
               </form>
+              
+              {/* Logout Button */}
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <button
+                  onClick={() => {
+                    logout();
+                    navigate('/');
+                  }}
+                  className="w-full bg-gray-800 hover:bg-gray-900 text-white py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-md"
+                >
+                  <FaSignOutAlt /> Logout
+                </button>
+              </div>
             </div>
           </motion.div>
         </div>

@@ -12,8 +12,8 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [showMedicalModal, setShowMedicalModal] = useState(false);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
   const [selectedDonor, setSelectedDonor] = useState(null);
   const [medicalForm, setMedicalForm] = useState({
     weight: "",
@@ -62,6 +62,30 @@ const AdminPanel = () => {
     setPasswordForm({ newPassword: "", confirmPassword: "" });
     setPasswordError("");
     setPasswordSuccess("");
+  };
+
+  const handleDeleteUser = (user) => {
+    setUserToDelete(user);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteUser = async () => {
+    try {
+      // Call backend endpoint to delete user
+      await axios.delete(`/auth/${userToDelete._id}`);
+      
+      // Refresh the user list
+      fetchData();
+      
+      // Close the modal
+      setShowDeleteModal(false);
+      
+      // Show success message
+      alert(`User ${userToDelete.name} deleted successfully!`);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Failed to delete user: " + (error.response?.data?.message || "Unknown error"));
+    }
   };
 
   const handlePasswordSubmit = async (e) => {
@@ -402,6 +426,13 @@ const AdminPanel = () => {
                         >
                           <FaKey />
                         </button>
+                        <button
+                          onClick={() => handleDeleteUser(user)}
+                          className="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors"
+                          title="Delete User"
+                        >
+                          <FaTrash />
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -578,6 +609,35 @@ const AdminPanel = () => {
                 </button>
               </div>
             </form>
+          </motion.div>
+        </div>
+      )}
+      
+      {/* Delete User Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+          >
+            <h3 className="text-2xl font-bold mb-4 text-gray-800">Confirm Delete User</h3>
+            <p className="text-gray-600 mb-4">Are you sure you want to delete user <span className="font-bold">{userToDelete?.name}</span>? This action cannot be undone.</p>
+            
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-xl font-bold transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDeleteUser}
+                className="flex-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white py-3 rounded-xl font-bold transition-all shadow-lg"
+              >
+                Delete User
+              </button>
+            </div>
           </motion.div>
         </div>
       )}
