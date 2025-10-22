@@ -12,7 +12,9 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [showMedicalModal, setShowMedicalModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [userToDelete, setUserToDelete] = useState(null);
   const [selectedDonor, setSelectedDonor] = useState(null);
   const [medicalForm, setMedicalForm] = useState({
@@ -114,6 +116,40 @@ const AdminPanel = () => {
       }, 2000);
     } catch (error) {
       setPasswordError(error.response?.data?.message || "Failed to change password");
+    }
+  };
+
+  const handleAddMedicalRecord = async (e) => {
+    e.preventDefault();
+    
+    try {
+      // Call backend endpoint to add medical record
+      await axios.post(`/auth/medical-record/${selectedDonor._id}`, {
+        ...medicalForm,
+        lastDonationDate: new Date()
+      });
+      
+      // Refresh the data
+      fetchData();
+      
+      // Close the modal
+      setShowMedicalModal(false);
+      
+      // Reset form
+      setMedicalForm({
+        weight: "",
+        bloodPressure: "",
+        hemoglobin: "",
+        eligibleForDonation: true,
+        medicalNotes: "",
+        checkupBy: ""
+      });
+      
+      // Show success message
+      alert(`Medical record added for ${selectedDonor.name} successfully!`);
+    } catch (error) {
+      console.error("Error adding medical record:", error);
+      alert("Failed to add medical record: " + (error.response?.data?.message || "Unknown error"));
     }
   };
 
