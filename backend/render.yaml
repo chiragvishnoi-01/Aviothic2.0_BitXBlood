@@ -11,9 +11,5 @@ services:
         value: production
       - key: PORT
         value: 5000
-      - key: MONGODB_URI
-        value: mongodb+srv://chirag562:Z07YXAFlztRCfbK6@aviothic01.e67ncgo.mongodb.net/blood-donation?retryWrites=true&w=majority
-      - key: JWT_SECRET
-        value: bloodlink_jwt_secret_2025
       - key: ALLOWED_ORIGINS
         value: http://localhost:5173,http://127.0.0.1:5173,https://aviothic2-0-bit-x-blood.vercel.app,https://aviothic2-0-bit-x-blood-854tbk5jj-chiragvishnoi-01s-projects.vercel.app
