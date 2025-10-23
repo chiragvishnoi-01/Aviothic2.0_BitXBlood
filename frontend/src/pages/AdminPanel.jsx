@@ -72,7 +72,7 @@ const AdminPanel = () => {
       console.log("Fetching user and donor data...");
       const [usersRes, donorsRes] = await Promise.all([
         axios.get("/auth/all"),
-        axios.get("/auth/donors")
+        axios.get("/auth/donors-public")
       ]);
       console.log("Users data:", usersRes.data);
       console.log("Donors data:", donorsRes.data);

@@ -65,11 +65,13 @@ instance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
+    console.log("Axios error:", error);
     
     // Handle different error scenarios
     if (error.response) {
       // Server responded with error status
       const { status, data } = error.response;
+      console.log("Error response:", { status, data });
       
       switch (status) {
         case 401:
@@ -83,6 +85,11 @@ instance.interceptors.response.use(
           
         case 403:
           console.error('Access forbidden:', data.message);
+          // Also clear user data for 403 errors
+          localStorage.removeItem('user');
+          if (window.location.pathname !== '/login') {
+            window.location.href = '/login';
+          }
           break;
           
         case 404:
