@@ -254,6 +254,7 @@ const Footer = () => {
                 <div>
                   <div className="font-semibold text-xs text-gray-500">Email</div>
                   <div>support@bloodlink.com</div>
+                  <div>chiragvishnoi96@gmail.com</div>
                 </div>
               </motion.li>
               <motion.li 
@@ -266,6 +267,7 @@ const Footer = () => {
                 <div>
                   <div className="font-semibold text-xs text-gray-500">Hotline</div>
                   <div>+1 (800) DONATE-NOW</div>
+                  <div>+91 7393019961</div>
                 </div>
               </motion.li>
               <motion.li 
