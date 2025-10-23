@@ -45,16 +45,35 @@ const AdminPanel = () => {
 
   const fetchData = async () => {
     try {
+      console.log("Fetching user and donor data...");
       const [usersRes, donorsRes] = await Promise.all([
         axios.get("/auth/all"),
         axios.get("/auth/donors")
       ]);
+      console.log("Users data:", usersRes.data);
+      console.log("Donors data:", donorsRes.data);
       setUsers(usersRes.data);
       setDonors(donorsRes.data);
     } catch (error) {
       console.error("Error fetching data:", error);
-      // Show error message to user
-      alert("Failed to fetch data: " + (error.response?.data?.message || error.message || "Unknown error"));
+      // Show detailed error message to user
+      let errorMessage = "Failed to fetch data. ";
+      
+      if (error.response) {
+        // Server responded with error status
+        errorMessage += `Status: ${error.response.status}. `;
+        if (error.response.data && error.response.data.message) {
+          errorMessage += `Message: ${error.response.data.message}. `;
+        }
+      } else if (error.request) {
+        // Request made but no response received
+        errorMessage += "No response from server. Please check if the backend is running. ";
+      } else {
+        // Something else happened
+        errorMessage += `Error: ${error.message}. `;
+      }
+      
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }

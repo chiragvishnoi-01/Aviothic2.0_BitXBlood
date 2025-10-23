@@ -17,7 +17,8 @@ instance.interceptors.request.use(
       console.log(' Axios Request:', {
         method: config.method?.toUpperCase(),
         url: config.baseURL + config.url,
-        data: config.data
+        data: config.data,
+        headers: config.headers
       });
     }
     
@@ -27,10 +28,14 @@ instance.interceptors.request.use(
         const userData = JSON.parse(user);
         if (userData.token) {
           config.headers.Authorization = `Bearer ${userData.token}`;
+        } else {
+          console.warn('User data found but no token available');
         }
       } catch (error) {
         console.error('Error parsing user data:', error);
       }
+    } else {
+      console.warn('No user data found in localStorage');
     }
     return config;
   },
