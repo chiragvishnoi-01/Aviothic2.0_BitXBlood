@@ -10,8 +10,8 @@ const Footer = () => {
     { icon: FaFacebook, href: "#", label: "Facebook", color: "hover:bg-blue-600" },
     { icon: FaInstagram, href: "#", label: "Instagram", color: "hover:bg-pink-600" },
     { icon: FaTwitter, href: "#", label: "Twitter", color: "hover:bg-sky-500" },
-    { icon: FaGithub, href: "#", label: "GitHub", color: "hover:bg-gray-700" },
-    { icon: FaLinkedin, href: "#", label: "LinkedIn", color: "hover:bg-blue-700" },
+    { icon: FaGithub, href: "https://github.com/chiragvishnoi-01", label: "GitHub", color: "hover:bg-gray-700" },
+    { icon: FaLinkedin, href: "https://www.linkedin.com/in/chiragvishnoi01/", label: "LinkedIn", color: "hover:bg-blue-700" },
   ];
 
   const stats = [
