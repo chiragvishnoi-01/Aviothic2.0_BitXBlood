@@ -53,6 +53,8 @@ const AdminPanel = () => {
       setDonors(donorsRes.data);
     } catch (error) {
       console.error("Error fetching data:", error);
+      // Show error message to user
+      alert("Failed to fetch data: " + (error.response?.data?.message || error.message || "Unknown error"));
     } finally {
       setLoading(false);
     }
