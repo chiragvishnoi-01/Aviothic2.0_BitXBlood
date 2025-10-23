@@ -1,73 +1,23 @@
 import express from "express";
+import Campaign from "../models/Campaign.js";
 
 const router = express.Router();
 
-// In-memory campaigns storage (for demo purposes)
-let campaigns = [
-  {
-    _id: "1",
-    title: "New York City Blood Drive 2025",
-    description: "Join our mega blood donation drive to support hospitals across New York. Make an impact and save lives today!",
-    date: new Date('2025-11-15'),
-    location: "City Hospital & Research Centre",
-    organizer: "American Red Cross",
-    email: "redcross.ny@example.com",
-    phone: "+1 555 123 4567",
-    city: "New York",
-    targetDonors: 150,
-    registeredDonors: 68,
-    status: "upcoming",
-    bloodGroupsNeeded: ["O+", "O-", "A+", "B+"],
-    createdAt: new Date()
-  },
-  {
-    _id: "2",
-    title: "UCLA Blood Donation Camp",
-    description: "Students and faculty unite to donate blood and raise awareness about the importance of blood donation in our community.",
-    date: new Date('2025-11-20'),
-    location: "UCLA Campus, Main Auditorium",
-    organizer: "UCLA Student Council",
-    email: "students@ucla.edu",
-    phone: "+1 555 234 5678",
-    city: "Los Angeles",
-    targetDonors: 100,
-    registeredDonors: 42,
-    status: "upcoming",
-    bloodGroupsNeeded: ["All"],
-    createdAt: new Date()
-  },
-  {
-    _id: "3",
-    title: "Community Blood Drive",
-    description: "Join us for our community blood donation event. Help save lives and make a difference in our community.",
-    date: new Date('2025-11-25'),
-    location: "Community Hall, Downtown Chicago",
-    organizer: "Chicago Red Cross",
-    email: "info@redcross-chicago.org",
-    phone: "+1 555 345 6789",
-    city: "Chicago",
-    targetDonors: 200,
-    registeredDonors: 125,
-    status: "active",
-    bloodGroupsNeeded: ["O-", "AB+", "AB-"],
-    createdAt: new Date()
-  }
-];
-
 // GET /api/campaigns → list all campaigns
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const { status, city } = req.query;
-    let filteredCampaigns = campaigns;
-
+    let query = {};
+    
     if (status) {
-      filteredCampaigns = filteredCampaigns.filter(c => c.status === status);
+      query.status = status;
     }
     if (city) {
-      filteredCampaigns = filteredCampaigns.filter(c => c.city.toLowerCase().includes(city.toLowerCase()));
+      query.city = new RegExp(city, 'i'); // Case insensitive search
     }
 
-    res.json(filteredCampaigns);
+    const campaigns = await Campaign.find(query).sort({ createdAt: -1 });
+    res.json(campaigns);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -75,9 +25,9 @@ router.get("/", (req, res) => {
 });
 
 // GET /api/campaigns/:id → get single campaign
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const campaign = campaigns.find(c => c._id === req.params.id);
+    const campaign = await Campaign.findById(req.params.id);
     if (!campaign) return res.status(404).json({ message: "Campaign not found" });
     res.json(campaign);
   } catch (error) {
@@ -87,7 +37,7 @@ router.get("/:id", (req, res) => {
 });
 
 // POST /api/campaigns → create new campaign
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { 
       title, 
@@ -108,8 +58,7 @@ router.post("/", (req, res) => {
       });
     }
 
-    const newCampaign = {
-      _id: (campaigns.length + 1).toString(),
+    const newCampaign = new Campaign({
       title,
       description,
       date: new Date(date),
@@ -121,14 +70,13 @@ router.post("/", (req, res) => {
       targetDonors: targetDonors || 50,
       registeredDonors: 0,
       status: "upcoming",
-      bloodGroupsNeeded: bloodGroupsNeeded || ["All"],
-      createdAt: new Date()
-    };
+      bloodGroupsNeeded: bloodGroupsNeeded || ["All"]
+    });
 
-    campaigns.push(newCampaign);
+    const savedCampaign = await newCampaign.save();
     res.status(201).json({ 
       message: "Campaign created successfully!", 
-      campaign: newCampaign 
+      campaign: savedCampaign 
     });
   } catch (error) {
     console.error(error);
@@ -137,22 +85,21 @@ router.post("/", (req, res) => {
 });
 
 // PUT /api/campaigns/:id → update campaign
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    const campaignIndex = campaigns.findIndex(c => c._id === req.params.id);
-    if (campaignIndex === -1) {
+    const campaign = await Campaign.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    
+    if (!campaign) {
       return res.status(404).json({ message: "Campaign not found" });
     }
 
-    campaigns[campaignIndex] = {
-      ...campaigns[campaignIndex],
-      ...req.body,
-      _id: req.params.id // Preserve the ID
-    };
-
     res.json({ 
       message: "Campaign updated successfully", 
-      campaign: campaigns[campaignIndex] 
+      campaign 
     });
   } catch (error) {
     console.error(error);
@@ -161,14 +108,13 @@ router.put("/:id", (req, res) => {
 });
 
 // DELETE /api/campaigns/:id → delete campaign
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    const campaignIndex = campaigns.findIndex(c => c._id === req.params.id);
-    if (campaignIndex === -1) {
+    const campaign = await Campaign.findByIdAndDelete(req.params.id);
+    if (!campaign) {
       return res.status(404).json({ message: "Campaign not found" });
     }
 
-    campaigns.splice(campaignIndex, 1);
     res.json({ message: "Campaign deleted successfully" });
   } catch (error) {
     console.error(error);
