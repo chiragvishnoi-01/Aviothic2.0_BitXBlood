@@ -34,13 +34,37 @@ const AdminPanel = () => {
 
   useEffect(() => {
     // Check if user is admin
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (user.role !== 'admin') {
+    const userString = localStorage.getItem("user");
+    console.log("User data from localStorage:", userString);
+    
+    if (!userString) {
+      console.log("No user data found in localStorage");
       navigate("/login");
       return;
     }
-
-    fetchData();
+    
+    try {
+      const user = JSON.parse(userString);
+      console.log("Parsed user object:", user);
+      
+      if (user.role !== 'admin') {
+        console.log("User is not admin, redirecting to login");
+        navigate("/login");
+        return;
+      }
+      
+      if (!user.token) {
+        console.log("No token found in user data");
+        navigate("/login");
+        return;
+      }
+      
+      console.log("User is admin, proceeding to fetch data");
+      fetchData();
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      navigate("/login");
+    }
   }, [navigate]);
 
   const fetchData = async () => {

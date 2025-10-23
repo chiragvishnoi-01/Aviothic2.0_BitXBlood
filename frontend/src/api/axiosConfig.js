@@ -22,12 +22,17 @@ instance.interceptors.request.use(
       });
     }
     
-    const user = localStorage.getItem('user');
-    if (user) {
+    const userString = localStorage.getItem('user');
+    console.log("User string from localStorage:", userString);
+    
+    if (userString) {
       try {
-        const userData = JSON.parse(user);
+        const userData = JSON.parse(userString);
+        console.log("Parsed user data:", userData);
+        
         if (userData.token) {
           config.headers.Authorization = `Bearer ${userData.token}`;
+          console.log("Authorization header set:", config.headers.Authorization);
         } else {
           console.warn('User data found but no token available');
         }
