@@ -1,5 +1,11 @@
 # BloodLink - Blood Donation Platform
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub issues](https://img.shields.io/github/issues/chiragvishnoi-01/Aviothic2.0_BitXBlood)](https://github.com/chiragvishnoi-01/Aviothic2.0_BitXBlood/issues)
+[![GitHub stars](https://img.shields.io/github/stars/chiragvishnoi-01/Aviothic2.0_BitXBlood)](https://github.com/chiragvishnoi-01/Aviothic2.0_BitXBlood/stargazers)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/chiragvishnoi-01/Aviothic2.0_BitXBlood)](https://github.com/chiragvishnoi-01/Aviothic2.0_BitXBlood/pulls)
+[![Contributors](https://img.shields.io/github/contributors/chiragvishnoi-01/Aviothic2.0_BitXBlood)](https://github.com/chiragvishnoi-01/Aviothic2.0_BitXBlood/graphs/contributors)
+
 A comprehensive blood donation platform built with the MERN stack (MongoDB, Express.js, React, Node.js). BloodLink connects blood donors with blood banks and hospitals, facilitating life-saving blood donations through an efficient and user-friendly platform.
 
 ![BloodLink Banner](frontend/src/assets/banner.png) <!-- Add your banner image path here -->
@@ -23,6 +29,7 @@ For detailed information about the project, please refer to the following docume
 - [Backend README](backend/README.md) - Backend-specific information
 - [Deployment Guide](DEPLOYMENT_GUIDE_VERCEL_RENDER.md) - Instructions for deploying the application
 - [Security Policy](SECURITY.md) - Security practices and vulnerability reporting
+- [Changelog](CHANGELOG.md) - Version history and changes
 
 ## 🚀 Getting Started
 
