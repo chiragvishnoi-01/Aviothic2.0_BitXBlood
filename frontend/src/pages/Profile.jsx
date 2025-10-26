@@ -7,7 +7,7 @@ import { FaUser, FaEnvelope, FaPhone, FaCity, FaTint, FaEdit, FaSave, FaTimes, F
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { user, login } = useAuth();
+  const { user, login, logout } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: user?.name || "",
