@@ -91,10 +91,10 @@ const Chatbot = () => {
 
   return (
     <>
-      {/* Floating Chat Button - Positioned on the left down side as requested */}
+      {/* Floating Chat Button - Positioned on the right down side */}
       <motion.button
         onClick={toggleChat}
-        className="fixed bottom-6 left-6 bg-gradient-to-r from-red-600 to-rose-600 text-white p-4 rounded-full shadow-2xl z-50 hover:from-red-700 hover:to-rose-700 transition-all duration-300"
+        className="fixed bottom-6 right-6 bg-gradient-to-r from-red-600 to-rose-600 text-white p-4 rounded-full shadow-2xl z-50 hover:from-red-700 hover:to-rose-700 transition-all duration-300"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         initial={{ opacity: 0, y: 20 }}
@@ -104,11 +104,11 @@ const Chatbot = () => {
         <FaRobot className="text-2xl" />
       </motion.button>
 
-      {/* Chat Window - Positioned on the left down side */}
+      {/* Chat Window - Positioned on the right down side */}
       <AnimatePresence>
         {isOpen && !isMinimized && (
           <motion.div
-            className="fixed bottom-24 left-6 w-full max-w-md h-[500px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden glassmorphism-effect"
+            className="fixed bottom-24 right-6 w-full max-w-md h-[500px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden glassmorphism-effect"
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -232,7 +232,7 @@ const Chatbot = () => {
       <AnimatePresence>
         {isOpen && isMinimized && (
           <motion.div
-            className="fixed bottom-24 left-6 w-64 bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden"
+            className="fixed bottom-24 right-6 w-64 bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden"
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
