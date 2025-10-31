@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaRobot, FaTimes, FaPaperPlane, FaUser, FaExpand, FaCompress } from "react-icons/fa";
+import { FaRobot, FaTimes, FaPaperPlane, FaUser, FaExpand, FaCompress, FaInfoCircle } from "react-icons/fa";
 import axios from "../api/axiosConfig";
 import { useAuth } from "../context/AuthContext.jsx";
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -19,6 +20,7 @@ const Chatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const { user } = useAuth();
+  const welcomeTimeoutRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -27,6 +29,19 @@ const Chatbot = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    // Show welcome message for 5 seconds when component mounts
+    welcomeTimeoutRef.current = setTimeout(() => {
+      setShowWelcome(false);
+    }, 5000);
+    
+    return () => {
+      if (welcomeTimeoutRef.current) {
+        clearTimeout(welcomeTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const sendMessage = async () => {
     if (!inputValue.trim() || isLoading) return;
@@ -82,11 +97,23 @@ const Chatbot = () => {
     setIsOpen(!isOpen);
     if (!isOpen) {
       setIsMinimized(false);
+      // Hide welcome message when chat is opened
+      setShowWelcome(false);
+      if (welcomeTimeoutRef.current) {
+        clearTimeout(welcomeTimeoutRef.current);
+      }
     }
   };
 
   const toggleMinimize = () => {
     setIsMinimized(!isMinimized);
+  };
+
+  const closeWelcome = () => {
+    setShowWelcome(false);
+    if (welcomeTimeoutRef.current) {
+      clearTimeout(welcomeTimeoutRef.current);
+    }
   };
 
   return (
@@ -103,6 +130,43 @@ const Chatbot = () => {
       >
         <FaRobot className="text-2xl" />
       </motion.button>
+
+      {/* Welcome Popup Message */}
+      <AnimatePresence>
+        {showWelcome && !isOpen && (
+          <motion.div
+            className="fixed bottom-24 right-6 w-64 bg-white rounded-xl shadow-2xl z-40 p-4 border border-gray-200"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex justify-between items-start">
+              <div className="flex items-center gap-2">
+                <FaInfoCircle className="text-blue-500" />
+                <span className="font-semibold text-gray-800">BloodLink AI Assistant</span>
+              </div>
+              <button 
+                onClick={closeWelcome}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <FaTimes />
+              </button>
+            </div>
+            <p className="mt-2 text-sm text-gray-600">
+              Ask me anything about blood donation, donors, or the platform! I'm here to help. 💬
+            </p>
+            <div className="mt-2 w-full bg-gray-200 rounded-full h-1">
+              <motion.div 
+                className="bg-blue-500 h-1 rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 5 }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Chat Window - Positioned on the right down side */}
       <AnimatePresence>
