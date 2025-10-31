@@ -40,7 +40,7 @@ export const getAIResponse = async (message, userId = null) => {
       try {
         const user = await User.findById(userId).select('name bloodGroup city isDonor');
         if (user) {
-          userInfo = `User context: ${user.name}, blood group: ${user.bloodGroup || 'not specified'}, location: ${user.city || 'not specified'}, registered donor: ${user.isDonor ? 'yes' : 'no'}. `;
+          userInfo = `User context: ${user.name}, blood group: ${user.bloodGroup || 'not specified'}, location: ${user.city || 'not specified'}, registered donor: ${user.isDonor ? 'yes' : 'no' }. `;
         }
       } catch (error) {
         console.error("Error fetching user info:", error);
@@ -89,8 +89,13 @@ const getFallbackResponse = (message) => {
     return "Here's blood group compatibility information:\n\nO- (Universal Donor) can donate to everyone\nAB+ (Universal Receiver) can receive from everyone\n\nOther groups have specific compatibility rules. Would you like to know about a specific blood group?";
   }
   
+  // Why donate blood
+  if (lowerMessage.includes("why") && (lowerMessage.includes("donate") || lowerMessage.includes("donation"))) {
+    return "Blood donation is a vital act of service that helps save lives in our community. Here's why it's so important:\n\n🏥 Medical Necessity\n• Emergency situations: Accident victims often need immediate blood transfusions\n• Surgical procedures: Many operations require blood products\n• Chronic illnesses: Patients with conditions like sickle cell anemia need regular transfusions\n\n🤝 Community Impact\n• Supply maintenance: Regular donations ensure hospitals have adequate blood supplies\n• Universal help: Anyone can need blood regardless of age or background\n\n💝 Personal Benefits\n• Health screening: Donors receive free health checks\n• Reduced disease risk: Studies suggest regular donation may lower heart disease risk\n• Emotional satisfaction: Helping others provides a sense of purpose\n\n🩸 Blood Facts\n• One donation can save up to three lives\n• You can donate blood every 56 days\n• Only 3% of eligible people donate blood annually";
+  }
+  
   // Donation process
-  if (lowerMessage.includes("donate") || lowerMessage.includes("donation")) {
+  if (lowerMessage.includes("how") && (lowerMessage.includes("donate") || lowerMessage.includes("donation"))) {
     return "The blood donation process:\n1. Registration with ID\n2. Health screening\n3. Blood collection (8-12 minutes)\n4. Refreshments and rest\n\nThe entire process takes about 30-45 minutes. You must be at least 17 years old and weigh at least 110 lbs.";
   }
   

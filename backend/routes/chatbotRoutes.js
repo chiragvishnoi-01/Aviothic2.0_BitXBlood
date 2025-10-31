@@ -5,7 +5,7 @@ import { authenticateToken } from "./authRoutes.js";
 const router = express.Router();
 
 // Chatbot endpoint
-router.post("/message", authenticateToken, async (req, res) => {
+router.post("/message", async (req, res) => {
   try {
     const { message } = req.body;
     
@@ -27,7 +27,7 @@ router.post("/message", authenticateToken, async (req, res) => {
     }
     
     // Get AI response
-    const response = await getAIResponse(message, req.user.userId);
+    const response = await getAIResponse(message, null);
     
     res.json({ 
       response,
