@@ -111,6 +111,10 @@
     @apply bg-white/70 backdrop-blur-lg border border-white/20;
   }
 
+  .glassmorphism-effect {
+    @apply bg-white/80 backdrop-blur-xl border border-white/30 shadow-2xl;
+  }
+
   /* Input Styles */
   input:focus, textarea:focus, select:focus {
     @apply ring-2 ring-red-400 border-red-400 outline-none;

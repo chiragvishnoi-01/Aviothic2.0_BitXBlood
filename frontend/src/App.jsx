@@ -15,6 +15,7 @@ import Signup from "./pages/Signup.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
 import Profile from "./pages/Profile.jsx";
+import Chatbot from "./components/Chatbot.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
 const ScrollToTop = () => {
@@ -78,6 +79,7 @@ const App = () => {
             <AnimatedRoutes />
           </main>
           <Footer />
+          <Chatbot />
         </div>
       </Router>
     </AuthProvider>

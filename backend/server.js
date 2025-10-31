@@ -177,6 +177,7 @@ import bankRoutes from "./routes/bankRoutes.js";
 import leaderboardRoutes from "./routes/leaderboardRoutes.js";
 import campaignRoutes from "./routes/campaignRoutes.js";
 import authRoutes, { authenticateToken } from "./routes/authRoutes.js";
+import chatbotRoutes from "./routes/chatbotRoutes.js";
 
 // API Routes - MOVE THESE BEFORE THE FALLBACK ROUTE
 app.use("/api/auth", authRoutes);
@@ -185,6 +186,7 @@ app.use("/api/sos", sosRoutes);
 app.use("/api/banks", bankRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/campaigns", campaignRoutes);
+app.use("/api/chatbot", chatbotRoutes);
 
 // 404 Handler - This should be the last route
 app.use((req, res) => {
