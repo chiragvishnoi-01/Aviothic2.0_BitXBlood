@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaArrowRight, FaUsers, FaCalendarAlt } from "react-icons/fa";
@@ -8,9 +8,28 @@ import Testimonials from "../components/Testimonials";
 import DonorCard from "../components/DonorCard";
 import CampaignCard from "../components/CampaignCard";
 import AnimatedBloodDonation from "../components/AnimatedBloodDonation";
-import donorsData from "../data/donors.json";
+import axios from "../api/axiosConfig";
 
 const Home = () => {
+  const [donors, setDonors] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDonors = async () => {
+      try {
+        const res = await axios.get("/auth/donors-public");
+        setDonors(res.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching donors:", error);
+        setDonors([]);
+        setLoading(false);
+      }
+    };
+
+    fetchDonors();
+  }, []);
+
   return (
     <div className="overflow-hidden relative">
       {/* Global Animated Background Particles Across Entire Page */}
@@ -227,7 +246,7 @@ const Home = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
-            {donorsData.slice(0, 6).map((donor, index) => (
+            {donors.slice(0, 6).map((donor, index) => (
               <motion.div
                 key={donor.id}
                 initial={{ opacity: 0, y: 20 }}
