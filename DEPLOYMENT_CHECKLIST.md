@@ -1,6 +1,6 @@
-# ✅ BloodLink Deployment Checklist
+# ✅ Raktchain Deployment Checklist
 
-Follow this checklist to deploy your BloodLink application to production with MongoDB Atlas.
+Follow this checklist to deploy your Raktchain application to production with MongoDB Atlas.
 
 ## 📋 Pre-Deployment Checklist
 
@@ -70,7 +70,7 @@ Follow this checklist to deploy your BloodLink application to production with Mo
 
 ### Backend Verification
 - [ ] Visit health endpoint: `https://your-backend-url.onrender.com/health`
-- [ ] Should return: `{"status":"OK","message":"BloodLink Backend is running!"}`
+- [ ] Should return: `{"status":"OK","message":"Raktchain Backend is running!"}`
 
 ### Frontend Verification
 - [ ] Visit your application: `https://your-frontend-url.vercel.app`
@@ -114,7 +114,7 @@ If you encounter issues:
 
 ## 🎉 Success!
 
-When all checklist items are completed and verified, your BloodLink application will be successfully deployed and ready for users!
+When all checklist items are completed and verified, your Raktchain application will be successfully deployed and ready for users!
 
 ---
 
@@ -167,7 +167,7 @@ When all checklist items are completed and verified, your BloodLink application 
 
 1. **Backend Health Check**:
    - Visit your Render backend URL + /health (e.g., https://your-backend.onrender.com/health)
-   - Should return: {"status":"OK","message":"BloodLink Backend is running!"}
+   - Should return: {"status":"OK","message":"Raktchain Backend is running!"}
 
 2. **Frontend Testing**:
    - Visit your Vercel deployment URL

@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-10-26
 
 ### Added
-- Initial release of BloodLink - Blood Donation Platform
+- Initial release of Raktchain - Blood Donation Platform
 - Complete MERN stack implementation
 - User authentication and authorization system
 - Donor management system

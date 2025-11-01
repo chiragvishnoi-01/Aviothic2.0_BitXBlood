@@ -112,7 +112,7 @@ const Testimonials = () => {
           </h2>
 
           <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Real experiences from donors and recipients who trust BloodLink
+            Real experiences from donors and recipients who trust Raktchain
           </p>
         </motion.div>
 

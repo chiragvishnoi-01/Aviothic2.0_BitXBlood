@@ -129,7 +129,7 @@ app.get('/health', async (req, res) => {
   try {
     res.status(200).json({ 
       status: 'OK', 
-      message: 'BloodLink Backend is running!',
+      message: 'Raktchain Backend is running!',
       timestamp: new Date().toISOString(),
       environment: {
         NODE_ENV: process.env.NODE_ENV || 'development',
@@ -141,7 +141,7 @@ app.get('/health', async (req, res) => {
   } catch (error) {
     res.status(200).json({ 
       status: 'OK', 
-      message: 'BloodLink Backend is running!',
+      message: 'Raktchain Backend is running!',
       timestamp: new Date().toISOString(),
       environment: {
         NODE_ENV: process.env.NODE_ENV || 'development',
@@ -156,7 +156,7 @@ app.get('/health', async (req, res) => {
 // Root Route
 app.get('/', (req, res) => {
   res.status(200).json({ 
-    message: 'BloodLink API Server',
+    message: 'Raktchain API Server',
     version: '1.0.0',
     endpoints: {
       auth: '/api/auth',

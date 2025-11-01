@@ -2,7 +2,7 @@
 
 ## 📋 Complete Deployment Instructions
 
-This guide will help you deploy the BloodLink application with:
+This guide will help you deploy the Raktchain application with:
 - **Frontend** on **Vercel** 
 - **Backend** on **Render**
 
@@ -119,7 +119,7 @@ Click **"Add Environment Variable"** for each:
    https://your-app-name.onrender.com
    ```
 4. **Test it**: Visit `https://your-app-name.onrender.com/health`
-   - Should show: `{"status":"OK","message":"BloodLink Backend is running!"}`
+   - Should show: `{"status":"OK","message":"Raktchain Backend is running!"}`
 
 **⚠️ SAVE YOUR RENDER URL! You'll need it for Vercel.**
 
@@ -350,7 +350,7 @@ When ready for production:
 
 ## 🎉 Success!
 
-Your BloodLink app is now live! 🩸
+Your Raktchain app is now live! 🩸
 
 - **Frontend:** https://your-project-name.vercel.app
 - **Backend:** https://your-app-name.onrender.com

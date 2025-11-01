@@ -1,4 +1,4 @@
-# BloodLink - Blood Donation Platform
+# Raktchain - Blood Donation Platform
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub issues](https://img.shields.io/github/issues/chiragvishnoi-01/Aviothic2.0_BitXBlood)](https://github.com/chiragvishnoi-01/Aviothic2.0_BitXBlood/issues)
@@ -6,13 +6,13 @@
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/chiragvishnoi-01/Aviothic2.0_BitXBlood)](https://github.com/chiragvishnoi-01/Aviothic2.0_BitXBlood/pulls)
 [![Contributors](https://img.shields.io/github/contributors/chiragvishnoi-01/Aviothic2.0_BitXBlood)](https://github.com/chiragvishnoi-01/Aviothic2.0_BitXBlood/graphs/contributors)
 
-A comprehensive blood donation platform built with the MERN stack (MongoDB, Express.js, React, Node.js). BloodLink connects blood donors with blood banks and hospitals, facilitating life-saving blood donations through an efficient and user-friendly platform.
+A comprehensive blood donation platform built with the MERN stack (MongoDB, Express.js, React, Node.js). Raktchain connects blood donors with blood banks and hospitals, facilitating life-saving blood donations through an efficient and user-friendly platform.
 
-![BloodLink Banner](frontend/src/assets/banner.png) <!-- Add your banner image path here -->
+![Raktchain Banner](frontend/src/assets/banner.png) <!-- Add your banner image path here -->
 
 ## 🎯 Goal
 
-BloodLink aims to bridge the gap between blood donors and recipients by providing a centralized platform that:
+Raktchain aims to bridge the gap between blood donors and recipients by providing a centralized platform that:
 - Connects willing donors with blood banks and hospitals in need
 - Facilitates emergency blood requests through our SOS feature
 - Maintains a real-time inventory of blood availability across banks
@@ -23,7 +23,7 @@ BloodLink aims to bridge the gap between blood donors and recipients by providin
 
 For detailed information about the project, please refer to the following documentation files:
 
-- [Project Overview](PROJECT_OVERVIEW.md) - Comprehensive overview of the BloodLink platform
+- [Project Overview](PROJECT_OVERVIEW.md) - Comprehensive overview of the Raktchain platform
 - [Development Guide](DEVELOPMENT.md) - Instructions for setting up the development environment
 - [API Documentation](backend/docs/API_DOCUMENTATION.md) - Detailed API endpoints and usage
 - [Backend README](backend/README.md) - Backend-specific information
@@ -148,7 +148,7 @@ VITE_API_URL=http://localhost:5000/api
 
 ## 🔐 Authentication & Authorization
 
-BloodLink implements a robust authentication system:
+Raktchain implements a robust authentication system:
 - **User Registration**: Secure signup with email verification
 - **User Login**: JWT-based authentication with 24-hour expiration
 - **Role-Based Access**: Three user roles (user, donor, admin)
@@ -266,7 +266,7 @@ We take security seriously. Please see our [SECURITY.md](SECURITY.md) for inform
 
 ## 📞 Support
 
-If you need help with BloodLink, please:
+If you need help with Raktchain, please:
 1. Check our [documentation](README.md)
 2. Review existing [issues](../../issues)
 3. Create a new issue if needed

@@ -1,8 +1,8 @@
-# BloodLink Project Overview
+# Raktchain Project Overview
 
 ## 🎯 Project Mission
 
-BloodLink is a comprehensive blood donation platform designed to bridge the critical gap between blood donors and recipients. Our mission is to save lives by making the blood donation process more efficient, accessible, and organized through technology.
+Raktchain is a comprehensive blood donation platform designed to bridge the critical gap between blood donors and recipients. Our mission is to save lives by making the blood donation process more efficient, accessible, and organized through technology.
 
 ## 🧩 Core Components
 
@@ -194,4 +194,4 @@ BloodLink is a comprehensive blood donation platform designed to bridge the crit
 - Public health officials
 - Community organizers
 
-This comprehensive overview provides a detailed understanding of the BloodLink platform's purpose, functionality, and impact. The system is designed to be both technically robust and socially responsible, addressing a critical healthcare need through innovative technology solutions.
+This comprehensive overview provides a detailed understanding of the Raktchain platform's purpose, functionality, and impact. The system is designed to be both technically robust and socially responsible, addressing a critical healthcare need through innovative technology solutions.

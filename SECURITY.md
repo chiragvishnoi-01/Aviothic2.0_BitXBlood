@@ -2,7 +2,7 @@
 
 ## 🛡️ Security Measures
 
-We take the security of the BloodLink platform seriously. Here are the measures we've implemented to protect the project:
+We take the security of the Raktchain platform seriously. Here are the measures we've implemented to protect the project:
 
 ### Environment Variables Protection
 - All sensitive environment variables are stored in `.env` files
@@ -56,10 +56,10 @@ VITE_API_URL=http://localhost:5000/api
 
 ## 🚨 Reporting a Vulnerability
 
-If you discover a security vulnerability within BloodLink, please follow these steps:
+If you discover a security vulnerability within Raktchain, please follow these steps:
 
 1. **Do not** create a public GitHub issue for the vulnerability.
-2. Send an email to our security team at [security@bloodlink.example.com](mailto:security@bloodlink.example.com) with the subject line "Security Vulnerability Report - BloodLink".
+2. Send an email to our security team at [security@bloodlink.example.com](mailto:security@bloodlink.example.com) with the subject line "Security Vulnerability Report - Raktchain".
 3. Include the following information in your report:
    - A detailed description of the vulnerability
    - Steps to reproduce the vulnerability
@@ -72,7 +72,7 @@ We appreciate your efforts to responsibly disclose any vulnerabilities you find,
 
 ## 🔄 Supported Versions
 
-Currently, we are supporting security updates for the following versions of BloodLink:
+Currently, we are supporting security updates for the following versions of Raktchain:
 
 | Version | Supported          |
 | ------- | ------------------ |

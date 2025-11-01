@@ -133,7 +133,7 @@ const Footer = () => {
                   <FaHeart className="text-white text-2xl" />
                 </div>
               </motion.div>
-              <h3 className="text-3xl font-black bg-gradient-to-r from-red-500 via-rose-400 to-pink-500 bg-clip-text text-transparent">BloodLink</h3>
+              <h3 className="text-3xl font-black bg-gradient-to-r from-red-500 via-rose-400 to-pink-500 bg-clip-text text-transparent">Raktchain</h3>
             </div>
             <p className="text-gray-400 mb-6 text-sm leading-relaxed max-w-xs">
               Connecting donors with those in need. Every drop counts in saving lives. Together, we make a difference! 💉❤️
@@ -294,7 +294,7 @@ const Footer = () => {
         >
           <div className="flex items-center gap-2 mb-4 md:mb-0">
             <p className="text-center md:text-left">
-              © {currentYear} <span className="font-bold text-red-400">BloodLink</span>. All Rights Reserved. 
+              © {currentYear} <span className="font-bold text-red-400">Raktchain</span>. All Rights Reserved. 
             </p>
             <motion.div
               animate={{ scale: [1, 1.3, 1] }}

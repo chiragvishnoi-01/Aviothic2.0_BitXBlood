@@ -162,7 +162,7 @@ const Navbar = () => {
                 animation: 'gradient 3s linear infinite'
               }}
             >
-              BloodLink
+              Raktchain
             </motion.span>
             <motion.span 
               className="text-xs text-gray-600 font-semibold -mt-1 tracking-wide"

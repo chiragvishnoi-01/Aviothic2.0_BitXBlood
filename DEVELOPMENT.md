@@ -1,6 +1,6 @@
 # Development Guide
 
-This guide will help you set up and contribute to the BloodLink project.
+This guide will help you set up and contribute to the Raktchain project.
 
 ## 🛠️ Prerequisites
 

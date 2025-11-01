@@ -1,4 +1,4 @@
-# Contributing to BloodLink
+# Contributing to Raktchain
 
 Thank you for your interest in contributing to BloodLink! We welcome contributions from the community to help improve our blood donation platform.
 

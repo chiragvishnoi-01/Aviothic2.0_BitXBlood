@@ -37,7 +37,7 @@ const Navbar = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-2xl md:text-3xl font-black bg-gradient-to-r from-red-600 to-rose-600 bg-clip-text text-transparent">
-              BloodLink
+              Raktchain
             </span>
             <span className="text-xs text-gray-600 font-semibold -mt-1">
               💝 Connecting Lives
