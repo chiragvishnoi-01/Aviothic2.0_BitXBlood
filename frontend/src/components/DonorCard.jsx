@@ -1,5 +1,5 @@
 import React from "react";
-import { FaPhone, FaMapMarkerAlt, FaTint } from "react-icons/fa";
+import { FaPhone, FaMapMarkerAlt, FaTint, FaEnvelope } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const DonorCard = ({ donor }) => {
@@ -94,14 +94,15 @@ const DonorCard = ({ donor }) => {
           </div>
           <span className="text-sm font-medium">{donor.city || 'City not specified'}</span>
         </motion.div>
+        {/* Changed phone display to email display */}
         <motion.div
           className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl hover:bg-red-50 transition-colors group/item"
           whileHover={{ x: 5 }}
         >
           <div className="bg-red-100 p-2 rounded-lg group-hover/item:bg-red-200 transition-colors">
-            <FaPhone className="text-red-600" />
+            <FaEnvelope className="text-red-600" />
           </div>
-          <span className="text-sm font-bold">{donor.phone || 'Phone not provided'}</span>
+          <span className="text-sm font-bold">{donor.email || 'Email not provided'}</span>
         </motion.div>
       </div>
 
@@ -111,8 +112,8 @@ const DonorCard = ({ donor }) => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <FaPhone className="text-sm" />
-        Contact Donor
+        <FaEnvelope className="text-sm" />
+        Contact via Email
       </motion.button>
       </div>
     </motion.div>
