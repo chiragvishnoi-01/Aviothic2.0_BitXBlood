@@ -1,20 +1,23 @@
 import express from "express";
-import { donors } from "../mockData.js";
+import User from "../models/User.js";
 
 const router = express.Router();
 
 // GET /api/leaderboard → top donors by total donations
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   try {
+    // Find all donors and calculate their total donations
+    const donors = await User.find({ isDonor: true }).select('name bloodGroup city badges donationHistory');
+    
     // Calculate total donated units for each donor
-    const leaderboard = donors.map(d => {
-      const totalDonations = d.donationHistory.length;
+    const leaderboard = donors.map(donor => {
+      const totalDonations = donor.donationHistory ? donor.donationHistory.length : 0;
       return {
-        id: d._id,
-        name: d.name,
-        bloodGroup: d.bloodGroup,
-        city: d.city,
-        badges: d.badges,
+        id: donor._id,
+        name: donor.name,
+        bloodGroup: donor.bloodGroup,
+        city: donor.city,
+        badges: donor.badges || [],
         totalDonations
       };
     });
