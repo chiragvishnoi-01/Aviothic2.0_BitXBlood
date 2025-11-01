@@ -184,7 +184,6 @@ const Chatbot = () => {
                 <FaRobot className="text-2xl" />
                 <div>
                   <h3 className="font-bold text-lg">BloodLink AI Assistant</h3>
-                  <p className="text-red-100 text-xs">Powered by Gemini</p>
                 </div>
               </div>
               <div className="flex gap-2">
