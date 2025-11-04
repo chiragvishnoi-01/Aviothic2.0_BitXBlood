@@ -188,7 +188,7 @@ app.use("/api/banks", bankRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/campaigns", campaignRoutes);
 app.use("/api/chatbot", chatbotRoutes);
-app.use("/api/awareness", awarenessRoutes);
+app.use("/api/awareness", awarenessRoutes); // Added awareness routes for blood donation community posts
 
 // 404 Handler - This should be the last route
 app.use((req, res) => {
