@@ -20,7 +20,7 @@ const Awareness = () => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("/awareness");
+        const response = await axios.get("/api/awareness");
         setPosts(response.data);
       } catch (err) {
         setError("Failed to fetch awareness posts");
@@ -46,7 +46,7 @@ const Awareness = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/awareness", newPost);
+      const response = await axios.post("/api/awareness", newPost);
       setPosts(prev => [response.data.post, ...prev]);
       setNewPost({
         title: "",
@@ -64,7 +64,7 @@ const Awareness = () => {
   // Handle like/unlike
   const handleLike = async (postId) => {
     try {
-      const response = await axios.put(`/awareness/${postId}/like`);
+      const response = await axios.put(`/api/awareness/${postId}/like`);
       setPosts(prev => prev.map(post => 
         post._id === postId 
           ? { ...post, likes: response.data.likes } 
