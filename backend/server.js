@@ -178,7 +178,23 @@ import leaderboardRoutes from "./routes/leaderboardRoutes.js";
 import campaignRoutes from "./routes/campaignRoutes.js";
 import authRoutes, { authenticateToken } from "./routes/authRoutes.js";
 import chatbotRoutes from "./routes/chatbotRoutes.js";
-import awarenessRoutes from "./routes/awarenessRoutes.js";
+
+// Try to import awareness routes, but handle errors gracefully
+let awarenessRoutes;
+try {
+  awarenessRoutes = (await import("./routes/awarenessRoutes.js")).default;
+  console.log("✅ Awareness routes loaded successfully");
+} catch (error) {
+  console.error("❌ Failed to load awareness routes:", error.message);
+  // Create a fallback router that returns 501 Not Implemented
+  awarenessRoutes = express.Router();
+  awarenessRoutes.all("*", (req, res) => {
+    res.status(501).json({ 
+      error: "Awareness feature not available", 
+      message: "This feature is currently unavailable due to server configuration issues" 
+    });
+  });
+}
 
 // API Routes - MOVE THESE BEFORE THE FALLBACK ROUTE
 app.use("/api/auth", authRoutes);
