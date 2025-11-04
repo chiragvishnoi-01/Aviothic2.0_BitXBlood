@@ -15,6 +15,7 @@ import Signup from "./pages/Signup.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
 import Profile from "./pages/Profile.jsx";
+import Awareness from "./pages/Awareness.jsx";
 import Chatbot from "./components/Chatbot.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
@@ -52,6 +53,7 @@ const AnimatedRoutes = () => {
         <Route path="/leaderboard" element={<PageTransition><LeaderboardPage /></PageTransition>} />
         <Route path="/campaigns" element={<PageTransition><Campaigns /></PageTransition>} />
         <Route path="/create-campaign" element={<PageTransition><CreateCampaign /></PageTransition>} />
+        <Route path="/awareness" element={<PageTransition><Awareness /></PageTransition>} />
         <Route path="/profile" element={<PageTransition><Profile /></PageTransition>} />
         <Route
           path="*"
