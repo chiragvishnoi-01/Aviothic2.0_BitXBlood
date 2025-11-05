@@ -19,7 +19,7 @@ const Navbar = () => {
     { path: "/", label: "Home" },
     { path: "/dashboard", label: "Dashboard" },
     { path: "/campaigns", label: "Campaigns" },
-    { path: "/awareness", label: "Awareness" },
+    // Removed awareness link
     { path: "/leaderboard", label: "Leaderboard" },
   ];
 
@@ -63,150 +63,103 @@ const Navbar = () => {
             </li>
           ))}
           
-          {user?.role === 'admin' && (
-            <li>
-              <Link
-                to="/admin"
-                className="px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-amber-400 to-orange-500 text-white hover:from-amber-500 hover:to-orange-600 transition-all duration-200 shadow-md"
-              >
-                ⚙️ Admin
-              </Link>
-            </li>
-          )}
-          
           <li>
             <Link
               to="/sos"
-              className="px-6 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
+              className="px-5 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg font-bold text-sm hover:from-red-700 hover:to-rose-700 transition-all shadow-md"
             >
-              <span>🚨</span> SOS Emergency
+              🚨 SOS
             </Link>
           </li>
-          
-          {user ? (
-            <li className="ml-4 flex items-center gap-3">
-              <Link
-                to="/profile"
-                className="flex items-center gap-2 bg-gray-50 px-4 py-2.5 rounded-lg border border-gray-200 hover:bg-red-50 hover:text-red-600 transition-all duration-200"
-              >
-                <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-                <span className="font-bold text-gray-800 text-sm hidden md:inline">{user.name}</span>
-              </Link>
-            </li>
-          ) : (
-            <li className="ml-4 flex items-center gap-3">
-              <Link
-                to="/login"
-                className="text-gray-700 hover:text-red-600 px-5 py-2.5 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-red-50 border border-gray-200"
-              >
-                Login
-              </Link>
-              <Link
-                to="/signup"
-                className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:from-red-700 hover:to-rose-700 transition-all duration-200 shadow-md"
-              >
-                ✨ Sign Up Free
-              </Link>
-            </li>
-          )}
         </ul>
 
         {/* Mobile Menu Button */}
-        <button
+        <button 
+          className="md:hidden text-gray-800 z-20"
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-2xl text-gray-800 hover:text-red-600 focus:outline-none transition-colors"
-          aria-label="Toggle menu"
         >
-          {isOpen ? <FaTimes /> : <FaBars />}
+          {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
         </button>
-      </div>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <motion.div
-          className="md:hidden mt-4 pb-4 space-y-2 bg-white rounded-xl shadow-xl border border-gray-100 p-4"
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
+        {/* Mobile Menu - Simplified animations */}
+        <motion.div 
+          className={`md:hidden fixed inset-0 bg-white z-10 flex flex-col pt-20 px-6 pb-6 overflow-y-auto ${
+            isOpen ? "block" : "hidden"
+          }`}
+          initial={false}
+          animate={{ 
+            opacity: isOpen ? 1 : 0,
+            y: isOpen ? 0 : 20
+          }}
           transition={{ duration: 0.2 }}
         >
-          {navLinks.map((link) => (
+          <div className="space-y-4">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setIsOpen(false)}
+                className={`block px-4 py-3 rounded-lg font-bold ${
+                  isActive(link.path)
+                    ? "bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md"
+                    : "text-gray-700 hover:bg-red-50"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+            
             <Link
-              key={link.path}
-              to={link.path}
+              to="/sos"
               onClick={() => setIsOpen(false)}
-              className={`block px-4 py-3 rounded-lg font-bold transition-all ${
-                isActive(link.path)
-                  ? "bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md"
-                  : "text-gray-700 hover:bg-red-50 hover:text-red-600"
-              }`}
+              className="block bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-3 rounded-lg font-bold hover:from-red-700 hover:to-rose-700 transition shadow-md text-center"
             >
-              {link.label}
+              🚨 SOS Request
             </Link>
-          ))}
-          
-          {user?.role === 'admin' && (
-            <Link
-              to="/admin"
-              onClick={() => setIsOpen(false)}
-              className="block px-4 py-3 rounded-lg font-bold bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-md"
-            >
-              ⚙️ Admin Panel
-            </Link>
-          )}
-          
-          <Link
-            to="/sos"
-            onClick={() => setIsOpen(false)}
-            className="block bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-3 rounded-lg font-bold hover:from-red-700 hover:to-rose-700 transition shadow-md text-center"
-          >
-            🚨 SOS Request
-          </Link>
-          
-          {user ? (
-            <>
-              <Link
-                to="/profile"
-                onClick={() => setIsOpen(false)}
-                className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-center font-bold text-gray-800 flex items-center justify-center gap-2 hover:bg-red-50 hover:text-red-600 transition-colors"
-              >
-                <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-                {user.name}
-              </Link>
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setIsOpen(false);
-                }}
-                className="w-full bg-gray-800 hover:bg-gray-900 text-white px-4 py-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2 shadow-md"
-              >
-                <FaSignOutAlt /> Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                onClick={() => setIsOpen(false)}
-                className="block text-gray-700 hover:bg-red-50 hover:text-red-600 px-4 py-3 rounded-lg font-bold transition-all text-center border border-gray-200"
-              >
-                Login
-              </Link>
-              <Link
-                to="/signup"
-                onClick={() => setIsOpen(false)}
-                className="block bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-3 rounded-lg font-bold hover:from-red-700 hover:to-rose-700 transition shadow-md text-center"
-              >
-                Sign Up Free
-              </Link>
-            </>
-          )}
+            
+            {user ? (
+              <>
+                <Link
+                  to="/profile"
+                  onClick={() => setIsOpen(false)}
+                  className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-center font-bold text-gray-800 flex items-center justify-center gap-2 hover:bg-red-50 hover:text-red-600 transition-colors"
+                >
+                  <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  {user.name}
+                </Link>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }}
+                  className="w-full bg-gray-800 hover:bg-gray-900 text-white px-4 py-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2 shadow-md"
+                >
+                  <FaSignOutAlt /> Logout
+                </button>
+              </>
+            ) : (
+              <div className="space-y-4 pt-4">
+                <Link
+                  to="/login"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-900 text-white rounded-lg font-bold hover:from-gray-800 hover:to-black transition shadow-md"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-center px-4 py-3 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg font-bold hover:from-red-700 hover:to-rose-700 transition shadow-md"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
+          </div>
         </motion.div>
-      )}
+      </div>
     </nav>
   );
 };

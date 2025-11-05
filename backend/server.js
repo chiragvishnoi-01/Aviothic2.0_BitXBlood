@@ -180,21 +180,21 @@ import authRoutes, { authenticateToken } from "./routes/authRoutes.js";
 import chatbotRoutes from "./routes/chatbotRoutes.js";
 
 // Try to import awareness routes, but handle errors gracefully
-let awarenessRoutes;
-try {
-  awarenessRoutes = (await import("./routes/awarenessRoutes.js")).default;
-  console.log("✅ Awareness routes loaded successfully");
-} catch (error) {
-  console.error("❌ Failed to load awareness routes:", error.message);
-  // Create a fallback router that returns 501 Not Implemented
-  awarenessRoutes = express.Router();
-  awarenessRoutes.all("*", (req, res) => {
-    res.status(501).json({ 
-      error: "Awareness feature not available", 
-      message: "This feature is currently unavailable due to server configuration issues" 
-    });
-  });
-}
+// let awarenessRoutes;
+// try {
+//   awarenessRoutes = (await import("./routes/awarenessRoutes.js")).default;
+//   console.log("✅ Awareness routes loaded successfully");
+// } catch (error) {
+//   console.error("❌ Failed to load awareness routes:", error.message);
+//   // Create a fallback router that returns 501 Not Implemented
+//   awarenessRoutes = express.Router();
+//   awarenessRoutes.all("*", (req, res) => {
+//     res.status(501).json({ 
+//       error: "Awareness feature not available", 
+//       message: "This feature is currently unavailable due to server configuration issues" 
+//     });
+//   });
+// }
 
 // API Routes - MOVE THESE BEFORE THE FALLBACK ROUTE
 app.use("/api/auth", authRoutes);
@@ -204,7 +204,7 @@ app.use("/api/banks", bankRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/campaigns", campaignRoutes);
 app.use("/api/chatbot", chatbotRoutes);
-app.use("/api/awareness", awarenessRoutes); // Added awareness routes for blood donation community posts
+// app.use("/api/awareness", awarenessRoutes);
 
 // 404 Handler - This should be the last route
 app.use((req, res) => {
@@ -219,19 +219,12 @@ app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(500).json({ 
     error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
+    message: err.message 
   });
 });
 
-// Start server
-const PORT = process.env.PORT || 5001;
-
-// Export the app for serverless deployment
-export default app;
-
-// Start the server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🌐 API URL: http://localhost:${PORT}`);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`📡 Access server at: http://localhost:${PORT}`);
 });
