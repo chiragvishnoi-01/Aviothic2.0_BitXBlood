@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -71,6 +72,62 @@ const Navbar = () => {
               🚨 SOS
             </Link>
           </li>
+          
+          {/* Show login/signup buttons when user is not authenticated */}
+          {!user ? (
+            <>
+              <li>
+                <Link
+                  to="/login"
+                  className="px-5 py-2.5 bg-gradient-to-r from-gray-700 to-gray-900 text-white rounded-lg font-bold text-sm hover:from-gray-800 hover:to-black transition-all shadow-md"
+                >
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/signup"
+                  className="px-5 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg font-bold text-sm hover:from-red-700 hover:to-rose-700 transition-all shadow-md"
+                >
+                  Sign Up
+                </Link>
+              </li>
+            </>
+          ) : (
+            /* Show profile and logout buttons when user is authenticated */
+            <li className="relative">
+              <button
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg font-bold text-sm text-gray-800 hover:bg-red-50 hover:text-red-600 transition-colors"
+              >
+                <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+                <span className="hidden lg:inline">{user.name}</span>
+              </button>
+              {/* Dropdown for logout */}
+              {isProfileMenuOpen && (
+                <div className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-[10000]">
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                    onClick={() => setIsProfileMenuOpen(false)}
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setIsProfileMenuOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg flex items-center gap-2"
+                  >
+                    <FaSignOutAlt /> Logout
+                  </button>
+                </div>
+              )}
+            </li>
+          )}
         </ul>
 
         {/* Mobile Menu Button */}
