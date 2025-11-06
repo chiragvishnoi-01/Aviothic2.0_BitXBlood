@@ -73,6 +73,18 @@ const Navbar = () => {
             </Link>
           </li>
           
+          {/* Show admin panel link only for admin users */}
+          {user && user.role === 'admin' && (
+            <li>
+              <Link
+                to="/admin"
+                className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg font-bold text-sm hover:from-amber-600 hover:to-orange-600 transition-all shadow-md"
+              >
+                ⚙️ Admin
+              </Link>
+            </li>
+          )}
+          
           {/* Show login/signup buttons when user is not authenticated */}
           {!user ? (
             <>
@@ -173,6 +185,17 @@ const Navbar = () => {
             >
               🚨 SOS Request
             </Link>
+            
+            {/* Show admin panel link only for admin users */}
+            {user && user.role === 'admin' && (
+              <Link
+                to="/admin"
+                onClick={() => setIsOpen(false)}
+                className="block bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-3 rounded-lg font-bold hover:from-amber-600 hover:to-orange-600 transition shadow-md text-center"
+              >
+                ⚙️ Admin Panel
+              </Link>
+            )}
             
             {user ? (
               <>
