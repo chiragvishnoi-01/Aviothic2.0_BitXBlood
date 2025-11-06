@@ -8,8 +8,8 @@ const Footer = () => {
   
   const socialLinks = [
     { icon: FaFacebook, href: "#", label: "Facebook", color: "hover:bg-blue-600" },
-    { icon: FaInstagram, href: "#", label: "Instagram", color: "hover:bg-pink-600" },
-    { icon: FaTwitter, href: "#", label: "Twitter", color: "hover:bg-sky-500" },
+    { icon: FaInstagram, href: "https://www.instagram.com/chiragvishnoi01/", label: "Instagram", color: "hover:bg-pink-600" },
+    { icon: FaTwitter, href: "https://x.com/ChiragVishnoi27", label: "Twitter", color: "hover:bg-sky-500" },
     { icon: FaGithub, href: "https://github.com/chiragvishnoi-01", label: "GitHub", color: "hover:bg-gray-700" },
     { icon: FaLinkedin, href: "https://www.linkedin.com/in/chiragvishnoi01/", label: "LinkedIn", color: "hover:bg-blue-700" },
   ];
@@ -151,6 +151,8 @@ const Footer = () => {
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ scale: 1.1, y: -3 }}
                   whileTap={{ scale: 0.95 }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <social.icon className="text-lg" />
                 </motion.a>
