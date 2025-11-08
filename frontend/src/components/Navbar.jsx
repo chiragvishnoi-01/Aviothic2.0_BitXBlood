@@ -150,10 +150,10 @@ const Navbar = () => {
           {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
         </button>
 
-        {/* Mobile Menu - Simplified without framer-motion */}
+        {/* Mobile Menu - Changed from fixed to absolute positioning for better scrolling */}
         {isOpen && (
-          <div className="md:hidden fixed inset-0 bg-white z-10 flex flex-col pt-20 px-6 pb-6 overflow-y-auto">
-            <div className="space-y-4 min-h-full pb-20">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white z-10 flex flex-col pt-6 px-6 pb-6 shadow-lg border-t border-gray-200 max-h-[70vh] overflow-y-auto">
+            <div className="space-y-4 pb-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
