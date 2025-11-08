@@ -150,15 +150,9 @@ const Navbar = () => {
           {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
         </button>
 
-        {/* Mobile Menu - Simplified animations */}
+        {/* Mobile Menu - Simplified without framer-motion */}
         {isOpen && (
-          <motion.div 
-            className="md:hidden fixed inset-0 bg-white z-10 flex flex-col pt-20 px-6 pb-6 overflow-y-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.2 }}
-          >
+          <div className="md:hidden fixed inset-0 bg-white z-10 flex flex-col pt-20 px-6 pb-6 overflow-y-auto">
             <div className="space-y-4 min-h-full pb-20">
               {navLinks.map((link) => (
                 <Link
@@ -235,7 +229,7 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
     </nav>
