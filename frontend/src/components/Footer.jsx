@@ -9,7 +9,7 @@ const Footer = () => {
   const socialLinks = [
     { icon: FaFacebook, href: "#", label: "Facebook", color: "hover:bg-blue-600" },
     { icon: FaInstagram, href: "https://www.instagram.com/chiragvishnoi01/", label: "Instagram", color: "hover:bg-pink-600" },
-    { icon: FaTwitter, href: "https://x.com/ChiragVishnoi27", label: "Twitter", color: "hover:bg-sky-500" },
+    { icon: FaTwitter, href: "https://x.com/Raktchain?t=uxGclJKtqa8tP6PM8XIm1g&s=09", label: "Twitter", color: "hover:bg-sky-500" },
     { icon: FaGithub, href: "https://github.com/chiragvishnoi-01", label: "GitHub", color: "hover:bg-gray-700" },
     { icon: FaLinkedin, href: "https://www.linkedin.com/in/chiragvishnoi01/", label: "LinkedIn", color: "hover:bg-blue-700" },
   ];
@@ -255,7 +255,7 @@ const Footer = () => {
                 </div>
                 <div>
                   <div className="font-semibold text-xs text-gray-500">Email</div>
-                  <div>chiragvishnoi96@gmail.com</div>
+                  <div>raktchain@gmail.com</div>
                 </div>
               </motion.li>
               <motion.li 
