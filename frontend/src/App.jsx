@@ -15,7 +15,6 @@ import Signup from "./pages/Signup.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
 import Profile from "./pages/Profile.jsx";
-import DonorDetails from "./pages/DonorDetails.jsx";
 // Removed Awareness import
 import Chatbot from "./components/Chatbot.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
@@ -56,7 +55,6 @@ const AnimatedRoutes = () => {
         <Route path="/create-campaign" element={<PageTransition><CreateCampaign /></PageTransition>} />
         {/* Removed awareness route */}
         <Route path="/profile" element={<PageTransition><Profile /></PageTransition>} />
-        <Route path="/donor/:donorId" element={<PageTransition><DonorDetails /></PageTransition>} />
         <Route
           path="*"
           element={

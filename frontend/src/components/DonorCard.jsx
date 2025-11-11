@@ -1,11 +1,8 @@
 import React from "react";
 import { FaPhone, FaMapMarkerAlt, FaTint, FaEnvelope } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 
 const DonorCard = ({ donor }) => {
-  const navigate = useNavigate();
-  
   const bloodGroupColors = {
     "A+": "from-red-500 to-rose-500",
     "A-": "from-red-600 to-rose-600",
@@ -18,19 +15,14 @@ const DonorCard = ({ donor }) => {
   };
 
   const gradientClass = bloodGroupColors[donor.bloodGroup] || "from-gray-500 to-gray-700";
-  
-  const handleContactClick = () => {
-    navigate(`/donor/${donor._id}`);
-  };
 
   return (
     <motion.div
-      className="relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 p-6 border-2 border-transparent hover:border-red-200 group overflow-hidden cursor-pointer"
+      className="relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 p-6 border-2 border-transparent hover:border-red-200 group overflow-hidden"
       whileHover={{ y: -8, scale: 1.02 }}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4, type: "spring" }}
-      onClick={handleContactClick}
     >
       {/* Animated Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-red-50/50 via-transparent to-rose-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -119,13 +111,9 @@ const DonorCard = ({ donor }) => {
         className="mt-4 w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white py-3 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-2xl flex items-center justify-center gap-2"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={(e) => {
-          e.stopPropagation();
-          handleContactClick();
-        }}
       >
         <FaEnvelope className="text-sm" />
-        View Details
+        Contact via Email
       </motion.button>
       </div>
     </motion.div>
