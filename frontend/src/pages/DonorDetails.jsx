@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import axios from "../api/axiosConfig";
 import { FaPhone, FaMapMarkerAlt, FaTint, FaEnvelope, FaArrowLeft, FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
 const DonorDetails = () => {
@@ -9,19 +10,29 @@ const DonorDetails = () => {
   const [feedback, setFeedback] = useState("");
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const [donor, setDonor] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // Mock donor data - in a real app, this would come from an API
-  const donor = {
-    _id: donorId,
-    name: "John Doe",
-    email: "johndoe@example.com",
-    phone: "+1 (555) 123-4567",
-    city: "New York, NY",
-    bloodGroup: "O+",
-    lastDonation: "2023-06-15",
-    totalDonations: 12,
-    photo: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
-  };
+  useEffect(() => {
+    const fetchDonorDetails = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`/auth/donors-public/${donorId}`);
+        setDonor(res.data);
+        setError("");
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load donor details. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (donorId) {
+      fetchDonorDetails();
+    }
+  }, [donorId]);
 
   const bloodGroupColors = {
     "A+": "from-red-500 to-rose-500",
@@ -34,10 +45,12 @@ const DonorDetails = () => {
     "AB-": "from-purple-600 to-pink-600",
   };
 
-  const gradientClass = bloodGroupColors[donor.bloodGroup] || "from-gray-500 to-gray-700";
+  const gradientClass = donor ? bloodGroupColors[donor.bloodGroup] || "from-gray-500 to-gray-700" : "from-gray-500 to-gray-700";
 
   const handleContactViaEmail = () => {
-    window.location.href = `mailto:${donor.email}`;
+    if (donor && donor.email) {
+      window.location.href = `mailto:${donor.email}`;
+    }
   };
 
   const handleSubmitFeedback = (e) => {
@@ -48,19 +61,52 @@ const DonorDetails = () => {
     setRating(0);
   };
 
-  const renderStars = (ratingValue) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (i <= ratingValue) {
-        stars.push(<FaStar key={i} className="text-yellow-400" />);
-      } else if (i === Math.ceil(ratingValue) && !Number.isInteger(ratingValue)) {
-        stars.push(<FaStarHalfAlt key={i} className="text-yellow-400" />);
-      } else {
-        stars.push(<FaRegStar key={i} className="text-yellow-400" />);
-      }
-    }
-    return stars;
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 py-12 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-red-600 font-semibold">Loading donor details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 py-12 flex items-center justify-center">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md text-center">
+          <div className="text-6xl mb-4">😞</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops!</h2>
+          <p className="text-red-600 text-xl font-semibold mb-6">{error}</p>
+          <button
+            onClick={() => navigate(-1)}
+            className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            Back to Donors
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!donor) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 py-12 flex items-center justify-center">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md text-center">
+          <div className="text-6xl mb-4">🔍</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Donor Not Found</h2>
+          <p className="text-gray-600 mb-6">The donor you're looking for doesn't exist or may have been removed.</p>
+          <button
+            onClick={() => navigate(-1)}
+            className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            Back to Donors
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50 py-12">
@@ -96,7 +142,7 @@ const DonorDetails = () => {
               >
                 <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white/30 shadow-2xl">
                   <img 
-                    src={donor.photo} 
+                    src={donor.photo || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"} 
                     alt={donor.name} 
                     className="w-full h-full object-cover"
                   />
@@ -130,11 +176,13 @@ const DonorDetails = () => {
                   </div>
                   <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
                     <FaMapMarkerAlt />
-                    <span>{donor.city}</span>
+                    <span>{donor.city || 'Location not specified'}</span>
                   </div>
-                  <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                    <span>{donor.totalDonations} donations</span>
-                  </div>
+                  {donor.totalDonations && (
+                    <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                      <span>{donor.totalDonations} donations</span>
+                    </div>
+                  )}
                 </motion.div>
               </div>
             </div>
@@ -158,19 +206,21 @@ const DonorDetails = () => {
                     </div>
                     <div>
                       <div className="text-sm text-gray-500">Email</div>
-                      <div className="font-medium">{donor.email}</div>
+                      <div className="font-medium">{donor.email || 'Email not provided'}</div>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
-                    <div className="bg-red-100 p-3 rounded-lg">
-                      <FaPhone className="text-red-600 text-xl" />
+                  {donor.phone && (
+                    <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+                      <div className="bg-red-100 p-3 rounded-lg">
+                        <FaPhone className="text-red-600 text-xl" />
+                      </div>
+                      <div>
+                        <div className="text-sm text-gray-500">Phone</div>
+                        <div className="font-medium">{donor.phone}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-sm text-gray-500">Phone</div>
-                      <div className="font-medium">{donor.phone}</div>
-                    </div>
-                  </div>
+                  )}
                   
                   <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
                     <div className="bg-red-100 p-3 rounded-lg">
@@ -178,7 +228,7 @@ const DonorDetails = () => {
                     </div>
                     <div>
                       <div className="text-sm text-gray-500">Location</div>
-                      <div className="font-medium">{donor.city}</div>
+                      <div className="font-medium">{donor.city || 'Location not specified'}</div>
                     </div>
                   </div>
                   
