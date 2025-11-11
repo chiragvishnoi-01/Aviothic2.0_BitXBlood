@@ -293,6 +293,25 @@ router.get("/donors-public", async (req, res) => {
   }
 });
 
+// Get specific donor by ID - public endpoint
+router.get("/donors-public/:id", async (req, res) => {
+  try {
+    const donor = await User.findById(req.params.id).select('-password');
+    if (!donor) {
+      return res.status(404).json({ message: "Donor not found" });
+    }
+    if (!donor.isDonor) {
+      return res.status(404).json({ message: "User is not a donor" });
+    }
+    res.json(donor);
+  } catch (error) {
+    if (error.kind === 'ObjectId') {
+      return res.status(400).json({ message: "Invalid donor ID format" });
+    }
+    res.status(500).json({ message: "Error fetching donor", error: error.message });
+  }
+});
+
 // Register as donor
 router.put("/register-donor/:id", authenticateToken, async (req, res) => {
   try {
