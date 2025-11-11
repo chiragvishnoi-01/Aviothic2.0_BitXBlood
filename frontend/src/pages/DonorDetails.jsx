@@ -18,12 +18,26 @@ const DonorDetails = () => {
     const fetchDonorDetails = async () => {
       try {
         setLoading(true);
+        console.log('Fetching donor details for ID:', donorId);
         const res = await axios.get(`/auth/donors-public/${donorId}`);
+        console.log('Donor data received:', res.data);
         setDonor(res.data);
         setError("");
       } catch (err) {
-        console.error(err);
-        setError("Failed to load donor details. Please try again later.");
+        console.error('Error fetching donor details:', err);
+        if (err.response) {
+          // Server responded with error status
+          console.error('Error response:', err.response);
+          setError(`Failed to load donor details: ${err.response.data.message || err.response.statusText}`);
+        } else if (err.request) {
+          // Request made but no response received
+          console.error('No response received:', err.request);
+          setError("Failed to connect to server. Please check your internet connection.");
+        } else {
+          // Something else happened
+          console.error('Error message:', err.message);
+          setError("Failed to load donor details. Please try again later.");
+        }
       } finally {
         setLoading(false);
       }
@@ -31,6 +45,8 @@ const DonorDetails = () => {
 
     if (donorId) {
       fetchDonorDetails();
+    } else {
+      setError("No donor ID provided.");
     }
   }, [donorId]);
 
@@ -50,13 +66,16 @@ const DonorDetails = () => {
   const handleContactViaEmail = () => {
     if (donor && donor.email) {
       window.location.href = `mailto:${donor.email}`;
+    } else {
+      alert("Email address not available for this donor.");
     }
   };
 
   const handleSubmitFeedback = (e) => {
     e.preventDefault();
     // In a real app, this would send the feedback to the server
-    alert(`Feedback submitted for ${donor.name}:\nRating: ${rating} stars\nComment: ${feedback}`);
+    const donorName = donor ? donor.name : 'Unknown Donor';
+    alert(`Feedback submitted for ${donorName}:\nRating: ${rating} stars\nComment: ${feedback}`);
     setFeedback("");
     setRating(0);
   };
@@ -178,11 +197,6 @@ const DonorDetails = () => {
                     <FaMapMarkerAlt />
                     <span>{donor.city || 'Location not specified'}</span>
                   </div>
-                  {donor.totalDonations && (
-                    <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                      <span>{donor.totalDonations} donations</span>
-                    </div>
-                  )}
                 </motion.div>
               </div>
             </div>
@@ -210,7 +224,8 @@ const DonorDetails = () => {
                     </div>
                   </div>
                   
-                  {donor.phone && (
+                  {/* Check if phone field exists and is not empty */}
+                  {donor.phone && donor.phone.trim() !== '' && (
                     <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
                       <div className="bg-red-100 p-3 rounded-lg">
                         <FaPhone className="text-red-600 text-xl" />
